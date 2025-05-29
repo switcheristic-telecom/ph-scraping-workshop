@@ -15,3 +15,6 @@ authors:
 
 --
 
+Founded in 1996, the Wayback Machine is the oldest, as well as the largest publicly-accessible web archive. 
+
+In this lesson, we are going to use the Wayback Machine's CDX API 
