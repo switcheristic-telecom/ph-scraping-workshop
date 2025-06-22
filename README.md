@@ -123,7 +123,7 @@ python 4-summarize-image-resources.py
 
 The project creates the following directory structure:
 
-```
+```bash
 data/                          # Main output directory
 ├── website.com/               # One directory per website
 │   └── 20000510123456/        # Timestamp-based snapshot directories
