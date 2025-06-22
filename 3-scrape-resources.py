@@ -30,6 +30,15 @@ def capture_images(resources_dir: str, cdx_entry: dict, soup: BeautifulSoup):
 
         image_tag_attrs = img.attrs
 
+        if img.parent.name == "a":
+            image_tag_attrs["parent_href"] = img.parent["href"]
+            if img.parent["href"].startswith("http"):
+                image_tag_attrs["full_parent_href"] = img.parent["href"]
+            else:
+                image_tag_attrs["full_parent_href"] = urllib.parse.urljoin(
+                    cdx_entry["original"], img.parent["href"]
+                )
+
         resource_name = util.safe_filename(img["src"])
         resource_cdx_entry_path = os.path.join(resources_dir, resource_name + ".json")
 
