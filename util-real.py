@@ -44,3 +44,31 @@ def query_wm_cdx_entries(
     response.raise_for_status()
 
     return parse_wm_cdx_api_response_str(response.text)
+
+
+##################
+##### PART 2 #####
+##################
+import os, json
+
+OUTPUT_DIR = "data"
+
+
+def get_saved_website_entries() -> dict:
+    """Get all the saved website entries
+    dict: {website: [cdx_entry, ...], website2: [cdx_entry, ...], ...}
+    """
+    all_website_entries = {}
+
+    for website in os.listdir(OUTPUT_DIR):
+        website_dir = os.path.join(OUTPUT_DIR, website)
+        all_website_entries[website] = []
+
+        for timestamp_dir in os.listdir(website_dir):
+            if os.path.isdir(os.path.join(website_dir, timestamp_dir)):
+                cdx_meta_path = os.path.join(
+                    website_dir, timestamp_dir, "cdx_entry.json"
+                )
+                with open(cdx_meta_path, "r") as f:
+                    cdx_entry = json.load(f)
+                all_website_entries[website].append(cdx_entry)
