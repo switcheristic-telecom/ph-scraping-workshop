@@ -1,13 +1,14 @@
-import os, csv, json, time, requests
-from tenacity import retry, stop_after_attempt, wait_exponential
+import os, csv, json
+import util
 
-
-#####################
-##### CONSTANTS #####
-#####################
-
-OUTPUT_DIR = "wm_scraping"
+OUTPUT_DIR = "data"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+
+################
+##### MAIN #####
+################
+
 
 categories_of_interest = ["portal", "content"]
 
@@ -24,40 +25,6 @@ with open("nikkeibp-may2000.csv", "r") as file:
 print(f"Found {len(japanese_websites)} Japanese websites to scrape")
 
 
-def parse_wm_cdx_api_response_str(response_str: str) -> list[dict]:
-    """Parse the response from the Wayback Machine CDX API"""
-    rows = [entry for entry in response_str.strip().split("\n") if entry != ""]
-    result = []
-    for row in rows:
-        fields = row.split(" ")
-        result.append(
-            {
-                "urlkey": fields[0],
-                "timestamp": fields[1],
-                "original": fields[2],
-                "mimetype": fields[3],
-                "statuscode": fields[4],
-                "digest": fields[5],
-                "length": fields[6],
-            }
-        )
-    return result
-
-
-@retry(stop=stop_after_attempt(10), wait=wait_exponential(multiplier=1, min=2, max=8))
-def query_wm_cdx_entries(
-    url: str,
-    from_time: str = "20000501000000",
-    to_time: str = "20000531235959",
-):
-    cdx_url = f"https://web.archive.org/cdx/search/cdx?url={url}&from={from_time}&to={to_time}"
-
-    response = requests.get(cdx_url, timeout=30)
-    response.raise_for_status()
-
-    return parse_wm_cdx_api_response_str(response.text)
-
-
 for website in japanese_websites:
     print(f"Querying CDX for {website}")
 
@@ -66,7 +33,7 @@ for website in japanese_websites:
         print(f"  Skipping - folder already exists")
         continue
 
-    cdx_entries = query_wm_cdx_entries(website)
+    cdx_entries = util.query_wm_cdx_entries(website)
 
     print(f"  Found {len(cdx_entries)} CDX entries")
     os.makedirs(website_dir, exist_ok=True)
@@ -82,5 +49,3 @@ for website in japanese_websites:
                 json.dump(cdx_entry, f, indent=2)
 
         print(f"  Created {len(cdx_entries)} snapshot entry folders")
-
-    time.sleep(1)  # Be respectful to the API
