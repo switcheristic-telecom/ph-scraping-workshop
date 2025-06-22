@@ -1,14 +1,15 @@
-import requests, os, json, time
-from tenacity import retry, stop_after_attempt, wait_exponential
+import requests, os, json, time, tenacity
 
+OUTPUT_DIR = "data"
+CACHE_DIR = "cache"
 
 #####################
 ##### UTIL #####
 #####################
 
-my_retry = retry(
-    stop=stop_after_attempt(10),
-    wait=wait_exponential(multiplier=1, min=2, max=15),
+retry = tenacity.retry(
+    stop=tenacity.stop_after_attempt(10),
+    wait=tenacity.wait_exponential(multiplier=1, min=2, max=32),
     after=lambda _: time.sleep(2),
 )
 
@@ -46,12 +47,13 @@ def parse_wm_cdx_api_response_str(response_str: str) -> list[dict]:
     return result
 
 
-@my_retry
+@retry
 def query_wm_cdx_entries(
     url: str,
     from_time: str = "20000501000000",
     to_time: str = "20000531235959",
 ):
+    """Query the Wayback Machine CDX API for a given URL and time range"""
     cdx_url = f"https://web.archive.org/cdx/search/cdx?url={url}&from={from_time}&to={to_time}"
 
     response = requests.get(cdx_url, timeout=30)
@@ -60,7 +62,7 @@ def query_wm_cdx_entries(
     return parse_wm_cdx_api_response_str(response.text)
 
 
-@my_retry
+@retry
 def query_wm_cdx_closest_entry(url: str, timestamp: str) -> dict | None:
     """Get the closest snapshot entry for a given URL and timestamp"""
     cdx_url = f"https://web.archive.org/cdx/search/cdx?url={url}&closest={timestamp}"
@@ -77,7 +79,7 @@ def query_wm_cdx_closest_entry(url: str, timestamp: str) -> dict | None:
 #####################
 
 
-@my_retry
+@retry
 def download_website_snapshot(cdx_entry: dict) -> dict:
     wayback_url = f"https://web.archive.org/web/{cdx_entry['timestamp']}id_/{cdx_entry['original']}"
     response = requests.get(wayback_url, timeout=30)
@@ -89,7 +91,7 @@ def download_website_snapshot(cdx_entry: dict) -> dict:
     }
 
 
-@my_retry
+@retry
 def download_image(cdx_entry: dict) -> dict:
     wayback_url = f"https://web.archive.org/web/{cdx_entry['timestamp']}im_/{cdx_entry['original']}"
     response = requests.get(wayback_url, timeout=30)

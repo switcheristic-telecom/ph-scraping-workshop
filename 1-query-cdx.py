@@ -1,16 +1,10 @@
-import os, csv, json
-import util
+##################
+##### PART 1 #####
+##################
 
-OUTPUT_DIR = "data"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+import csv
 
-
-################
-##### MAIN #####
-################
-
-
-categories_of_interest = ["portal", "content"]
+CATEGORY_OF_INTEREST = ["portal", "content"]
 
 japanese_websites = []
 with open("nikkeibp-may2000.csv", "r") as file:
@@ -18,11 +12,21 @@ with open("nikkeibp-may2000.csv", "r") as file:
     for row in reader:
         if (
             row.get("is_japanese") == "true"
-            and row.get("category") in categories_of_interest
+            and row.get("category") in CATEGORY_OF_INTEREST
         ):
             japanese_websites.append(row["website"])
 
 print(f"Found {len(japanese_websites)} Japanese websites to scrape")
+
+##################
+##### PART 2 #####
+##################
+
+import os, json
+import util
+
+OUTPUT_DIR = "data"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
 for website in japanese_websites:

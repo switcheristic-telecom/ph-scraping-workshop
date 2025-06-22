@@ -28,6 +28,17 @@ def capture_images(resources_dir: str, cdx_entry: dict, soup: BeautifulSoup):
         else:
             img_url = urllib.parse.urljoin(cdx_entry["original"], img["src"])
 
+        image_tag_attrs = img.attrs
+
+        if img.parent.name == "a":
+            image_tag_attrs["parent_href"] = img.parent["href"]
+            if img.parent["href"].startswith("http"):
+                image_tag_attrs["full_parent_href"] = img.parent["href"]
+            else:
+                image_tag_attrs["full_parent_href"] = urllib.parse.urljoin(
+                    cdx_entry["original"], img.parent["href"]
+                )
+
         resource_name = util.safe_filename(img["src"])
         resource_cdx_entry_path = os.path.join(resources_dir, resource_name + ".json")
 
@@ -63,9 +74,11 @@ def capture_images(resources_dir: str, cdx_entry: dict, soup: BeautifulSoup):
                 util.save_image(image_snapshot, image_dir)
                 util.save_image(image_snapshot, cache_image_dir)
 
-            cdx_entry_path = os.path.join(image_dir, "cdx_entry.json")
-            with open(cdx_entry_path, "w") as f:
+            with open(os.path.join(image_dir, "cdx_entry.json"), "w") as f:
                 json.dump(closest_entry, f)
+
+            with open(os.path.join(image_dir, "image_tag_attrs.json"), "w") as f:
+                json.dump(image_tag_attrs, f)
 
 
 def capture_frames(resources_dir: str, cdx_entry: dict, soup: BeautifulSoup):

@@ -104,12 +104,14 @@ def detect_images(snapshot_dir: str):
             if resource_name.endswith(tuple(image_extensions)):
                 file_path = os.path.join(root, resource_name)
                 cdx_entry_path = os.path.join(root, "cdx_entry.json")
+                image_tag_attrs_path = os.path.join(root, "image_tag_attrs.json")
                 metadata = get_image_metadata(file_path)
                 images.append(
                     {
                         "path": file_path,
                         "metadata": metadata,
                         "cdx_entry": json.load(open(cdx_entry_path)),
+                        "image_tag_attrs": json.load(open(image_tag_attrs_path)),
                     }
                 )
 
@@ -130,6 +132,13 @@ for website in os.listdir(OUTPUT_DIR):
                         "website_timestamp": timestamp,
                         **image["cdx_entry"],
                         **image["metadata"],
+                        "image_tag_parent_href": image["image_tag_attrs"].get(
+                            "parent_href", None
+                        ),
+                        "image_tag_full_parent_href": image["image_tag_attrs"].get(
+                            "full_parent_href", None
+                        ),
+                        "image_tag_alt_text": image["image_tag_attrs"].get("alt", None),
                     }
                 )
 
