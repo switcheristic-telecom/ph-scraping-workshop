@@ -143,13 +143,13 @@ data/                          # Main output directory
 │           └── [resource].json       # Resource discovery metadata
 
 cache/                         # Shared cache directory
-└── [digest]/                  # Content-based caching by SHA-1 hash
-    └── [cached files]         # Cached downloads (deduplicated)
+└── [digest]/                  # Content-based caching by Wayback Machine digest
+    └── [cached files]         # Cached downloads to avoid duplicate downloads
 ```
 
 ## Key Features
 
-- **Content-based caching**: Uses SHA-1 hashes to avoid downloading identical content multiple times
+- **Content-based caching**: Uses Wayback Machine digest hashes to avoid downloading identical content multiple times
 - **Encoding detection**: Automatically handles legacy character encodings for international content
 - **Rate limiting**: Implements respectful crawling with exponential backoff
 - **Time-accurate resource matching**: Finds the closest archived version of each resource
