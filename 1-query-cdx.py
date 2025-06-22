@@ -1,14 +1,8 @@
-import os, csv, json
-import util
+##################
+##### PART 1 #####
+##################
 
-OUTPUT_DIR = "data"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-
-################
-##### MAIN #####
-################
-
+import csv
 
 CATEGORY_OF_INTEREST = ["portal", "content"]
 
@@ -23,6 +17,16 @@ with open("nikkeibp-may2000.csv", "r") as file:
             japanese_websites.append(row["website"])
 
 print(f"Found {len(japanese_websites)} Japanese websites to scrape")
+
+##################
+##### PART 2 #####
+##################
+
+import os, json
+import util
+
+OUTPUT_DIR = "data"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
 for website in japanese_websites:
