@@ -132,13 +132,13 @@ for website in os.listdir(OUTPUT_DIR):
                         "website_timestamp": timestamp,
                         **image["cdx_entry"],
                         **image["metadata"],
-                        "image_tag_alt_text": image["image_tag_attrs"].get("alt", None),
                         "image_tag_parent_href": image["image_tag_attrs"].get(
                             "parent_href", None
                         ),
                         "image_tag_full_parent_href": image["image_tag_attrs"].get(
                             "full_parent_href", None
                         ),
+                        "image_tag_alt_text": image["image_tag_attrs"].get("alt", None),
                     }
                 )
 
