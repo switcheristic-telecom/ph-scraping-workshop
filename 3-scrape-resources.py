@@ -28,33 +28,44 @@ def capture_images(resources_dir: str, cdx_entry: dict, soup: BeautifulSoup):
         else:
             img_url = urllib.parse.urljoin(cdx_entry["original"], img["src"])
 
+        resource_name = util.safe_filename(img["src"])
+        resource_cdx_entry_path = os.path.join(resources_dir, resource_name + ".json")
+
         print(f"  Found image {img_url} ({cdx_entry['timestamp']})")
 
-        closest_entry = util.query_wm_cdx_closest_entry(img_url, cdx_entry["timestamp"])
+        if os.path.exists(resource_cdx_entry_path):
+            with open(resource_cdx_entry_path, "r") as f:
+                closest_entry = json.load(f)
+        else:
+            closest_entry = util.query_wm_cdx_closest_entry(
+                img_url, cdx_entry["timestamp"]
+            )
+            with open(resource_cdx_entry_path, "w") as f:
+                json.dump(closest_entry, f)
 
         if not closest_entry:
             print(f"    No closest entry found for {img_url}")
             continue
 
-        print(f"        Closest cdx entry: {closest_entry['digest']}")
+        print(f"    Closest cdx entry: {closest_entry['digest']}")
 
-        image_dir = os.path.join(resources_dir, util.safe_filename(img["src"]))
+        image_dir = os.path.join(resources_dir, resource_name)
         cache_image_dir = os.path.join(CACHE_DIR, closest_entry["digest"])
 
         if closest_entry["statuscode"] == "200":
             if util.find_and_copy_cached_snapshot(cache_image_dir, image_dir):
                 print(f"    Loaded from cache {img_url}, skipping")
-                continue
 
-            print(f"    Downloading image {img_url} ({closest_entry['digest']})")
-            image_snapshot = util.download_image(closest_entry)
+            else:
+                print(f"    Downloading image {img_url} ({closest_entry['digest']})")
+                image_snapshot = util.download_image(closest_entry)
 
-            util.save_image(image_snapshot, image_dir)
-            util.save_image(image_snapshot, cache_image_dir)
+                util.save_image(image_snapshot, image_dir)
+                util.save_image(image_snapshot, cache_image_dir)
 
-        cdx_entry_path = os.path.join(image_dir, "cdx_entry.json")
-        with open(cdx_entry_path, "w") as f:
-            json.dump(closest_entry, f)
+            cdx_entry_path = os.path.join(image_dir, "cdx_entry.json")
+            with open(cdx_entry_path, "w") as f:
+                json.dump(closest_entry, f)
 
 
 def capture_frames(resources_dir: str, cdx_entry: dict, soup: BeautifulSoup):
@@ -66,28 +77,36 @@ def capture_frames(resources_dir: str, cdx_entry: dict, soup: BeautifulSoup):
 
         print(f"    Found frame {frame_url} ({cdx_entry['timestamp']})")
 
-        closest_entry = util.query_wm_cdx_closest_entry(
-            frame_url, cdx_entry["timestamp"]
-        )
+        resource_name = util.safe_filename(frame["src"])
+        resource_cdx_entry_path = os.path.join(resources_dir, resource_name + ".json")
+
+        if os.path.exists(resource_cdx_entry_path):
+            with open(resource_cdx_entry_path, "r") as f:
+                closest_entry = json.load(f)
+        else:
+            closest_entry = util.query_wm_cdx_closest_entry(
+                frame_url, cdx_entry["timestamp"]
+            )
+            with open(resource_cdx_entry_path, "w") as f:
+                json.dump(closest_entry, f)
 
         if not closest_entry:
             print(f"    No closest entry found for {frame_url}")
             continue
 
-        print(f"        Closest cdx entry: {closest_entry['digest']}")
+        print(f"    Closest cdx entry: {closest_entry['digest']}")
 
-        frame_dir = os.path.join(resources_dir, util.safe_filename(frame["src"]))
+        frame_dir = os.path.join(resources_dir, resource_name)
         cache_frame_dir = os.path.join(CACHE_DIR, closest_entry["digest"])
 
         if closest_entry["statuscode"] == "200":
             if util.find_and_copy_cached_snapshot(cache_frame_dir, frame_dir):
                 print(f"    Loaded from cache {frame_url}, skipping")
-                continue
-
-            print(f"    Downloading frame {frame_url} ({closest_entry['digest']})")
-            frame_snapshot = util.download_website_snapshot(closest_entry)
-            util.save_website_snapshot(frame_snapshot, frame_dir)
-            util.save_website_snapshot(frame_snapshot, cache_frame_dir)
+            else:
+                print(f"    Downloading frame {frame_url} ({closest_entry['digest']})")
+                frame_snapshot = util.download_website_snapshot(closest_entry)
+                util.save_website_snapshot(frame_snapshot, frame_dir)
+                util.save_website_snapshot(frame_snapshot, cache_frame_dir)
 
         cdx_entry_path = os.path.join(frame_dir, "cdx_entry.json")
         with open(cdx_entry_path, "w") as f:
@@ -115,11 +134,21 @@ for website in os.listdir(OUTPUT_DIR):
                 cdx_entry = json.load(f)
             all_website_entries[website].append(cdx_entry)
 
-for website, entries in all_website_entries.items():
+import random
+
+# Randomize order of websites
+websites = list(all_website_entries.items())
+random.shuffle(websites)
+
+for website, entries in websites:
     print(f"Found {len(entries)} snapshots for {website}")
 
+    # Randomize order of entries
+    shuffled_entries = entries.copy()
+    random.shuffle(shuffled_entries)
+
     # Download ALL entries for each website
-    for cdx_entry in entries:
+    for cdx_entry in shuffled_entries:
         print(f"Found {cdx_entry['timestamp']} {cdx_entry['digest']}")
 
         website_dir = os.path.join(OUTPUT_DIR, website, cdx_entry["timestamp"])
