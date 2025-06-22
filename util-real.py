@@ -72,3 +72,5 @@ def get_saved_website_entries() -> dict:
                 with open(cdx_meta_path, "r") as f:
                     cdx_entry = json.load(f)
                 all_website_entries[website].append(cdx_entry)
+
+    return all_website_entries
