@@ -13,7 +13,6 @@ for image_tag_with_parent_info in all_image_tags_with_parent_info:
     website = image_tag_with_parent_info["website"]
     website_dir = image_tag_with_parent_info["website_dir"]
     cdx_entry = image_tag_with_parent_info["cdx_entry"]
-    extension = image_tag_with_parent_info["extension"]
 
     # Skip if it's missing src, width, or height
     if "src" not in image_tag or "width" not in image_tag or "height" not in image_tag:
@@ -59,15 +58,10 @@ for image_tag_with_parent_info in all_image_tags_with_parent_info:
         )
         with open(banner_cdx_entry_path, "w") as f1:
             json.dump(banner_cdx_entry, f1)
-    if (
-        banner_cdx_entry
-        and banner_cdx_entry["digest"] == "6ABYE2EFD5BH55JI2R6LSMVRT5JNWYFI"
-    ):
-        print(banner_cdx_entry)
-        input("Click Enter to continue")
 
     # If CDX entry is valid, download snapshot
     if banner_cdx_entry and banner_cdx_entry["statuscode"] == "200":
+        extension = util.get_image_file_extension(banner_cdx_entry)
         banner_snapshot_file_path = os.path.join(
             banner_snapshot_dir, f"{banner_cdx_entry['digest']}.{extension}"
         )
@@ -75,7 +69,7 @@ for image_tag_with_parent_info in all_image_tags_with_parent_info:
             banner_snapshot_dir, "image_tag_attrs.json"
         )
         with open(banner_image_tag_file_path, "w") as f:
-            json.dump(image_tag_with_parent_info, f)
+            json.dump(image_tag_with_parent_info["image_tag"], f)
 
         # Check if snapshot already exists, if not, proceed
         if os.path.exists(banner_snapshot_file_path):

@@ -296,6 +296,7 @@ def get_image_file_extension(cdx_entry: dict) -> str:
     """Get the file extension from a URL"""
     # Remove query parameters after ? or #
     url_extension = cdx_entry["original"].split("?")[0].split("#")[0].lower()
+    url_extension = url_extension.split(".")[-1]
 
     if url_extension not in image_extensions:
         url_extension = None
@@ -320,6 +321,7 @@ def get_saved_image_tags_with_parent_info() -> list[dict]:
         website_dir = entry["website_dir"]
         cdx_entry = entry["cdx_entry"]
         image_tags_path = os.path.join(website_dir, "image_tags.json")
+
         try:
             with open(image_tags_path, "r") as f:
                 image_tags = json.load(f)
@@ -330,7 +332,6 @@ def get_saved_image_tags_with_parent_info() -> list[dict]:
                             "website": website,
                             "cdx_entry": cdx_entry,
                             "image_tag": image_tag,
-                            "extension": get_image_file_extension(cdx_entry),
                         }
                         for image_tag in image_tags
                     ]
