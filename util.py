@@ -263,12 +263,25 @@ def get_saved_website_and_frame_entries() -> list[dict]:
     return all_website_and_frame_entries
 
 
+import urllib.parse
+
+
 def detect_and_save_image_tag_attrs(
-    soup: BeautifulSoup, website_dir: str
+    soup: BeautifulSoup, website_dir: str, parent_cdx_entry: dict
 ) -> list[dict]:
     """Detect all images in a BeautifulSoup object and return a list of dicts"""
-    all_images = soup.find_all("img")
-    image_tags = [img.attrs for img in all_images]
+    image_tags = []
+    for img in soup.find_all("img"):
+        image_tag_attrs = img.attrs
+        if img.parent.name == "a":
+            image_tag_attrs["parent_href"] = img.parent["href"]
+            if img.parent["href"].startswith("http"):
+                image_tag_attrs["full_parent_href"] = img.parent["href"]
+            else:
+                image_tag_attrs["full_parent_href"] = urllib.parse.urljoin(
+                    parent_cdx_entry["original"], img.parent["href"]
+                )
+        image_tags.append(image_tag_attrs)
     with open(os.path.join(website_dir, "image_tags.json"), "w") as f:
         json.dump(image_tags, f)
 

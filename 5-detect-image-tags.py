@@ -32,5 +32,5 @@ for entry in all_website_and_frame_entries:
 
     with open(utf8_html_path, "r", encoding="utf-8") as f:
         soup = BeautifulSoup(f, "html.parser")
-        image_tags = util.detect_and_save_image_tag_attrs(soup, website_dir)
+        image_tags = util.detect_and_save_image_tag_attrs(soup, website_dir, cdx_entry)
         print(f"      Found {len(image_tags)} image tags")
