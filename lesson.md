@@ -15,6 +15,94 @@ authors:
 
 --
 
-Founded in 1996, the Wayback Machine is the oldest, as well as the largest publicly-accessible web archive. 
+# Lesson Introduction
 
-In this lesson, we are going to use the Wayback Machine's CDX API 
+In this lesson, you will learn how to scrape images, videos, and other types of media resources from historical web pages archived on the Internet Archive’s Wayback Machine. 
+
+The importance of web archives and archived web data in historical research is getting increasingly recognised as historians turn their attention to the 1990s and early 2000s, a period that saw massive growth and mainstream adoption of the web. While many web archives like the Wayback Machine provide a user-friendly interface for viewing archived snapshots of a single URL, historians looking to perform computational or quantitative analysis may prefer accessing archived web data programmatically in order to examine the availability of archived snapshots of historical URLs, bulk download archived snapshots, and extract specific page elements for further analysis. 
+
+In this lesson, you will learn how to use the Wayback Machine’s CDX Server API to scrape media resources featured on archived snapshots of historical URLs on the Wayback Machine. Specifically, we are going to build a small dataset of historical web banner ads appearing on popular Japanese-language websites in the year 2000. The workflow introduced in the lesson is generally comparable to standard web scraping procedures, but we will cover a number of challenges specific to scraping historical web pages archived on the Wayback Machine - especially non-English web pages from the 1990s and early 2000s. 
+
+
+# Prerequisites
+
+This lesson is designed for people who have an intermediate level of understanding of Python and HTML. You should ideally have prior experience with web scraping in Python and BeautifulSoup, as well as a basic understanding of how web archives work, though we are going to cover some of the background information in the next section. 
+
+If you are new to Python and HTML, you may want to consult the following Programming Historian lessons on [Python](https://programminghistorian.org/en/lessons/introduction-and-installation) and [HTML](https://programminghistorian.org/en/lessons/viewing-html-files), and subsequent lessons in the series. 
+
+You can follow the lesson on any mainstream operating system you prefer, including Windows, macOS, and popular Linux distributions, as long as you can get a relatively recent version of Python installed on your operating system. At the time of writing, the most recent Python version is 3.13. On Python, you will need to have the following libraries installed: 
+
+- requests  
+- BeautifulSoup  
+- pillow  
+- tenacity 
+
+We recommend that you install Anaconda, a distribution of Python specifically designed for data science research for this lesson. A standard installation of Anaconda includes the first three libraries, and you can easily install tenacity by running `pip install tenacity`. 
+
+# Learning outcomes
+
+By the end of this lesson, you will learn: 
+
+- Using the Wayback Machine CDX Server API to check the available archived snapshots of archived snapshots of a given historical URL.    
+- Batch downloading archived web page snapshots from the Wayback Machine.   
+- Identifying and downloading web media resources embedded in archived web pages, including common image formats, as well as multimedia content in historical formats, such as Flash, Shockwave, and VRML.   
+- Technical limitations and ethical considerations in scraping the Wayback Machine and alternative approaches to using archived web data for quantitative and computational historical research. 
+
+
+# Course structure
+
+The rest of the lesson is roughly structured into two parts. In the first part, after we outline the learning outcomes and prerequisites, we will briefly review how the Wayback Machine works and introduce the Wayback Machine CDX Server API, which we can use to find all available archived snapshots of a given URL on the Wayback Machine. Next, we will showcase how to detect and scrape different types of media content in an archived web page, with a focus on legacy formats that you may encounter in web pages from the 1990s-early 2000s. 
+
+The second part is the case study where we will use the tools and techniques we introduced in the first part to scrape the Wayback Machine for banner ads appearing on popular Japanese websites. We will discuss 
+
+
+# Getting Started with Programmatic Access to the Wayback Machine
+
+The earliest institutional attempts to preserve information available on the web started shortly after the web became the main medium for the presentation and transmission of information over the Internet around the mid-1990s. The ensuing years saw the emergence of a range of web archiving initiatives. In this tutorial, we will focus on scraping archived web content on the Wayback Machine. Founded in 1996, the Internet Archive’s Wayback Machine is the world’s first web archive, and today it holds 916 billion web pages from around the world dating back to 1996, publicly accessible through its website at [web.archive.org](http://web.archive.org). 
+
+The Wayback Machine proactively archives the web, mainly by running a web crawler that follows and saves links on the web in a way not dissimilar to search engines. Given its founding date and the worldwide scope of its collection, the Wayback Machine is also the only place where some of the earliest web pages on the Internet may be found. 
+
+You may already know how to access archived snapshots of a given historical URL on the Wayback Machine by entering the URL manually on the Wayback Machine’s home page and then choosing a particular archived snapshot of the URL to view on the Wayback Machine’s calendar interface. While the calendar interface is convenient for manual exploration of single URLs, it becomes impractical when you need to work with a set of URLs, when you want to retrieve multiple archived snapshots of one given URL, or when you need to scrape certain elements from a set of archived web pages. To handle these tasks, you will need a way to access the archive through code rather than through the web interface.
+
+There are different ways to access archived web data on the Wayback Machine programmatically. In this tutorial, we are going to use the Wayback Machine’s CDX Server API to retrieve available archived copies of web resources at a given URL on the Wayback Machine. CDX, or crawl index records, is a metadata index generated during the crawling process describing web data archived by the Wayback Machine’s crawler. Aside from the CDX API, the Wayback Machine can also be queried through the [Memento Protocol API](https://ws-dl.blogspot.com/2013/07/2013-07-15-wayback-machine-upgrades.html) and the [Wayback Machine Availability API](https://archive.org/help/wayback_api.php). All three APIs are available free of charge, though the CDX Server API returns much more information about each archived snapshot of a given URL than the two other alternatives mentioned above, such as HTTP status codes and sizes of the snapshots. 
+
+In addition to APIs, researchers may also be interested in accessing archived web data through integrated research toolkits and platforms such as the Internet Archive’s [Archives Research Compute Hub](https://archive-it.org/arch/). Researchers intending to use these toolkits and platforms generally need to have access to raw archived web data in WARC format or enter a partnership with an archiving organization such as the Internet Archive, but they can provide advanced features such as full-text search and data visualisation. If your research involves a large number of URLs that makes manually scraping impractical, using a research toolkit or platform might be a better choice. 
+
+
+# Downloading archived web pages from the Wayback Machine
+
+The tools and methods to scrape media resources off archived web pages on the Wayback Machine do not differ much technically from those commonly used to scrape the live web. However, to ensure that we can interpret scraped archived web data correctly, it is important to know how the Wayback Machine saves content on the web, and how it serves archived web content to the user on its web interface. 
+
+# Understanding web archive replay and time skew
+
+Web archive scholars have long emphasized that archived web content differs significantly from traditional archival materials. As Niels Brügger notes, an archived web page is "better understood as an actively created and subjective reconstruction" of what the original page may have looked like at a given point in time. The way an archived web page is *reconstructed* has implications for how we scrape, analyze, and interpret archived web content, which we will outline in the rest of this section. 
+
+A typical web page consists of a primary HTML document that defines its structure and textual content, along with numerous auxiliary resources such as images, stylesheets, scripts, and other media files. These resources are referenced in the HTML document by their own URLs. For example, an image in a web page is usually embedded using the `<img>` tag, with the image file’s location specified in the src attribute (e.g., `<img src="images/logo.gif">`). Similarly, stylesheets and scripts are linked using `<link>` and `<script>` tags. To display the page correctly, the browser must fetch all of these external resources in addition to the main HTML file. 
+
+When the Wayback Machine archives a web page, it attempts to archive both the HTML and all linked resources. However, if the Wayback Machine served archived HTML files exactly as they were originally written, the browser would try to fetch all linked resources from their original locations on the live web. Because many of these resources no longer exist online, this would result in broken images, missing styles, or incomplete functionality. To address this, the Wayback Machine modifies the HTML source by rewriting each resource URL to point to its archived version. This ensures that pages load as completely as possible using content from the archive rather than the live web.
+
+This process of dynamically assembling and serving an archived page by combining its HTML with available archived resources is called **replay**. During replay, the Wayback Machine retrieves the archived HTML file, rewrites URLs to point to corresponding resources in the archive, and presents the reconstructed page to the user \- often with a toolbar interface for navigation and metadata.
+
+Ideally, all resources on a web page would all be archived at the same moment as the HTML file. In practice, however, technical limitations often prevent the archive from capturing every resource at once. As a result, the Wayback Machine makes a “best effort” replay by stitching together the HTML file with the closest available versions of its linked resources from other capture dates. In some cases, elements appearing in a reconstructed page may have been archived days, months, or even years apart. This temporal incoherence is sometimes referred to as *time skew*. For researchers intending to use archived web content as source materials, time skews can complicate efforts to interpret a page’s content or intended user experience as it originally appeared on the web.
+
+In the case study section, we present a general workflow for scraping media from archived web pages on the Wayback Machine. This workflow is designed with these archival quirks in mind, helping researchers identify, retrieve, and interpret media resources while accounting for time skews. The lesson is specifically geared towards web pages from the late 1990s \- early 2000s. Interested researchers can consult the relevant literature we include in the further readings section to learn more about technical issues in web archive replay. 
+
+
+# Anatomy of an archived web page
+
+To better understand how the Wayback Machine serves archived web content, let’s observe an archived snapshot of Google’s home page saved by the Wayback Machine in 1999, available at [https://web.archive.org/web/19990117032727/http://www.google.com/](https://web.archive.org/web/19990117032727/http://www.google.com/). 
+
+We can begin by looking at the URL itself. Typically, the URL of an archived web resource on the Wayback Machine looks like this:
+
+```
+https://web.archive.org/web/[timestamp in yyyymmddhhmmss][optional request flag]/[original URL]
+```
+
+The timestamp in the URL is in Coordinated Universal Time (UTC). Therefore, this particular snapshot of Google’s home page \- whose original URL is http://www.google.com \- was captured on January 17, 1999, 03:27:27 UTC. The timestamp is sometimes followed by an optional request flag, whose role we will explain shortly. 
+
+Note that if you provide an incomplete timestamp, or a timestamp on which the Wayback Machine does not have an archived snapshot of the given URL, the Wayback Machine will automatically find and return the snapshot captured at the closest available timestamp to the one given. For example, if you visit [https://web.archive.org/web/**19990116**/http://www.google.com/](https://web.archive.org/web/19990116/http://www.google.com/), the Wayback Machine will automatically redirect you to the archived snapshot of [Google.com](http://Google.com) captured at the closest available timestamp to 19990116, which is 19990117032727\. 
+
+Open the link in your browser, and you will be greeted with a reconstructed version of Google’s homepage in 1999.
+
+{% include figure.html filename="google-screenshot-1.png" alt="A screenshot of a Wayback Machine capture of google.com made on January 17, 1999, 03:27:27 UTC" caption="Wayback Machine capture of google.com made on January 17, 1999" %}
+
