@@ -53,7 +53,7 @@ for frame_tag_with_parent_info in all_frame_tags_with_parent_info:
             json.dump(frame_cdx_entry, f1)
 
     # If CDX entry is valid, download snapshot
-    if frame_cdx_entry:
+    if frame_cdx_entry and frame_cdx_entry["statuscode"] == "200":
         frame_snapshot_file_path = os.path.join(
             frame_snapshot_dir, f"{frame_cdx_entry['digest']}.html"
         )
@@ -65,6 +65,13 @@ for frame_tag_with_parent_info in all_frame_tags_with_parent_info:
         cache_frame_snapshot_dir = os.path.join(
             CACHE_DIGEST_DIR, frame_cdx_entry["digest"]
         )
+        # Check if snapshot already exists in cache, if not, proceed
+        if util.find_and_copy_cached_snapshot(
+            cache_frame_snapshot_dir, frame_snapshot_dir
+        ):
+            print(f"        Skipping {frame_tag_src} - found in cache")
+            continue
+
         try:
             print(f"        Downloading frame {frame_tag_src}")
             frame_snapshot = util.download_website_snapshot(frame_cdx_entry)

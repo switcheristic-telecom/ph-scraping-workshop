@@ -122,7 +122,11 @@ def save_website_snapshot(snapshot: dict, save_dir: str):
 def find_and_copy_cached_snapshot(cached_snapshot_dir: str, save_dir: str) -> bool:
     """Find and copy a cached snapshot to a directory if it exists. Return True if a snapshot was found and copied."""
     if os.path.exists(cached_snapshot_dir):
-        for filename in os.listdir(cached_snapshot_dir):
+        files = os.listdir(cached_snapshot_dir)
+        if not files:
+            return False
+
+        for filename in files:
             src = os.path.join(cached_snapshot_dir, filename)
             dst = os.path.join(save_dir, filename)
             os.makedirs(os.path.dirname(dst), exist_ok=True)
@@ -289,6 +293,7 @@ def get_saved_image_tags_with_parent_info() -> list[dict]:
                             "website": website,
                             "cdx_entry": cdx_entry,
                             "image_tag": image_tag,
+                            "extension": image_tag["src"].split(".")[-1],
                         }
                         for image_tag in image_tags
                     ]
@@ -299,19 +304,7 @@ def get_saved_image_tags_with_parent_info() -> list[dict]:
 
 
 def check_banner_properties(width: int, height: int) -> dict:
-    """Check if an image tag is a banner ad
-    {iab_size: str|None, jiaa_size: str|None, is_banner_ad: bool}
-    """
-    if width > 468 or height > 60:
-        return {"iab_size": None, "jiaa_size": None, "is_banner_ad": False}
-    return {
-        "iab_size": check_banner_ad(width, height),
-        "jiaa_size": None,
-        "is_banner_ad": True,
-    }
-
-
-def check_banner_ad(width, height):
+    """Reference to the IAB and JIAA banner ad sizes in iab-banner-ad-dimensions.csv and jiaa-banner-ad-dimensions.csv"""
     IAB_SIZES = {
         (300, 250): "Medium Rectangle",
         (250, 250): "Square Pop-Up",
@@ -346,7 +339,38 @@ def check_banner_ad(width, height):
         (148, 800): "Large Skyscraper",
     }
 
+    iab_size = IAB_SIZES.get((width, height), None)
+    jiaa_size = JIAA_SIZES.get((width, height), None)
+    is_banner_ad = iab_size is not None or jiaa_size is not None
     return {
-        "iab_size": IAB_SIZES.get((width, height), None),
-        "jiaa_size": JIAA_SIZES.get((width, height), None),
+        "iab_size": iab_size,
+        "jiaa_size": jiaa_size,
+        "is_banner_ad": is_banner_ad,
     }
+
+
+@retry
+def download_image_snapshot(cdx_entry: dict) -> dict:
+    wayback_url = f"https://web.archive.org/web/{cdx_entry['timestamp']}im_/{cdx_entry['original']}"
+    response = requests.get(wayback_url, timeout=30)
+    response.raise_for_status()
+    extension = cdx_entry["original"].split(".")[-1]
+    return {
+        "digest": cdx_entry["digest"],
+        "file": response.content,
+        "extension": extension,
+    }
+
+
+def save_image_snapshot(img_snapshot: dict, save_dir: str):
+    """Save an image to a directory"""
+    os.makedirs(save_dir, exist_ok=True)
+    img_filename = f"{img_snapshot['digest']}.{img_snapshot['extension']}"
+    img_path = os.path.join(save_dir, img_filename)
+    with open(img_path, "wb") as f:
+        f.write(img_snapshot["file"])
+
+
+##################
+##### PART 8 #####
+##################
