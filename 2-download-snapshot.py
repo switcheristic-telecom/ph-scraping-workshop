@@ -1,31 +1,20 @@
 import os, json
 import util
 
-#####################
-##### CONSTANTS #####
-#####################
+##################
+##### PART 1 #####
+##################
+
+all_website_entries = util.get_saved_website_entries()
+
+##################
+##### PART 2 #####
+##################
 
 OUTPUT_DIR = "data"
 CACHE_DIR = "cache"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(CACHE_DIR, exist_ok=True)
-
-################
-##### MAIN #####
-################
-
-all_website_entries = {}
-
-for website in os.listdir(OUTPUT_DIR):
-    website_dir = os.path.join(OUTPUT_DIR, website)
-    all_website_entries[website] = []
-
-    for timestamp_dir in os.listdir(website_dir):
-        if os.path.isdir(os.path.join(website_dir, timestamp_dir)):
-            cdx_meta_path = os.path.join(website_dir, timestamp_dir, "cdx_entry.json")
-            with open(cdx_meta_path, "r") as f:
-                cdx_entry = json.load(f)
-            all_website_entries[website].append(cdx_entry)
 
 
 for website, entries in all_website_entries.items():
@@ -58,4 +47,3 @@ for website, entries in all_website_entries.items():
             print(f"    Saved snapshot to {snapshot_dir}")
         except Exception as e:
             print(f"    Error downloading {cdx_entry['timestamp']}: {e}")
-            continue
