@@ -133,26 +133,6 @@ def capture_frames(resources_dir: str, cdx_entry: dict, soup: BeautifulSoup):
 ################
 
 
-# Load all website cdx entries
-all_website_entries = {}
-
-for website in os.listdir(OUTPUT_DIR):
-    website_dir = os.path.join(OUTPUT_DIR, website)
-    all_website_entries[website] = []
-
-    for timestamp_dir in os.listdir(website_dir):
-        if os.path.isdir(os.path.join(website_dir, timestamp_dir)):
-            cdx_meta_path = os.path.join(website_dir, timestamp_dir, "cdx_entry.json")
-            with open(cdx_meta_path, "r") as f:
-                cdx_entry = json.load(f)
-            all_website_entries[website].append(cdx_entry)
-
-import random
-
-# Randomize order of websites
-websites = list(all_website_entries.items())
-random.shuffle(websites)
-
 for website, entries in websites:
     print(f"Found {len(entries)} snapshots for {website}")
 

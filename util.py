@@ -5,8 +5,8 @@
 import requests, time, tenacity
 
 retry = tenacity.retry(
-    stop=tenacity.stop_after_attempt(10),
-    wait=tenacity.wait_exponential(multiplier=1, min=2, max=32),
+    stop=tenacity.stop_after_attempt(4),
+    wait=tenacity.wait_exponential(multiplier=1, min=2, max=8),
     after=lambda _: time.sleep(2),
 )
 
@@ -130,3 +130,223 @@ def find_and_copy_cached_snapshot(cached_snapshot_dir: str, save_dir: str) -> bo
                 fdst.write(fsrc.read())
         return True
     return False
+
+
+##################
+##### PART 5 #####
+##################
+
+from bs4 import BeautifulSoup
+
+
+def detect_and_save_frame_tag_attrs(
+    soup: BeautifulSoup,
+    website_dir: str,
+) -> list[dict]:
+    """Find all frame tag with their attribute and return a list of dicts"""
+    all_frame_tags = soup.find_all("frame")
+    frame_tag_attrs = [frame.attrs for frame in all_frame_tags]
+    with open(os.path.join(website_dir, "frame_tags.json"), "w") as f:
+        json.dump(frame_tag_attrs, f)
+
+    return frame_tag_attrs
+
+
+##################
+##### PART 6 #####
+##################
+
+
+def get_saved_frame_tags_with_parent_info() -> list[dict]:
+    """Get all the saved frame tags for a given website directory"""
+    all_frame_tags = []
+    all_website_entries = get_saved_website_entries()
+    for website, entries in all_website_entries.items():
+        for cdx_entry in entries:
+            website_dir = os.path.join(OUTPUT_DIR, website, cdx_entry["timestamp"])
+            frame_tags_path = os.path.join(website_dir, "frame_tags.json")
+            try:
+                with open(frame_tags_path, "r") as f:
+                    frame_tags = json.load(f)
+                    frame_tags_with_dir = [
+                        {
+                            "website_dir": website_dir,
+                            "website": website,
+                            "parent_cdx_entry": cdx_entry,
+                            "frame_tags": frame_tag,
+                        }
+                        for frame_tag in frame_tags
+                    ]
+                    all_frame_tags.extend(frame_tags_with_dir)
+            except FileNotFoundError:
+                continue
+    return all_frame_tags
+
+
+def url_to_filename(url: str) -> str:
+    """Convert a URL into a safe filename by replacing invalid characters with underscores"""
+    # Remove protocol and split on slashes
+    url = url.split("://")[-1].replace("/", "_")
+    # Replace any remaining invalid characters with underscores
+    return "".join(c if c.isalnum() or c in "._-" else "_" for c in url)
+
+
+@retry
+def query_wm_cdx_closest_entry(url: str, timestamp: str) -> dict | None:
+    """Get the closest snapshot entry for a given URL and timestamp"""
+    cdx_url = f"https://web.archive.org/cdx/search/cdx?url={url}&closest={timestamp}"
+
+    response = requests.get(cdx_url, timeout=30)
+    response.raise_for_status()
+
+    entries = parse_wm_cdx_api_response_str(response.text)
+    return entries[0] if entries else None
+
+
+##################
+##### PART 7 #####
+##################
+
+
+def get_saved_website_and_frame_entries() -> list[dict]:
+    """Get all the saved frame tags for a given website directory"""
+    all_website_and_frame_entries = []
+    all_website_entries = get_saved_website_entries()
+    for website, entries in all_website_entries.items():
+        for cdx_entry in entries:
+            # Add the website entry
+            website_dir = os.path.join(OUTPUT_DIR, website, cdx_entry["timestamp"])
+            all_website_and_frame_entries.append(
+                {
+                    "website_dir": website_dir,
+                    "website": website,
+                    "cdx_entry": cdx_entry,
+                    "type": "website",
+                }
+            )
+
+            # Add the frame entries
+            frames_dir = os.path.join(website_dir, "frames")
+
+            # If frames directory does not exist, skip
+            if not os.path.exists(frames_dir):
+                continue
+
+            for frame_name in os.listdir(frames_dir):
+                frame_cdx_entry_path = os.path.join(
+                    frames_dir, frame_name, "cdx_entry.json"
+                )
+                try:
+                    with open(frame_cdx_entry_path, "r") as f:
+                        frame_cdx_entry = json.load(f)
+                    frame_dir = os.path.join(frames_dir, frame_name)
+                    all_website_and_frame_entries.append(
+                        {
+                            "website_dir": frame_dir,
+                            "website": website,
+                            "cdx_entry": frame_cdx_entry,
+                            "type": "frame",
+                        }
+                    )
+                except FileNotFoundError:
+                    continue
+    return all_website_and_frame_entries
+
+
+def detect_and_save_image_tag_attrs(
+    soup: BeautifulSoup, website_dir: str
+) -> list[dict]:
+    """Detect all images in a BeautifulSoup object and return a list of dicts"""
+    all_images = soup.find_all("img")
+    image_tags = [img.attrs for img in all_images]
+    with open(os.path.join(website_dir, "image_tags.json"), "w") as f:
+        json.dump(image_tags, f)
+
+    return image_tags
+
+
+##################
+##### PART 8 #####
+##################
+
+
+def get_saved_image_tags_with_parent_info() -> list[dict]:
+    """Get all the saved image tags for all the website and frame entries"""
+    all_website_and_frame_entries = get_saved_website_and_frame_entries()
+    all_image_tags_with_parent_info = []
+    for entry in all_website_and_frame_entries:
+        website = entry["website"]
+        website_dir = entry["website_dir"]
+        cdx_entry = entry["cdx_entry"]
+        image_tags_path = os.path.join(website_dir, "image_tags.json")
+        try:
+            with open(image_tags_path, "r") as f:
+                image_tags = json.load(f)
+                all_image_tags_with_parent_info.extend(
+                    [
+                        {
+                            "website_dir": website_dir,
+                            "website": website,
+                            "cdx_entry": cdx_entry,
+                            "image_tag": image_tag,
+                        }
+                        for image_tag in image_tags
+                    ]
+                )
+        except FileNotFoundError:
+            continue
+    return all_image_tags_with_parent_info
+
+
+def check_banner_properties(width: int, height: int) -> dict:
+    """Check if an image tag is a banner ad
+    {iab_size: str|None, jiaa_size: str|None, is_banner_ad: bool}
+    """
+    if width > 468 or height > 60:
+        return {"iab_size": None, "jiaa_size": None, "is_banner_ad": False}
+    return {
+        "iab_size": check_banner_ad(width, height),
+        "jiaa_size": None,
+        "is_banner_ad": True,
+    }
+
+
+def check_banner_ad(width, height):
+    IAB_SIZES = {
+        (300, 250): "Medium Rectangle",
+        (250, 250): "Square Pop-Up",
+        (240, 400): "Vertical Rectangle",
+        (336, 280): "Large Rectangle",
+        (180, 150): "Rectangle",
+        (468, 60): "Full Banner",
+        (234, 60): "Half Banner",
+        (88, 31): "Micro Button",
+        (120, 90): "Button 1",
+        (120, 60): "Button 2",
+        (120, 240): "Vertical Banner",
+        (125, 125): "Square Button",
+        (728, 90): "Leaderboard",
+        (160, 600): "Wide Skyscraper",
+        (120, 600): "Skyscraper",
+        (300, 600): "Half Page Ad",
+    }
+
+    JIAA_SIZES = {
+        (224, 33): "Small Banner",
+        (468, 60): "Regular Banner",
+        (728, 90): "Large Banner",
+        (120, 60): "Small Badge",
+        (120, 90): "Regular Badge",
+        (125, 125): "Large Badge",
+        (200, 200): "Small Rectangle",
+        (300, 250): "Regular Rectangle",
+        (336, 280): "Large Rectangle",
+        (120, 600): "Regular Skyscraper",
+        (160, 600): "Wide Skyscraper",
+        (148, 800): "Large Skyscraper",
+    }
+
+    return {
+        "iab_size": IAB_SIZES.get((width, height), None),
+        "jiaa_size": JIAA_SIZES.get((width, height), None),
+    }

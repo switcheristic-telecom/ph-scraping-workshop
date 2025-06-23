@@ -16,10 +16,10 @@ Extract the zip file to create your project directory. The archive contains:
 - `jiaa-banner-ad-dimensions.csv` - Banner ad sizes from the Japan Interactive Advertising Association
 - `1-query-cdx.py` - Query the Wayback Machine for available snapshots
 - `2-download-snapshot.py` - Download the actual web pages
-- `3-download-frames.py` - Download nested pages in HTML `<frame>` tags
-- `4-detect-images.py` - Detect images from the all downloaded pages
-- `5-download-images.py` - Download all detected images
-- `6-summarize-images.py` - Analyze and categorize the detected images
+- `3-detect-frame-tags.py` - Detect nested pages in HTML `<frame>` tags
+- `4-download-frames.py` - Download all detected frames
+- `5-detect-image-tags.py` - Detect images from the all downloaded website and frames
+- `6-download-banner-ads.py` - Download images that are likely to be banner ads
 - `util.py` - Shared utility functions
 - `README.md` - Additional instructions
 

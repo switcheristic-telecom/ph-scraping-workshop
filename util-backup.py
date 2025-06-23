@@ -14,7 +14,7 @@ retry = tenacity.retry(
 )
 
 
-def safe_filename(url: str) -> str:
+def url_to_filename(url: str) -> str:
     """Convert a URL into a safe filename by replacing invalid characters with underscores"""
     # Remove protocol and split on slashes
     url = url.split("://")[-1].replace("/", "_")
