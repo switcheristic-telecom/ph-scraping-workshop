@@ -87,7 +87,7 @@ Ideally, all resources on a web page would all be archived at the same moment as
 
 In the case study section, we present a general workflow for scraping media from archived web pages on the Wayback Machine. This workflow is designed with these archival quirks in mind, helping researchers identify, retrieve, and interpret media resources while accounting for time skews. The lesson is specifically geared towards web pages from the late 1990s \- early 2000s. 
 
-It is worth noting that aside from the Wayback Machine's own replay mechanisms, there are other factors that may influence how an archived web page appears to a user today, such as differences in browser rendering engines [^OLDWEB], changes in default fonts or screen resolutions, and missing support for obsolete media formats like Flash [^FLASHSUPPORT]. 
+It is worth noting that aside from the Wayback Machine's own replay mechanisms, there are other factors that may influence how an archived web page appears to a user today, such as differences in browser rendering engines [^OLDWEB], changes in default fonts or screen resolutions, and missing support for obsolete media formats like Flash [^FLASHSUPPORT]. While researchers need to know about their existence, these factors do not directly concern scraping, as they affect how archived content is rendered in a browser rather than how it is stored or can be programmatically extracted from the archive. 
 
 
 # Anatomy of an archived web page
@@ -255,7 +255,7 @@ In this section, we will give a brief overview of how common types of web media 
 
 Images are inserted into a web page with the `<img>` tag, with the path to the image recorded in the `src` attribute of the `<img>` element. Many images also come with an `alt` attribute, which provides a textual description of the image. The `alt` text is usually displayed when the image cannot be loaded, or if the user is using a screen reader. For researchers today, the `alt` tag might be helpful to identify the intended content or function of an image when the original file is missing or when conducting textual analysis of archived pages.
 
-In web pages from the 1990s and early 2000s, it was also a common practice to specify image height and width using height and width attributes in the \<img\> element. This allows browsers to finish rendering the layout of the web page even when the image is not fully loaded. Researchers today may use the provided width and height information to find images fitting specific dimensions. 
+In web pages from the 1990s and early 2000s, it was also a common practice to specify image height and width using height and width attributes in the \<img\> element. This allows browsers to finish rendering the layout of the web page even when the image is not fully loaded or if it fails to load. Researchers today may use the provided width and height information to find images fitting specific dimensions. 
 
 As mentioned above, by default the Wayback Machine rewrites image URLs with the `im_` request flag. You should append the same flag when scraping the image files to ensure that you get the original image files. 
 
