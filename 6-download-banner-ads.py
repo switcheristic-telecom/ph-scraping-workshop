@@ -2,7 +2,7 @@ import os, json
 import util
 import urllib.parse
 
-CACHE_DIGEST_DIR = "cache-digest"
+CACHE_DIR = "cache"
 
 all_image_tags_with_parent_info = util.get_saved_image_tags_with_parent_info()
 
@@ -76,9 +76,7 @@ for image_tag_with_parent_info in all_image_tags_with_parent_info:
             print(f"        Skipping {image_tag_src} - already downloaded")
             continue
 
-        cache_banner_snapshot_dir = os.path.join(
-            CACHE_DIGEST_DIR, banner_cdx_entry["digest"]
-        )
+        cache_banner_snapshot_dir = os.path.join(CACHE_DIR, banner_cdx_entry["digest"])
         # Check if snapshot already exists in cache, if not, proceed
         if util.find_and_copy_cached_snapshot(
             cache_banner_snapshot_dir, banner_snapshot_dir

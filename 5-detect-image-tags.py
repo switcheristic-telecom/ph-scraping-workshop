@@ -7,9 +7,9 @@ import util
 from bs4 import BeautifulSoup
 
 OUTPUT_DIR = "data"
-CACHE_DIGEST_DIR = "cache-digest"
+CACHE_DIR = "cache"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-os.makedirs(CACHE_DIGEST_DIR, exist_ok=True)
+os.makedirs(CACHE_DIR, exist_ok=True)
 
 all_website_and_frame_entries = util.get_saved_website_and_frame_entries()
 

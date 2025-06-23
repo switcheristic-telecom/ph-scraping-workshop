@@ -7,9 +7,9 @@ import util
 import urllib.parse
 
 OUTPUT_DIR = "data"
-CACHE_DIGEST_DIR = "cache-digest"
+CACHE_DIR = "cache"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-os.makedirs(CACHE_DIGEST_DIR, exist_ok=True)
+os.makedirs(CACHE_DIR, exist_ok=True)
 
 all_frame_tags_with_parent_info = util.get_saved_frame_tags_with_parent_info()
 
@@ -62,9 +62,7 @@ for frame_tag_with_parent_info in all_frame_tags_with_parent_info:
             print(f"        Skipping {frame_tag_src} - already downloaded")
             continue
 
-        cache_frame_snapshot_dir = os.path.join(
-            CACHE_DIGEST_DIR, frame_cdx_entry["digest"]
-        )
+        cache_frame_snapshot_dir = os.path.join(CACHE_DIR, frame_cdx_entry["digest"])
         # Check if snapshot already exists in cache, if not, proceed
         if util.find_and_copy_cached_snapshot(
             cache_frame_snapshot_dir, frame_snapshot_dir

@@ -327,9 +327,9 @@ Now we can put it all together in our download script:
 # 2-download-snapshot.py (part 2)
 
 OUTPUT_DIR = "data"
-CACHE_DIGEST_DIR = "cache-digest"
+CACHE_DIR = "cache"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-os.makedirs(CACHE_DIGEST_DIR, exist_ok=True)
+os.makedirs(CACHE_DIR, exist_ok=True)
 
 
 for website, entries in all_website_entries.items():
@@ -348,7 +348,7 @@ for website, entries in all_website_entries.items():
             continue
 
         # Check if snapshot has already been cached
-        cache_snapshot_dir = os.path.join(CACHE_DIGEST_DIR, cdx_entry["digest"])
+        cache_snapshot_dir = os.path.join(CACHE_DIR, cdx_entry["digest"])
         if util.find_and_copy_cached_snapshot(cache_snapshot_dir, snapshot_dir):
             print(f"  Loaded from cache {cdx_entry['timestamp']}, skipping")
             continue
