@@ -53,15 +53,27 @@ for website in os.listdir(OUTPUT_DIR):
         print(snapshot_dir)
         if os.path.isdir(snapshot_dir):
             for image in detect_images(snapshot_dir):
+
+                image_tag_height = image["image_tag_attrs"].get("height", None)
+                image_tag_width = image["image_tag_attrs"].get("width", None)
+                if image_tag_height and image_tag_width:
+                    image_tag_banner_properties = util.check_banner_properties(
+                        int(image_tag_width), int(image_tag_height)
+                    )
+
                 all_images.append(
                     {
                         "website": website,
                         "website_timestamp": timestamp,
                         **image["cdx_entry"],
                         **image["metadata"],
-                        "image_tag_width": image["image_tag_attrs"].get("width", None),
-                        "image_tag_height": image["image_tag_attrs"].get(
-                            "height", None
+                        "image_tag_width": image_tag_width,
+                        "image_tag_height": image_tag_height,
+                        "image_tag_banner_iab_size": image_tag_banner_properties.get(
+                            "iab_size", None
+                        ),
+                        "image_tag_banner_jiaa_size": image_tag_banner_properties.get(
+                            "jiaa_size", None
                         ),
                         "image_tag_parent_href": image["image_tag_attrs"].get(
                             "parent_href", None
