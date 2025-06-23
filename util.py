@@ -443,6 +443,7 @@ def get_image_metadata(image_path: str):
         "loop_count": None,
         "iab_size": None,
         "jiaa_size": None,
+        "corrupt": True,
     }
     try:
         with Image.open(image_path) as img:
@@ -456,6 +457,7 @@ def get_image_metadata(image_path: str):
                 "loop_count": 0,
                 "iab_size": None,
                 "jiaa_size": None,
+                "corrupt": False,
             }
 
             # Check for GIF animation
