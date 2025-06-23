@@ -5,7 +5,7 @@ import util
 ##### PART 1 #####
 ##################
 
-all_website_entries = util.get_saved_website_entries()
+all_website_entries = util.retrieve_saved_website_entries()
 
 ##################
 ##### PART 2 #####

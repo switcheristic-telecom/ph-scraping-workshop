@@ -1,10 +1,10 @@
 # Case study: Building a dataset of banner ads appearing on popular Japanese-language websites
 
-In the rest of this lesson, we are going to build a dataset of banner ads appearing on popular Japanese-language websites in the year 2000 by scraping the Wayback Machine. Such a dataset can be of help for researchers in a number of areas - for example, researchers in digital marketing history may want to analyze early web advertising strategies, while researchers interested in the history of the ad network industry may want to observe the evolution of banner ad formats and targeting practices during the early commercialization of the internet.
+In the rest of this lesson, you will build a dataset of banner ads appearing on popular Japanese-language websites in the year 2000 by scraping the Wayback Machine. Such a dataset can help researchers in several areas - for example, researchers in digital marketing history may want to analyze early web advertising strategies, while researchers interested in the history of the ad network industry may want to observe the evolution of banner ad formats and targeting practices during the early commercialization of the internet.
 
 ## Download the lesson materials
 
-Before we begin, you'll need to download the supporting files for this lesson. These include the curated list of Japanese websites from 2000, all the Python scripts we'll be using, and some helper data files.
+Before you begin, you'll need to download the supporting files for this lesson. These include the curated list of Japanese websites from 2000, all the Python scripts you'll be using, and some helper data files.
 
 Download the lesson files here: [TODO: lesson-files.zip](lesson-files.zip)
 
@@ -23,17 +23,6 @@ Extract the zip file to create your project directory. The archive contains:
 - `7-summarize-banner-ads.py` - Summarize the banner ads
 - `util.py` - Shared utility functions
 - `banner-ads-summary-reference.csv` - Reference summary of the banner ads collection
-- `README.md` - Additional instructions
-
-## Setting up the environment
-
-Now that you have the lesson materials, let's install the necessary Python dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-The scripts are organized in a logical sequence that mirrors our research workflow. Each script handles a specific part of the process, making it easy to understand what's happening at each step and to resume work if needed. We'll walk through each script in order, explaining what it does and how the techniques can be applied to other research questions.
 
 ## Building a list of historical URLs to scrape
 
@@ -49,7 +38,7 @@ rank,website
 
 ### Refining our dataset
 
-To make our analysis more focused, we've enhanced the original list by adding two important classifications: whether each site was primarily in Japanese, and what category of website it represented. We determined these by actually examining Wayback Machine snapshots from 2000 - a good reminder that historical web research often requires this kind of detective work to understand what sites were really like in their original context.
+To make the analysis more focused, the original list has been enhanced by adding two important classifications: whether each site was primarily in Japanese, and what category of website it represented. These were determined by examining Wayback Machine snapshots from 2000 - a good reminder that historical web research often requires this kind of detective work to understand what sites were really like in their original context.
 
 ```csv
 # nikkeibp-may2000.csv
@@ -58,17 +47,17 @@ rank,website,is_japanese,category
 2,microsoft.com,false,corporate
 ```
 
-We've categorized sites using the same scheme as the original Nikkei study: `portal` (web directories and search engines), `content` (news, entertainment), `services` (web-based tools), `ISP` (internet service providers), `shopping` (e-commerce), and `corporate` (company websites).
+The sites have been categorized using the same scheme as the original Nikkei study: `portal` (web directories and search engines), `content` (news, entertainment), `services` (web-based tools), `ISP` (internet service providers), `shopping` (e-commerce), and `corporate` (company websites).
 
-For this lesson, we'll focus specifically on Japanese-language websites in the `portal` and `content` categories. These types of sites were most likely to feature banner advertising, since they relied on attracting large audiences and generating revenue through ads. This gives us 16 websites to examine - a manageable number for learning purposes while still providing enough data for meaningful analysis.
+For this lesson, you'll focus specifically on Japanese-language websites in the `portal` and `content` categories. These types of sites were most likely to feature banner advertising, since they relied on attracting large audiences and generating revenue through ads. This gives you 16 websites to examine - a manageable number for learning purposes while still providing enough data for meaningful analysis.
 
 ## Querying for website snapshots from the Wayback Machine
 
-Now that we have our list of target websites, we need to find out what archived snapshots the Wayback Machine has available for each site from May 2000.
+Now that you have your list of target websites, you need to find out what archived snapshots the Wayback Machine has available for each site from May 2000.
 
 ### Reading the list of websites
 
-Let's start by examining how we load our curated list of Japanese websites. Open `1-query-cdx.py` and look at the first section:
+Start by examining how to load the curated list of Japanese websites. Open ⁠1-query-cdx.py and look at the first section:
 
 ```python
 # 1-query-cdx.py (part 1)
@@ -86,15 +75,13 @@ with open("nikkeibp-may2000.csv", "r") as file:
             and row.get("category") in CATEGORY_OF_INTEREST
         ):
             japanese_websites.append(row["website"])
-
-print(f"Found {len(japanese_websites)} Japanese websites to scrape")
 ```
 
 ### Working with the CDX API
 
-The Wayback Machine's CDX (Crawl inDeX) API is our gateway to finding archived content. Think of it as a catalog that tells us exactly what snapshots are available for any given website and when they were captured. For each website in our list, we'll query the API to find all snapshots taken during May 2000.
+The Wayback Machine's CDX (Crawl inDeX) API is your gateway to finding archived content. Think of it as a catalog that tells you exactly what snapshots are available for any given website and when they were captured. For each website in your list, you'll query the API to find all snapshots taken during May 2000.
 
-Let's examine the helper functions in `util.py` that make working with the API easier:
+Examine the helper functions in `util.py` that make working with the API easier:
 
 ```python
 # util.py (part 1)
@@ -142,17 +129,14 @@ def query_wm_cdx_entries(
 
 ```
 
-The `@retry` decorator is particularly important here. The Wayback Machine, like many free public services, can sometimes be slow or temporarily unavailable. This decorator automatically retries failed requests up to 10 times with increasing delays between attempts, making our scraping more reliable without requiring us to manually handle every potential network hiccup.
+The `⁠@retry` decorator is particularly important here. The Wayback Machine, like many free public services, can sometimes be slow or temporarily unavailable. This decorator automatically retries failed requests up to 10 times with increasing delays between attempts, making your scraping more reliable without requiring you to manually handle every potential network hiccup.
 
 ### Querying and organizing our data
 
-Now we can systematically query the CDX API for each website and organize the results. Let's look at the rest of `1-query-cdx.py`:
+Now you can systematically query the CDX API for each website and organize the results. Look at the rest of `⁠1-query-cdx.py`:
 
 ```python
 # 1-query-cdx.py (part 2)
-import os, json
-import util
-
 OUTPUT_DIR = "data"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -164,7 +148,6 @@ for website in japanese_websites:
     cdx_entries = util.query_wm_cdx_entries(website)
     os.makedirs(website_dir, exist_ok=True)
 
-    # Create folder structure for all entries of this website
     if cdx_entries:
         for cdx_entry in cdx_entries:
             website_timestamp_dir = os.path.join(website_dir, cdx_entry["timestamp"])
@@ -174,15 +157,9 @@ for website in japanese_websites:
                 json.dump(cdx_entry, f, indent=2)
 ```
 
-This script creates a organized folder structure that mirrors how the Wayback Machine organizes its content. Each website gets its own folder, and within that, each snapshot gets a folder named with its timestamp. The `cdx_entry.json` file in each folder contains the metadata we'll need to actually download that snapshot later.
+This script creates an organized folder structure that mirrors how the Wayback Machine organizes its content. Each website gets its own folder, and within that, each snapshot gets a folder named with its timestamp. The `⁠cdx_entry.json` file in each folder contains the metadata you'll need to actually download that snapshot later.
 
-Run this script with:
-
-```bash
-python 1-query-cdx.py
-```
-
-The resulting structure looks like this:
+Run the script with `python 1-query-cdx.py` and the resulting structure looks like this:
 
 ```bash
 data/                          # Main output directory
@@ -191,24 +168,18 @@ data/                          # Main output directory
 │       ├── cdx_entry.json     # CDX metadata for this snapshot
 ```
 
-This approach has several advantages:
-
-- It's easy to navigate in the folder structure
-- It allows us to resume our work if something goes wrong
-- It makes it simple to focus on specific websites or time periods later
-
 ## Downloading the website snapshots
 
-With our CDX metadata in hand, we can now download the actual archived web pages. This is where we'll encounter some of the unique challenges of working with historical web content.
+With your CDX metadata in hand, you can now download the actual archived web pages. This is where you'll encounter some of the unique challenges of working with historical web content.
 
-### Reading our saved metadata
+### Retrieving saved metadata
 
-First, let's examine how we read back all the CDX entries we saved in the previous step. Look at this function in `util.py`:
+First, examine how to read back all the CDX entries you saved in the previous step. Look at this function in `⁠util.py` that gathers all the information in a list of dicts. In the rest of the lesson, you will use many functions of such kind that gathers scraped data from your folder structure.
 
 ```python
 # util.py (part 2)
-def get_saved_website_entries() -> list[dict]:
-    """Get all the saved website entries
+def retrieve_saved_website_entries() -> list[dict]:
+    """Retrieve all the saved website entries
     Returns a list of dicts with the following keys:
     - website: the website name
     - snapshot_dir: the directory of the website snapshot
@@ -236,15 +207,19 @@ def get_saved_website_entries() -> list[dict]:
     return all_website_entries
 ```
 
+Now you can use the function in `⁠2-download-snapshot.py`:
+
 ```python
 #2-download-snapshot.py (part 1)
 import util
-all_website_entries = util.get_saved_website_entries()
+all_website_entries = util.retrieve_saved_website_entries()
 ```
 
 ### Handling downloads and text encoding
 
-Now comes the tricky part: actually downloading the web pages and handling their text encoding correctly. Remember, we're dealing with Japanese websites from 2000, which used various character encoding schemes that were common before UTF-8 became the universal standard.
+To download website snapshot, you construct the url using the `timestamp` and `original` fields of the CDX entry. Note that to get the original html, you will use the `⁠id_` flag.
+
+Also, as you are dealing with Japanese website before 2000, which used various character encoding schemes (eg `Shift-JIS`, `EUC-JP`, or `ISO-2022-JP`) that were common before UTF-8 became the universal standard, you will need to handle the text encoding correctly. You will save both the original encoded version and a UTF-8 version of each file for future use.
 
 ```python
 # util.py (part 3)
@@ -280,16 +255,9 @@ def save_website_snapshot(snapshot: dict, save_dir: str):
         f.write(snapshot["encoding"])
 ```
 
-Notice several important details in this code:
-
-- We use the `id_` flag in our Wayback Machine URL, which tells the archive to serve us the original HTML without modifying any URLs. This gives us the authentic historical content.
-- We save each file using its "digest" (a unique fingerprint) as the filename. This helps us identify duplicate content later.
-- We save both the original encoded version and a UTF-8 version of each file. Japanese websites from 2000 might use encodings like `Shift-JIS`, `EUC-JP`, or `ISO-2022-JP`, and having both versions ensures we can work with the content regardless of encoding issues.
-- We also save the detected encoding to a separate file, which will be useful for debugging and analysis.
-
 ### Implementing smart caching
 
-Here's where we encounter a key insight about web archives: many snapshots of the same website are actually identical, even if they were captured at different times. The Wayback Machine assigns each unique piece of content a "digest" - essentially a fingerprint that identifies identical content. We can use this to avoid downloading the same content multiple times, which is both more efficient and more respectful of the Wayback Machine's servers.
+Here's where we encounter a key insight about web archives: many snapshots of the same website are actually identical, even if they were captured at different times. The Wayback Machine assigns each unique piece of content a `digest` - a unique fingerprint of the content. We can use this to avoid downloading the same content multiple times, which is both more efficient and more respectful of the Wayback Machine's servers.
 
 ```python
 # util.py (part 4)
@@ -316,6 +284,8 @@ Now we can put it all together in our download script:
 
 ```python
 # 2-download-snapshot.py (part 2)
+CACHE_DIR = "cache"
+os.makedirs(CACHE_DIR, exist_ok=True)
 
 for entry in all_website_entries:
     snapshot_dir = entry["snapshot_dir"]
@@ -341,15 +311,9 @@ for entry in all_website_entries:
         print(f"Error downloading {cdx_entry['timestamp']}: {e}")
 ```
 
-The cache directory organizes files by their digest (content fingerprint), making it easy to identify and reuse identical content across different timestamps and websites.
+The `cache` directory organizes files by their `digest`, making it easy to identify and reuse identical content across different timestamps and websites.
 
-Run the script with:
-
-```bash
-python 2-download-snapshot.py
-```
-
-The folder structure now includes the downloaded snapshot files:
+Run the script with `python 2-download-snapshot.py` and the `data` folder now includes the downloaded snapshot files:
 
 ```bash
 data/
@@ -361,13 +325,15 @@ data/
 │       ├── encoding.txt       # Encoding information
 ```
 
-## Detecting nested pages in HTML `<frame>` tags
+This process would take a dozen minutes depending on your network.
 
-Now that we've downloaded the website snapshots, we can start looking for nested pages in the HTML `<frame>` tags.
+## Detecting nested pages in HTML frame tags
 
-### Using BeautifulSoup to parse the HTML and find the `<frame>` tags
+Now that you've downloaded the website snapshots, you can start looking for nested pages in the HTML `⁠<frame>` tags.
 
-[TO WRITE: we are using bs4 to parse the HTML and find the `<frame>` tags] [TO WRITE: note that the file we read in is the utf8 version, not the original encoding] [TO WRITE: explain the downbelow code snippet]
+### Using BeautifulSoup to parse the HTML and find frame tags
+
+You'll use BeautifulSoup to parse the HTML and extract frame information. Using the `⁠find_all` method to find all the `⁠<frame>` tags, and then saving the attributes of each tag to a `⁠frame_tags.json` file.
 
 ```python
 # util.py (part 5)
@@ -384,7 +350,7 @@ def detect_and_save_frame_tag_attrs(
     return frame_tag_attrs
 ```
 
-[TO WRITE: explain the downbelow code snippet]
+The main detection script iterates through all downloaded website snapshots. Note that you read the UTF-8 version of the files, not the original encoding.
 
 ```python
 # 3-detect-frame-tags.py
@@ -405,13 +371,7 @@ for entry in all_website_entries:
         util.detect_and_save_frame_tag_attrs(soup, snapshot_dir)
 ```
 
-Run the script with:
-
-```bash
-python 3-detect-frame-tags.py
-```
-
-The resulting structure looks like this:
+Run the script with `python 3-detect-frame-tags.py` and each website folder now includes the `frame_tags.json` file.
 
 ```bash
 data/
@@ -421,58 +381,43 @@ data/
 │       ├── frame_tags.json
 ```
 
-[TO WRITE: In our dataset, `nikkeibp.co.jp` and `nikkei.co.jp` are the only two websites using `<frame>` tags to display banner ads, but it's good to include them, otherwise the original html doesn't tell us anything about the actual content of the website]
+In your dataset, ⁠`nikkeibp.co.jp` and ⁠`nikkei.co.jp` are the only two websites using ⁠`<frame>` tags to display banner ads. While not all sites use frames, it's important to include them because the original HTML doesn't reveal the actual content of the website if the main content is loaded through frames.
 
 ## Downloading the detected frames
 
+You'll now download the frame content that was detected in the previous step.
+
 ### Retrieving the frame tags
 
-Similar to the `2-download-snapshot.py` script, we will write a helper function to retrieve the frame tags from the `frame_tags.json` file.
+Similar to the `⁠2-download-snapshot.py` script, you'll write a retrieve function to load the existing `⁠frame_tags.json` files:
 
 ```python
-# util.py (part 6)
-def get_saved_frame_tags_with_parent_info() -> list[dict]:
-    all_frame_tags = []
-    all_website_entries = get_saved_website_entries()
-    for entry in all_website_entries:
-        website = entry["website"]
-        website_dir = entry["snapshot_dir"]
-        cdx_entry = entry["cdx_entry"]
-        frame_tags_path = os.path.join(website_dir, "frame_tags.json")
-        try:
-            with open(frame_tags_path, "r") as f:
-                frame_tags = json.load(f)
-                frame_tags_with_dir = [
-                    {
-                        "website_dir": website_dir,
-                        "website": website,
-                        "parent_cdx_entry": cdx_entry,
-                        "frame_tags": frame_tag,
-                    }
-                    for frame_tag in frame_tags
-                ]
-                all_frame_tags.extend(frame_tags_with_dir)
-        except Exception as e:
-            continue
-    return all_frame_tags
+# util.py (part 6 - api spec)
+def retrieve_saved_frame_tags_with_parent_info() -> list[dict]:
+    """Retrieve all the saved frame tags for a given website directory
+    Returns a list of dicts with the following keys:
+    - website_dir: the directory of the website
+    - website: the website name
+    - cdx_entry: the CDX entry of the website
+    - frame_tag: the frame tag
+    """
+
 ```
 
 ### Designing the folder structure for the detected frames
 
-[TO WRITE: we are putting the detected frames into folder under the parent website folder, eg `data/nikkeibp.co.jp/20000510123456/frames/[frame_tag_src]`]. The `frame_tag_src` is the `src` attribute of the `<frame>` tag. Yet, they are not good folder names because they contain special characters and spaces. We will use the `url_to_filename` function to convert them into safe filenames.
+You'll put the detected frames into folders under the parent website folder, e.g., `⁠data/nikkeibp.co.jp/20000510123456/frames/[frame_tag_src]`. The `⁠frame_tag_src` is the `⁠src` attribute of the `⁠<frame>` tag. However, these aren't good folder names because they could contain special characters, such as `/` and spaces. You'll use the `⁠url_to_filename` function to convert them into safe filenames.
 
 ```python
 # util.py (part 7)
 def url_to_filename(url: str) -> str:
-    # Remove protocol and split on slashes
     url = url.split("://")[-1].replace("/", "_")
-    # Replace any remaining invalid characters with underscores
     return "".join(c if c.isalnum() or c in "._-" else "_" for c in url)
 ```
 
 ### Querying the CDX API for the closest snapshot entry
 
-Similar to downloading the original website snapshot, we will query the CDX API for each frame tag to find the closest snapshot entry. We limit the number of results to 1 (this also makes the query faster) and sort by the closest timestamp. [TO WRITE: talk about time skew]
+Similar to downloading the original website snapshot, you'll query the CDX API for each frame tag to find the closest snapshot entry. You limit the number of results to 1 (this also makes the query faster), sort by the `⁠closest timestamp`, and take the first result. This matches the time skew behavior you learned about earlier - frame content might have been archived at a different time than the parent page.
 
 ```python
 # util.py (part 8)
@@ -488,7 +433,7 @@ def query_wm_cdx_closest_entry(url: str, timestamp: str) -> dict | None:
 
 ### Implementing the frame downloading
 
-[TO WRITE: we are using similar strategy as the download code for the original website snapshot, putting downloaded results into a cache folder] [TO WRITE:] [TO WRITE: The code is very verbose so we won't include it here, but you can find it in the `4-download-frames.py` script] [TO WRITE: Downbelow is a psuedo code for the download code]
+You'll use a similar strategy as the download code for the original website snapshot, putting downloaded results into a cache folder. The code is quite verbose, so here's the essential workflow:
 
 ```python
 # 4-download-frames.py (pseudo code)
@@ -507,13 +452,7 @@ for frame_tag_with_parent_info in all_frame_tags_with_parent_info:
         save_website_snapshot(frame_snapshot, cache_snapshot_dir)
 ```
 
-Run the script with:
-
-```bash
-python 4-download-frames.py
-```
-
-The resulting structure looks like this:
+Run the script with `python 4-download-frames.py` and the `data` folder now includes the downloaded frame files:
 
 ```bash
 data/
@@ -530,18 +469,18 @@ data/
 │       │       ├── [FRAME_DIGEST]_utf8.html # utf8 encoded html file of the frame
 ```
 
-## Detecting image assets in HTML `<img>` tags
+## Detecting image assets in HTML img tags
 
-Now we have both the original website snapshot and the nested frames. We can start looking for image assets in the `<img>` tags in all the html files.
+Now you have both the original website snapshots and the nested frames. You can start looking for image assets in the `⁠<img>` tags in all the HTML files.
 
 ### Retrieving the original website and frame entries
 
-[TO WRITE: similarly, we will write a helper function to retrieve the original website and frame entries with adequate metadata] [TO WRITE: the function is very similar to the one for retrieving the frame tags, we will only show the api spec here]
+You'll use a similar retrieve function to read both the original website and frame entries with adequate metadata:
 
 ```python
 # util.py (part 9 - api spec)
-def get_saved_website_and_frame_entries() -> list[dict]:
-    """Get all the saved frame tags for a given website directory
+def retrieve_saved_website_and_frame_entries() -> list[dict]:
+    """Retrieve all the saved frame tags for a given website directory
     Returns a list of dicts with the following keys:
     - website_dir: the directory of the website
     - website: the website name
@@ -551,9 +490,9 @@ def get_saved_website_and_frame_entries() -> list[dict]:
 
 ```
 
-### Using BeautifulSoup to parse the HTML and find the `<img>` tags
+### Using BeautifulSoup to parse the HTML and find img tags
 
-[TO WRITE: we are using the same strategy as the frame detection, but this time we are looking for the `<img>` tags] [TO WRITE: one thing we are doing differently is that we are also looking for the link in the wrapping `<a>` tags for the `<img>` tags, because most banner ads are wrapped in `<a>` tags to go somewhere when clicked]
+You'll use the same strategy as the frame detection, but this time you'll look for the `⁠<img>` tags. You'll also look for the link in the wrapping `⁠<a>` tags for the `⁠<img>` tags, because most banner ads are wrapped in `⁠<a>` tags to go to the `href` link when clicked. We will save them as `parent_href` and `full_parent_href` (with the full base url) in the `image_tags.json` file.
 
 ```python
 # util.py (part 10)
@@ -580,13 +519,13 @@ def detect_and_save_image_tag_attrs(
     return image_tags
 ```
 
-### Detect for all the images in the website
+### Detecting all the images in the website and frames
 
-[TO WRITE: Same drill, we run the detect function for every website and frame entry]
+You'll run the detect function for every website and frame entry:
 
 ```python
-# 5-detect-image-tags.py (simplified)
-all_website_and_frame_entries = util.get_saved_website_and_frame_entries()
+# 5-detect-image-tags.py
+all_website_and_frame_entries = util.retrieve_saved_website_and_frame_entries()
 
 for entry in all_website_and_frame_entries:
     website = entry["website"]
@@ -605,13 +544,7 @@ for entry in all_website_and_frame_entries:
         image_tags = util.detect_and_save_image_tag_attrs(soup, website_dir, cdx_entry)
 ```
 
-Run the script with:
-
-```bash
-python 5-detect-image-tags.py
-```
-
-The resulting structure looks like this:
+Run the script with `python 5-detect-image-tags.py` and the `data` folder now includes the `image_tags.json` file:
 
 ```bash
 data/
@@ -630,7 +563,9 @@ data/
 
 ### Banner Ad Dimensions Detection
 
-[TO WRITE: We source the `iab-banner-ad-dimensions.csv` from the `jiaa-banner-ad-dimensions` folder in the `data` folder from a Japanese book "図解 インターネット広告"] [TO WRITE: explain IAB is international, JIAA is Japanese] [TO WRITE: there is a function in `util.py` to check if the image size fits the banner ad criteria]
+The banner ad dimension standards come from two sources: the `⁠iab-banner-ad-dimensions.csv` contains International Advertising Bureau standards, while ⁠`jiaa-banner-ad-dimensions.csv` contains standards from the Japan Interactive Advertising Association. Both data were sourced from the Japanese book "図解 インターネット広告" (Illustrated Internet Advertising), which documented early Japanese web advertising practices.
+
+There's a function in `⁠util.py` to check if image dimensions match banner ad criteria:
 
 ```python
 # util.py (part 11 - api spec)
@@ -641,17 +576,16 @@ def check_banner_properties(width: int, height: int) -> dict:
     - jiaa_size: the JIAA banner category (if fits)
     - is_banner_ad: True if the width and height matches the banner ad criteria (either IAB or JIAA)
     """
-    pass
 ```
 
 ### Retrieving the image tags with parent info
 
-[TO WRITE: we are using the same strategy as the frame detection, but this time we are looking for the `<img>` tags] [TO WRITE: one thing we are doing differently is that we are also looking for the link in the wrapping `<a>` tags for the `<img>` tags, because most banner ads are wrapped in `<a>` tags to go somewhere when clicked]
+You'll use the same strategy as the downloading frames, retrieving all image tags along with their parent website information.
 
 ```python
 # util.py (part 12 - api spec)
-def get_saved_image_tags_with_parent_info() -> list[dict]:
-    """Get all the saved image tags for a given website directory
+def retrieve_saved_image_tags_with_parent_info() -> list[dict]:
+    """Retrieve all the saved image tags for a given website directory
     Returns a list of dicts with the following keys:
     - website_dir: the directory of the website
     - website: the website name
@@ -662,7 +596,9 @@ def get_saved_image_tags_with_parent_info() -> list[dict]:
 
 ### Downloading images recognized as banner ads
 
-[TO WRITE: we will go through all the image tags with parent info, and if the image size (IMPORTANT: according to the image tag data, not the actual image file, we will come back to this in the final summary of banner ad collection) fits the banner ad criteria, we will download the image]. The utility code that powers this is in part 13 of `util.py`.
+You'll go through all the image tags with parent info. You will only download the image, if the `width` and `height` recorded in its original `<img>` tag attributes matches any of the IAB or JIAA banner ad dimensions.
+
+Note that the dimension recorded in the `<img>` tag attributes is specified in the parent website, and is not necessarily represent the actual image file. The discrepancy is amplified even more given the Wayback Machine's time skew, which you will discover in the final summary.
 
 ```python
 # 6-download-banner-ads.py (pseudo code)
@@ -684,13 +620,7 @@ for image_tag_with_parent_info in all_image_tags_with_parent_info:
         save_image_tag_attrs(image_snapshot_dir)
 ```
 
-Run the script with:
-
-```bash
-python 6-download-banner-ads.py
-```
-
-The resulting structure looks like this:
+Run the script with `python 6-download-banner-ads.py` and the `data` folder now includes the downloaded banner ad files:
 
 ```bash
 data/
@@ -701,18 +631,20 @@ data/
 │       │   ├── ...
 │       │   ├── banners_url_1/
 │       │   │   ├── ...
-│       │   │   ├── [IMAGE_DIGEST].[ext]
+│       │   │   ├── [IMAGE_DIGEST].[ext] # the downloaded image file
 │       │   │   ├── image_tag_attrs.json # image tag attributes
 │       │   │   ├── cdx_entry.json # cdx entry of the image
 ```
 
+This process would take a 1-2 hours depending on your network.
+
 ## Summarizing the banner ad collection
 
-[TO WRITE: we find all the images downloaded, and associate the banner ad images with the image tag parameters, the actual image metadata as we read it with PIL (there are some discrapencies between the image tag parameters and the actual image metadata, we will discuss this in the final summary of banner ad collection), and the cdx entry of the image, and the cdx entry of the parent website.]
+You'll now create a comprehensive summary that combines the downloaded banner ad images with their metadata, HTML tag attributes, and archival information. This analysis will reveal interesting discrepancies between what the HTML tags claimed about image dimensions and what the actual image files contain.
 
 ### Read image metadata using PIL
 
-[TO WRITE: we are using the `get_image_metadata` function in `util.py` to read the image metadata]
+You'll use the `PIL` library to read actual image file metadata. The function is defined in `util.py` and here's its specification:
 
 ```python
 # util.py (part 14 - api spec)
@@ -732,44 +664,44 @@ def get_image_metadata(image_path: str) -> dict:
     """
 ```
 
-### Generating a spreadsheet summary
+### Aggregating various metadata
 
-[TO WRITE: the spreadsheet field include]
+Along the way, you have gathered metadata from various sources about the image's parent website, `<img>` tag, and the image file itself. The final summary includes comprehensive metadata combining multiple data sources:
 
 - Parent website info
-  - `website`: the parent website name
-  - `website_timestamp`: the timestamp of the parent website
+  - `website`
+  - `website_timestamp`
 - Image CDX entry
-  - `urlkey`: the urlkey of the image
-  - `timestamp`: the timestamp of the image
-  - `original`: the original url of the image
-  - `mimetype`: the mimetype of the image
-  - `statuscode`: the status code of the image
-  - `digest`: the digest of the image
-  - `length`: the length of the image
+  - `urlkey`
+  - `timestamp`
+  - `original`
+  - `mimetype`
+  - `statuscode`
+  - `digest`
+  - `length`
 - Image metadata
-  - `width`: the width of the image
-  - `height`: the height of the image
-  - `size`: the size of the image
-  - `animated`: whether the image is animated
-  - `frame_count`: the number of frames in the image
-  - `animation_duration`: the duration of the animation
-  - `loop_count`: the number of times the animation loops
-  - `iab_size`: the IAB banner category (if fits)
-  - `jiaa_size`: the JIAA banner category (if fits)
-  - `corrupt`: whether the image is corrupt
+  - `width`
+  - `height`
+  - `size`
+  - `animated`
+  - `frame_count`
+  - `animation_duration`
+  - `loop_count`
+  - `iab_size`
+  - `jiaa_size`
+  - `corrupt`
 - Image tag parameters
-  - `image_tag_width`: the width of the image tag
-  - `image_tag_height`: the height of the image tag
-  - `image_tag_banner_iab_size`: the IAB banner category (if fits)
-  - `image_tag_banner_jiaa_size`: the JIAA banner category (if fits)
-  - `image_tag_parent_href`: the parent href of the image tag
-  - `image_tag_full_parent_href`: the full parent href of the image tag
-  - `image_tag_alt_text`: the alt text of the image tag
+  - `image_tag_width`
+  - `image_tag_height`
+  - `image_tag_banner_iab_size`
+  - `image_tag_banner_jiaa_size`
+  - `image_tag_parent_href`
+  - `image_tag_full_parent_href`
+  - `image_tag_alt_text`
 - Time skew
-  - `time_skew`: the time skew between the image and the parent website in seconds
+  - `time_skew`: the timestamp difference between the image and the parent website in seconds
 
-Example output:
+Run the summary script with `python 7-summarize-banner-ads.py` and the output is `banner-ads-summary.csv`. Here's an example row:
 
 | Field                      | Value                                                                                                                                                           |
 | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -800,11 +732,3 @@ Example output:
 | image_tag_parent_href      | /event.ng/Type=click&ProfileID=62&RunID=1419&AdID=1419&GroupID=11&FamilyID=1&TagValues=263&Redirect=http:%2F%2Fwww.super-h.com%2F                               |
 | image_tag_full_parent_href | http://bizad.nikkeibp.co.jp:80/event.ng/Type=click&ProfileID=62&RunID=1419&AdID=1419&GroupID=11&FamilyID=1&TagValues=263&Redirect=http:%2F%2Fwww.super-h.com%2F |
 | image_tag_alt_text         | HITACHI Click Here!                                                                                                                                             |
-
-The summary script is `7-summarize-banner-ads.py`. To
-
-```bash
-python 7-summarize-banner-ads.py
-```
-
-The output is `banner-ads-summary.csv`.
