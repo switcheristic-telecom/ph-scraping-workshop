@@ -75,7 +75,7 @@ The tools and methods to scrape media resources off archived web pages on the Wa
 
 # Understanding web archive replay and time skew
 
-Web archive scholars have long emphasized that archived web content differs significantly from traditional archival materials, and archived web materials may not be identical to what was online in the past. Even on the live web, a particular resource on the web may be experienced differently by different groups of people due to variety of technical and non-technical factors. The dynamic nature of the web means that web archives are always incomplete. As Niels Brügger notes, an archived web page is "better understood as an actively created and subjective reconstruction" of what the original page may have looked like at a given point in time [^1]. The way an archived web page is *reconstructed* has implications for how we scrape, analyze, and interpret archived web content, which we will outline in the rest of this section. 
+Web archive scholars have long emphasized that archived web content differs significantly from traditional archival materials, and archived web materials may not be identical to what was online in the past. Even on the live web, a particular resource on the web may be experienced differently by different groups of people due to variety of technical and non-technical factors. The dynamic nature of the web means that web archives are always incomplete. As Niels Brügger notes, an archived web page is "better understood as an actively created and subjective reconstruction" of what the original page may have looked like at a given point in time [^1]. The way an archived web page is *reconstructed* has implications for how we scrape, analyze, and interpret archived web content. 
 
 A typical web page consists of a primary HTML document that defines its structure and textual content, along with numerous auxiliary resources such as images, stylesheets, scripts, and other media files. These resources are referenced in the HTML document by their own URLs. For example, an image in a web page is usually embedded using the `<img>` tag, with the image file’s location specified in the src attribute (e.g., `<img src="images/logo.gif">`). Similarly, stylesheets and scripts are linked using `<link>` and `<script>` tags. To display the page correctly, the browser must fetch all of these external resources in addition to the main HTML file. 
 
@@ -87,7 +87,7 @@ Ideally, all resources on a web page would all be archived at the same moment as
 
 In the case study section, we present a general workflow for scraping media from archived web pages on the Wayback Machine. This workflow is designed with these archival quirks in mind, helping researchers identify, retrieve, and interpret media resources while accounting for time skews. The lesson is specifically geared towards web pages from the late 1990s \- early 2000s. 
 
-Lastly, it is worth noting that there are many other factors that influence how an archived web page appear to a user today. We will provide a brief discussion towards the end of the lesson, and interested researchers can consult the relevant literature in the further readings section to learn more about technical issues in web archive replay. 
+It is worth noting that aside from the Wayback Machine's own replay mechanisms, there are other factors that may influence how an archived web page appears to a user today, such as differences in browser rendering engines [^OLDWEB], changes in default fonts or screen resolutions, and missing support for obsolete media formats like Flash [^FLASHSUPPORT]. 
 
 
 # Anatomy of an archived web page
@@ -310,15 +310,15 @@ In the late 1990s and early 2000s, the HTML frame was a popular yet controversia
 
 # Further readings
 
-For a history of web archiving, see 
+For web archives in historical research, see For a history of web archiving, see Ian Milligan's [Averting the Digital Dark Age: How Archivists, Librarians, and Technologists Built the Web a Memory](https://www.press.jhu.edu/books/title/53671/averting-digital-dark-age).  
 
 The Environmental Data and Governance Initiative (EDGI) produces a Python library aptly named `wayback` that packages a number of Wayback Machine CDX Server API features into Python functions that can be readily imported into your project. Refer to [https://github.com/edgi-govdata-archiving/wayback](https://github.com/edgi-govdata-archiving/wayback) for more information. 
 
-HTML reference books published in the late 1990s and early 2000s are incredibly helpful for today’s researchers to understand web development practices prevalent in that era that are today largely forgotten. Some of the books are now available to borrow on the Internet Archive:
+HTML reference books published in the late 1990s and early 2000s are incredibly helpful for today’s researchers to understand web authoring practices prevalent in that era that are today largely forgotten. Some of the books are now available to borrow on the Internet Archive:
  
- - []
- - []
- - []
+ - [HTML Pocket Reference, Second Edition](https://archive.org/details/htmlpocketrefere00nied), written by Jennifer Niederst. Published by O'Reilly and Associates. 
+ - [HTML: The Complete Reference, Third Edition](https://archive.org/details/htmlcompleterefe00powe_0/mode/2up), written by Thomas A. Powell. Published by Osborne/McGraw-Hill. 
+ - [HTML, Java, CGI, VRML, SGML Web Publishing Unleashed]()
 
  
 
