@@ -7,7 +7,7 @@ CACHE_DIR = "cache"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(CACHE_DIR, exist_ok=True)
 
-all_frame_tags_with_parent_info = util.get_saved_frame_tags_with_parent_info()
+all_frame_tags_with_parent_info = util.retrieve_saved_frame_tags_with_parent_info()
 
 print(f"Found {len(all_frame_tags_with_parent_info)} frame tags")
 

@@ -5,8 +5,8 @@
 import requests, time, tenacity
 
 retry = tenacity.retry(
-    stop=tenacity.stop_after_attempt(4),
-    wait=tenacity.wait_exponential(multiplier=1, min=2, max=8),
+    stop=tenacity.stop_after_attempt(10),
+    wait=tenacity.wait_exponential(multiplier=1, min=2, max=32),
     after=lambda _: time.sleep(2),
 )
 
@@ -54,8 +54,8 @@ import os, json
 OUTPUT_DIR = "data"
 
 
-def get_saved_website_entries() -> list[dict]:
-    """Get all the saved website entries
+def retrieve_saved_website_entries() -> list[dict]:
+    """Retrieve all the saved website entries
     Returns a list of dicts with the following keys:
     - website: the website name
     - snapshot_dir: the directory of the website snapshot
@@ -175,8 +175,8 @@ def detect_and_save_frame_tag_attrs(
 ##################
 
 
-def get_saved_frame_tags_with_parent_info() -> list[dict]:
-    """Get all the saved frame tags for a given website directory
+def retrieve_saved_frame_tags_with_parent_info() -> list[dict]:
+    """Retrieve all the saved frame tags for a given website directory
     Returns a list of dicts with the following keys:
     - website_dir: the directory of the website
     - website: the website name
@@ -184,7 +184,7 @@ def get_saved_frame_tags_with_parent_info() -> list[dict]:
     - frame_tag: the frame tag
     """
     all_frame_tags = []
-    all_website_entries = get_saved_website_entries()
+    all_website_entries = retrieve_saved_website_entries()
     for entry in all_website_entries:
         website = entry["website"]
         website_dir = entry["snapshot_dir"]
@@ -244,8 +244,8 @@ def query_wm_cdx_closest_entry(url: str, timestamp: str) -> dict | None:
 ##################
 
 
-def get_saved_website_and_frame_entries() -> list[dict]:
-    """Get all the saved frame tags for a given website directory
+def retrieve_saved_website_and_frame_entries() -> list[dict]:
+    """Retrieve all the saved frame tags for a given website directory
     Returns a list of dicts with the following keys:
     - website_dir: the directory of the website
     - website: the website name
@@ -253,7 +253,7 @@ def get_saved_website_and_frame_entries() -> list[dict]:
     - type: "website" or "frame"
     """
     all_website_and_frame_entries = []
-    all_website_entries = get_saved_website_entries()
+    all_website_entries = retrieve_saved_website_entries()
     for entry in all_website_entries:
         website = entry["website"]
         website_dir = entry["snapshot_dir"]
@@ -381,15 +381,15 @@ def check_banner_properties(width: int, height: int) -> dict:
 ###################
 
 
-def get_saved_image_tags_with_parent_info() -> list[dict]:
-    """Get all the saved image tags for all the website and frame entries
+def retrieve_saved_image_tags_with_parent_info() -> list[dict]:
+    """Retrieve all the saved image tags for all the website and frame entries
     Returns a list of dicts with the following keys:
     - website_dir: the directory of the website
     - website: the website name
     - cdx_entry: the CDX entry of the website
     - image_tag: the image tag
     """
-    all_website_and_frame_entries = get_saved_website_and_frame_entries()
+    all_website_and_frame_entries = retrieve_saved_website_and_frame_entries()
     all_image_tags_with_parent_info = []
     for entry in all_website_and_frame_entries:
         website = entry["website"]

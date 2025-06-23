@@ -4,7 +4,7 @@ import urllib.parse
 
 CACHE_DIR = "cache"
 
-all_image_tags_with_parent_info = util.get_saved_image_tags_with_parent_info()
+all_image_tags_with_parent_info = util.retrieve_saved_image_tags_with_parent_info()
 
 print(f"Found {len(all_image_tags_with_parent_info)} image tags")
 

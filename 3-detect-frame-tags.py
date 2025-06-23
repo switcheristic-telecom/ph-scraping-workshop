@@ -7,7 +7,7 @@ CACHE_DIR = "cache"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(CACHE_DIR, exist_ok=True)
 
-all_website_entries = util.get_saved_website_entries()
+all_website_entries = util.retrieve_saved_website_entries()
 
 
 for entry in all_website_entries:

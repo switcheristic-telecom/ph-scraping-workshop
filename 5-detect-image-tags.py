@@ -11,7 +11,7 @@ CACHE_DIR = "cache"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(CACHE_DIR, exist_ok=True)
 
-all_website_and_frame_entries = util.get_saved_website_and_frame_entries()
+all_website_and_frame_entries = util.retrieve_saved_website_and_frame_entries()
 
 print(f"Found {len(all_website_and_frame_entries)} website and frame entries")
 
