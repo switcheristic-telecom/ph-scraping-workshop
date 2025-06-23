@@ -98,4 +98,3 @@ for image_tag_with_parent_info in all_image_tags_with_parent_info:
             print(
                 f"    Error downloading {image_tag_src} at {cdx_entry['timestamp']}: {e}"
             )
-            raise e
