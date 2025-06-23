@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV="PICS-Label" CONTENT="(PICS-1.0 &quot;http://www.rsac.org/ratingsv01.html&quot; l comment &quot;RSACi North America Server&quot; by &quot;Microsoft Network&quot; r (n 0 s 0 v 0 l 0))">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=shift_jis">
+<META HTTP-EQUIV="Expires" CONTENT="Mon, 08 Mar 1999 08:22:32 GMT">
+<META HTTP-EQUIV="Cache-Control" CONTENT="private">
+<TITLE>MSN Start Browser Sniff</TITLE>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+var VERSION_MSIE = 0;
+var VERSION_MOZILLA = 0;
+var PLATFORM_WIN32 = 0;
+sniff();
+redirect();
+function sniff() {
+var ua = navigator.userAgent;
+var i = ua.indexOf("MSIE");
+var j;
+// Get MSIE version.
+if (i >= 1) {
+i += 5;
+j = ua.indexOf(".", i);
+VERSION_MSIE = parseInt(ua.substring(i, j))
+}
+// Get Mozilla version
+i = ua.indexOf("Mozilla");
+if (i >= 0) {
+i += 8;
+j = ua.indexOf(".", i);
+VERSION_MOZILLA = parseInt(ua.substring(i, j))
+}    
+PLATFORM_WIN32 = ua.indexOf("Windows 2") >= 0 || ua.indexOf("Windows 9") >= 0 || ua.indexOf("Windows NT") >= 0;
+}
+function readCookie()	{
+var d = document;
+var strCookie = d.cookie;        
+var i = strCookie.indexOf("S8=");
+var intP = 0;
+if (i >=0)	{
+var n;
+n = strCookie.indexOf("p=");		
+intP = 	strCookie.substring(n+2, n+3)
+}		
+if (intP == 0) {
+strPage = "home.htm"
+} else {
+strPage = "homedir.htm"
+}
+location.replace(strPage);
+}
+function redirect() {
+var x;
+if (VERSION_MSIE >= 4 && PLATFORM_WIN32 || VERSION_MSIE >= 5) {
+readCookie();
+} else if (VERSION_MSIE <= 3 && VERSION_MOZILLA <=3) {
+drawUpgrade();	
+} else {
+location.href = "home.asp"
+}
+}
+function drawUpgrade()  {
+document.write("このサイトは現在あなたがお使いのブラウザでは正しく表示できません。<BR>")
+document.write("<P><A HREF='http://www.asia.microsoft.com/ie_intl/ja/'>ここ</A>をクリックして最新の Microsoft Internet Explorer をダウンロードしてください。")
+document.write("<P><FONT SIZE=2>(C) 1997-2000 Microsoft Corporation. All rights reserved.<A HREF='http://www.jp.msn.com/notice/Terms.asp'>Terms of Use.</A><A HREF='http://www.jp.msn.com/notice/Privacy.asp'>Privacy Policy.</A>")
+}
+//-->
+</SCRIPT>
+<NOFRAMES>
+<NOSCRIPT>
+このサイトは Microsoft Internet Explorer でご覧ください。
+<BR>
+Microsoft Internet Explorer をインストールしてください。
+<BR>
+<BR>
+ここを <A HREF="http://www.asia.microsoft.com/ie_intl/ja/">クリック</A>
+して Microsoft Internet Explorer をダウンロードしてください。
+<P>
+<FONT SIZE=2>
+(C) 1997-2000 Microsoft Corporation. All rights reserved.
+<A HREF="http://www.jp.msn.com/notice/Terms.asp">
+Terms of Use.
+</A>
+<A HREF="http://www.jp.msn.com/notice/Privacy.asp">
+Privacy Policy.
+</A>
+</NOSCRIPT>
+</NOFRAMES>
+</HEAD> 
+</HTML>

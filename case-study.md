@@ -1,8 +1,6 @@
 # Case study: Building a dataset of banner ads appearing on popular Japanese-language websites
 
-In the rest of this lesson, we are going to build a dataset of banner ads appearing on popular Japanese-language websites in the year 2000 by scraping the Wayback Machine. Such a dataset can be of help for researchers in a number of areas - for example, researchers in , while researchers interested in the history of the ad network industry may want to observe
-
-The challenge involved in building the dataset is not only technical but also
+In the rest of this lesson, we are going to build a dataset of banner ads appearing on popular Japanese-language websites in the year 2000 by scraping the Wayback Machine. Such a dataset can be of help for researchers in a number of areas - for example, researchers in digital marketing history may want to analyze early web advertising strategies, while researchers interested in the history of the ad network industry may want to observe the evolution of banner ad formats and targeting practices during the early commercialization of the internet.
 
 ## Setting up the environment
 
