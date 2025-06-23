@@ -21,6 +21,7 @@ Extract the zip file to create your project directory. The archive contains:
 - `5-detect-image-tags.py` - Detect images from the all downloaded website and frames
 - `6-download-banner-ads.py` - Download images that are likely to be banner ads
 - `7-summarize-banner-ads.py` - Summarize the banner ads
+- `banner-ads-summary-reference.csv` - Reference summary of the banner ads
 - `util.py` - Shared utility functions
 - `README.md` - Additional instructions
 
