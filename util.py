@@ -433,34 +433,50 @@ def save_image_snapshot(img_snapshot: dict, save_dir: str):
 def get_image_metadata(image_path: str):
     from PIL import Image
 
-    with Image.open(image_path) as img:
-        metadata = {
-            "width": img.width,
-            "height": img.height,
-            "size": os.path.getsize(image_path),
-            "animated": False,
-            "frame_count": 1,
-            "animation_duration": 0,
-            "loop_count": 0,
-            "iab_size": None,
-            "jiaa_size": None,
-        }
+    metadata = {
+        "width": None,
+        "height": None,
+        "size": None,
+        "animated": None,
+        "frame_count": None,
+        "animation_duration": None,
+        "loop_count": None,
+        "iab_size": None,
+        "jiaa_size": None,
+    }
+    try:
+        with Image.open(image_path) as img:
+            metadata = {
+                "width": img.width,
+                "height": img.height,
+                "size": os.path.getsize(image_path),
+                "animated": False,
+                "frame_count": 1,
+                "animation_duration": 0,
+                "loop_count": 0,
+                "iab_size": None,
+                "jiaa_size": None,
+            }
 
-        # Check for GIF animation
-        if img.format == "GIF" and "duration" in img.info:
-            try:
-                metadata["animated"] = True
-                metadata["frame_count"] = img.n_frames
-                metadata["animation_duration"] = (
-                    img.info.get("duration", 0) * img.n_frames
-                )
-                metadata["loop_count"] = img.info.get("loop", 0)
-            except (AttributeError, KeyError):
-                pass
+            # Check for GIF animation
+            if img.format == "GIF" and "duration" in img.info:
+                try:
+                    metadata["animated"] = True
+                    metadata["frame_count"] = img.n_frames
+                    metadata["animation_duration"] = (
+                        img.info.get("duration", 0) * img.n_frames
+                    )
+                    metadata["loop_count"] = img.info.get("loop", 0)
+                except (AttributeError, KeyError):
+                    pass
+            # Check if image is a banner ad
+            banner_metadata = check_banner_properties(
+                metadata["width"], metadata["height"]
+            )
 
-        banner_metadata = check_banner_properties(metadata["width"], metadata["height"])
+            metadata["iab_size"] = banner_metadata["iab_size"]
+            metadata["jiaa_size"] = banner_metadata["jiaa_size"]
+    except Exception as e:
+        print(f"Error getting image metadata: {e}")
 
-        metadata["iab_size"] = banner_metadata["iab_size"]
-        metadata["jiaa_size"] = banner_metadata["jiaa_size"]
-
-        return metadata
+    return metadata

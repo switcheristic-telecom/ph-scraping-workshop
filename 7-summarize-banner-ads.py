@@ -6,35 +6,38 @@ CACHE_DIR = "cache"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(CACHE_DIR, exist_ok=True)
 
-image_extensions = [
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".gif",
-    ".svg",
-    ".webp",
-    ".bmp",
-    ".ico",
-    ".tiff",
-    ".tif",
-]
 
-
-def detect_images(website_dir: str):
+def detect_images(snapshot_dir: str):
+    """Walk through website directory and find all image files using util.image_extensions"""
     images = []
-    for root, dirs, files in os.walk(website_dir):
-        for resource_name in files:
-            if resource_name.endswith(tuple(image_extensions)):
-                file_path = os.path.join(root, resource_name)
+
+    # Walk through all subdirectories
+    for root, dirs, files in os.walk(snapshot_dir):
+        for filename in files:
+            # Check if file has an image extension
+            if filename.endswith(tuple(util.image_extensions)):
+                file_path = os.path.join(root, filename)
+
+                # Look for associated metadata files in the same directory
                 cdx_entry_path = os.path.join(root, "cdx_entry.json")
                 image_tag_attrs_path = os.path.join(root, "image_tag_attrs.json")
+
+                # Get image metadata using util function
                 metadata = util.get_image_metadata(file_path)
+
+                # Load CDX entry and image tag attributes
+                with open(cdx_entry_path, "r") as f:
+                    cdx_entry = json.load(f)
+
+                with open(image_tag_attrs_path, "r") as f:
+                    image_tag_attrs = json.load(f)
+
                 images.append(
                     {
                         "path": file_path,
                         "metadata": metadata,
-                        "cdx_entry": json.load(open(cdx_entry_path)),
-                        "image_tag_attrs": json.load(open(image_tag_attrs_path)),
+                        "cdx_entry": cdx_entry,
+                        "image_tag_attrs": image_tag_attrs,
                     }
                 )
 
@@ -47,6 +50,7 @@ for website in os.listdir(OUTPUT_DIR):
     website_dir = os.path.join(OUTPUT_DIR, website)
     for timestamp in os.listdir(website_dir):
         snapshot_dir = os.path.join(website_dir, timestamp)
+        print(snapshot_dir)
         if os.path.isdir(snapshot_dir):
             for image in detect_images(snapshot_dir):
                 all_images.append(
@@ -55,6 +59,10 @@ for website in os.listdir(OUTPUT_DIR):
                         "website_timestamp": timestamp,
                         **image["cdx_entry"],
                         **image["metadata"],
+                        "image_tag_width": image["image_tag_attrs"].get("width", None),
+                        "image_tag_height": image["image_tag_attrs"].get(
+                            "height", None
+                        ),
                         "image_tag_parent_href": image["image_tag_attrs"].get(
                             "parent_href", None
                         ),
@@ -65,7 +73,8 @@ for website in os.listdir(OUTPUT_DIR):
                     }
                 )
 
-with open("image-summary.csv", "w", newline="", encoding="utf-8") as f:
+
+with open("banner-ads-summary.csv", "w", newline="", encoding="utf-8") as f:
     fieldnames = ["website", "website_timestamp"] + [
         k for k in all_images[0].keys() if k not in ["website", "website_timestamp"]
     ]
