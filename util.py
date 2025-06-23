@@ -374,3 +374,41 @@ def save_image_snapshot(img_snapshot: dict, save_dir: str):
 ##################
 ##### PART 8 #####
 ##################
+
+
+def get_image_metadata(image_path: str):
+    from PIL import Image
+
+    with Image.open(image_path) as img:
+        metadata = {
+            "width": img.width,
+            "height": img.height,
+            "size": os.path.getsize(image_path),
+            "animated": False,
+            "frame_count": 1,
+            "animation_duration": 0,
+            "loop_count": 0,
+            "iab_size": None,
+            "jiaa_size": None,
+        }
+
+        # Check for GIF animation
+        if img.format == "GIF" and "duration" in img.info:
+            try:
+                metadata["animated"] = True
+                metadata["frame_count"] = img.n_frames
+                metadata["animation_duration"] = (
+                    img.info.get("duration", 0) * img.n_frames
+                )
+                metadata["loop_count"] = img.info.get("loop", 0)
+            except (AttributeError, KeyError):
+                pass
+
+        banner_metadata = util.check_banner_properties(
+            metadata["width"], metadata["height"]
+        )
+
+        metadata["iab_size"] = banner_metadata["iab_size"]
+        metadata["jiaa_size"] = banner_metadata["jiaa_size"]
+
+        return metadata
