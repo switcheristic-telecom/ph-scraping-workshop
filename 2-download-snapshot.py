@@ -12,9 +12,9 @@ all_website_entries = util.get_saved_website_entries()
 ##################
 
 OUTPUT_DIR = "data"
-CACHE_DIR = "cache"
+CACHE_DIGEST_DIR = "cache-digest"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-os.makedirs(CACHE_DIR, exist_ok=True)
+os.makedirs(CACHE_DIGEST_DIR, exist_ok=True)
 
 
 for website, entries in all_website_entries.items():
@@ -33,7 +33,7 @@ for website, entries in all_website_entries.items():
             continue
 
         # Check if snapshot has already been cached
-        cache_snapshot_dir = os.path.join(CACHE_DIR, cdx_entry["digest"])
+        cache_snapshot_dir = os.path.join(CACHE_DIGEST_DIR, cdx_entry["digest"])
         if util.find_and_copy_cached_snapshot(cache_snapshot_dir, snapshot_dir):
             print(f"  Loaded from cache {cdx_entry['timestamp']}, skipping")
             continue

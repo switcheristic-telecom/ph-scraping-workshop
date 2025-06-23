@@ -1,10 +1,14 @@
 # Case study: Building a dataset of banner ads appearing on popular Japanese-language websites
 
-In the rest of this lesson, we are going to build a dataset of banner ads appearing on popular Japanese-language websites in the year 2000 by scraping the Wayback Machine. Such a dataset can be of help for researchers in a number of areas - for example, researchers in digital marketing history may want to analyze early web advertising strategies, while researchers interested in the history of the ad network industry may want to observe the evolution of banner ad formats and targeting practices during the early commercialization of the internet.
+In this section, we'll put our web scraping skills to work by building a dataset of banner advertisements from popular Japanese websites in the year 2000. This case study demonstrates how historians can use computational methods to study the early commercialization of the internet and the evolution of digital advertising.
+
+Why focus on banner ads from 2000? The year 2000 represents a pivotal moment in web history - the dot-com boom was at its peak, web advertising was becoming standardized, and many of the advertising practices we see today were taking shape. By examining banner ads from this period, we can gain insights into early digital marketing strategies, the visual culture of the early commercial web, and how companies presented themselves online during the internet's first commercial wave.
+
+Our approach will involve several steps: first, we'll identify popular Japanese websites from 2000; then we'll systematically download archived snapshots of these sites; and finally, we'll extract and analyze the banner advertisements they contained. The techniques you'll learn here can be adapted to study other types of web content or different time periods.
 
 ## Setting up the environment
 
-Before we begin, let's make sure we have all the necessary tools installed. Create a new directory for this project and install the required dependencies
+Before we begin, let's make sure we have all the necessary tools installed. Create a new directory for this project and install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -14,14 +18,18 @@ We'll organize our work into several focused scripts, each handling a different 
 
 - `1-query-cdx.py` - Query the Wayback Machine for available snapshots
 - `2-download-snapshot.py` - Download the actual web pages
-- `3-download-frames.py` - Download nested pages in HTML `<frame>` tags
-- `4-detect-images.py` - Detect images from the all downloaded pages
-- `5-summarize-images.py` - Analyze and categorize the detected images
+- `3-scrape-frames.py` - Handle pages that use HTML frames
+- `4-scrape-images.py` - Extract images from the downloaded pages
+- `5-summarize-images.py` - Analyze and categorize our findings
 - `util.py` - Shared utility functions
+
+This modular approach allows us to work step-by-step and makes it easier to debug issues or restart from a particular point if needed.
 
 ## Building a list of historical URLs to scrape
 
 For our study, we need a representative sample of popular Japanese websites from 2000. Fortunately, the business magazine Nikkei published a list of the top 50 most visited websites in Japan in May 2000, which has been preserved in [this academic paper](https://firstmonday.org/ojs/index.php/fm/article/view/802) studying early internet adoption in Japan.
+
+This list is particularly valuable because it reflects actual usage patterns from 2000, not what we might assume were popular sites based on today's web landscape. Many of these early internet destinations have since disappeared or transformed dramatically.
 
 The basic list looks like this:
 
@@ -46,11 +54,11 @@ We've categorized sites using the same scheme as the original Nikkei study: `por
 
 For this lesson, we'll focus specifically on Japanese-language websites in the `portal` and `content` categories. These types of sites were most likely to feature banner advertising, since they relied on attracting large audiences and generating revenue through ads. This gives us 16 websites to examine - a manageable number for learning purposes while still providing enough data for meaningful analysis.
 
-## Querying for website snapshots from the Wayback Machine
+## Querying the Wayback Machine for website snapshots
 
 Now that we have our list of target websites, we need to find out what archived snapshots the Wayback Machine has available for each site from May 2000.
 
-### Reading the list of websites
+### Reading our website list
 
 Let's start by loading our curated list of Japanese websites:
 
@@ -128,7 +136,7 @@ def query_wm_cdx_entries(
 
 The `@retry` decorator is particularly important here. The Wayback Machine, like many free public services, can sometimes be slow or temporarily unavailable. This decorator automatically retries failed requests up to 10 times with increasing delays between attempts, making our scraping more reliable without requiring us to manually handle every potential network hiccup.
 
-### Querying Script
+### Querying and organizing our data
 
 Now we can systematically query the CDX API for each website and organize the results:
 
@@ -183,13 +191,13 @@ data/                          # Main output directory
 
 This approach has several advantages: it's easy to understand, it allows us to resume our work if something goes wrong, and it makes it simple to focus on specific websites or time periods later.
 
-## Downloading the website snapshots
+## Downloading the archived website snapshots
 
 With our CDX metadata in hand, we can now download the actual archived web pages. This is where we'll encounter some of the unique challenges of working with historical web content.
 
 ### Reading our saved metadata
 
-First, let's create a function to read back all the CDX entries we saved in the previous step. This will be useful for many steps later.
+First, let's create a function to read back all the CDX entries we saved in the previous step:
 
 ```python
 # util.py (part 2)
@@ -299,12 +307,12 @@ def find_and_copy_cached_snapshot(cached_snapshot_dir: str, save_dir: str) -> bo
 Now we can put it all together in our download script:
 
 ```python
-# 2-download-snapshot.py (part 2)
+# 2-download-snapshot.py (part 2 - final)
 
 OUTPUT_DIR = "data"
-CACHE_DIGEST_DIR = "cache-digest"
+CACHE_DIR = "cache"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-os.makedirs(CACHE_DIGEST_DIR, exist_ok=True)
+os.makedirs(CACHE_DIR, exist_ok=True)
 
 
 for website, entries in all_website_entries.items():
@@ -323,7 +331,7 @@ for website, entries in all_website_entries.items():
             continue
 
         # Check if snapshot has already been cached
-        cache_snapshot_dir = os.path.join(CACHE_DIGEST_DIR, cdx_entry["digest"])
+        cache_snapshot_dir = os.path.join(CACHE_DIR, cdx_entry["digest"])
         if util.find_and_copy_cached_snapshot(cache_snapshot_dir, snapshot_dir):
             print(f"  Loaded from cache {cdx_entry['timestamp']}, skipping")
             continue
@@ -338,5 +346,11 @@ for website, entries in all_website_entries.items():
         except Exception as e:
             print(f"    Error downloading {cdx_entry['timestamp']}: {e}")
 ```
+
+This caching system serves multiple purposes:
+
+1. It dramatically reduces the number of requests we make to the Wayback Machine (being respectful of their resources)
+2. It speeds up our research process when we need to rerun parts of our analysis
+3. It helps us understand which website versions were truly unique versus which were just captured multiple times without changes
 
 The cache directory organizes files by their digest (content fingerprint), making it easy to identify and reuse identical content across different timestamps and websites.
