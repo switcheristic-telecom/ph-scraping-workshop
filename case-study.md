@@ -801,7 +801,10 @@ Example output:
 | image_tag_full_parent_href | http://bizad.nikkeibp.co.jp:80/event.ng/Type=click&ProfileID=62&RunID=1419&AdID=1419&GroupID=11&FamilyID=1&TagValues=263&Redirect=http:%2F%2Fwww.super-h.com%2F |
 | image_tag_alt_text         | HITACHI Click Here!                                                                                                                                             |
 
-```python
-# 7-summarize-banner-ads.py (pseudo code)
+The summary script is `7-summarize-banner-ads.py`. To
 
+```bash
+python 7-summarize-banner-ads.py
 ```
+
+The output is `banner-ads-summary.csv`.
