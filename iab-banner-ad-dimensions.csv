@@ -1,0 +1,17 @@
+standard,size_name,width,height
+IAB,Medium Rectangle,300,250
+IAB,Square Pop-Up,250,250
+IAB,Vertical Rectangle,240,400
+IAB,Large Rectangle,336,280
+IAB,Rectangle,180,150
+IAB,Full Banner,468,60
+IAB,Half Banner,234,60
+IAB,Micro Button,88,31
+IAB,Button 1,120,90
+IAB,Button 2,120,60
+IAB,Vertical Banner,120,240
+IAB,Square Button,125,125
+IAB,Leaderboard,728,90
+IAB,Wide Skyscraper,160,600
+IAB,Skyscraper,120,600
+IAB,Half Page Ad,300,600

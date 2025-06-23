@@ -2,22 +2,36 @@
 
 In the rest of this lesson, we are going to build a dataset of banner ads appearing on popular Japanese-language websites in the year 2000 by scraping the Wayback Machine. Such a dataset can be of help for researchers in a number of areas - for example, researchers in digital marketing history may want to analyze early web advertising strategies, while researchers interested in the history of the ad network industry may want to observe the evolution of banner ad formats and targeting practices during the early commercialization of the internet.
 
+## Download the lesson materials
+
+Before we begin, you'll need to download the supporting files for this lesson. These include the curated list of Japanese websites from 2000, all the Python scripts we'll be using, and some helper data files.
+
+Download the lesson files here: [TODO: lesson-files.zip](lesson-files.zip)
+
+Extract the zip file to create your project directory. The archive contains:
+
+- `nikkeibp-may2000.csv` Curated list of top Japanese websites from May 2000
+- `requirements.txt` - Python dependencies needed for this lesson
+- `iab-banner-ad-dimensions.csv` - Standard banner ad sizes from the Internet Advertising Bureau
+- `jiaa-banner-ad-dimensions.csv` - Banner ad sizes from the Japan Interactive Advertising Association
+- `1-query-cdx.py` - Query the Wayback Machine for available snapshots
+- `2-download-snapshot.py` - Download the actual web pages
+- `3-download-frames.py` - Download nested pages in HTML `<frame>` tags
+- `4-detect-images.py` - Detect images from the all downloaded pages
+- `5-download-images.py` - Download all detected images
+- `6-summarize-images.py` - Analyze and categorize the detected images
+- `util.py` - Shared utility functions
+- `README.md` - Additional instructions
+
 ## Setting up the environment
 
-Before we begin, let's make sure we have all the necessary tools installed. Create a new directory for this project and install the required dependencies
+Now that you have the lesson materials, let's install the necessary Python dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-We'll organize our work into several focused scripts, each handling a different part of the process. Go ahead and create these empty files - we'll fill them in as we progress through the lesson:
-
-- `1-query-cdx.py` - Query the Wayback Machine for available snapshots
-- `2-download-snapshot.py` - Download the actual web pages
-- `3-download-frames.py` - Download nested pages in HTML `<frame>` tags
-- `4-detect-images.py` - Detect images from the all downloaded pages
-- `5-summarize-images.py` - Analyze and categorize the detected images
-- `util.py` - Shared utility functions
+The scripts are organized in a logical sequence that mirrors our research workflow. Each script handles a specific part of the process, making it easy to understand what's happening at each step and to resume work if needed. We'll walk through each script in order, explaining what it does and how the techniques can be applied to other research questions.
 
 ## Building a list of historical URLs to scrape
 
@@ -52,7 +66,7 @@ Now that we have our list of target websites, we need to find out what archived 
 
 ### Reading the list of websites
 
-Let's start by loading our curated list of Japanese websites:
+Let's start by examining how we load our curated list of Japanese websites. Open `1-query-cdx.py` and look at the first section:
 
 ```python
 # 1-query-cdx.py (part 1)
@@ -78,7 +92,7 @@ print(f"Found {len(japanese_websites)} Japanese websites to scrape")
 
 The Wayback Machine's CDX (Crawl inDeX) API is our gateway to finding archived content. Think of it as a catalog that tells us exactly what snapshots are available for any given website and when they were captured. For each website in our list, we'll query the API to find all snapshots taken during May 2000.
 
-Let's create some helper functions to make working with the API easier. We'll put these in a separate `util.py` file so we can reuse them throughout our project:
+Let's examine the helper functions in `util.py` that make working with the API easier:
 
 ```python
 # util.py (part 1)
@@ -128,9 +142,9 @@ def query_wm_cdx_entries(
 
 The `@retry` decorator is particularly important here. The Wayback Machine, like many free public services, can sometimes be slow or temporarily unavailable. This decorator automatically retries failed requests up to 10 times with increasing delays between attempts, making our scraping more reliable without requiring us to manually handle every potential network hiccup.
 
-### Querying Script
+### Querying and organizing our data
 
-Now we can systematically query the CDX API for each website and organize the results:
+Now we can systematically query the CDX API for each website and organize the results. Let's look at the rest of `1-query-cdx.py`:
 
 ```python
 # 1-query-cdx.py (part 2)
@@ -172,6 +186,12 @@ for website in japanese_websites:
 
 This script creates a organized folder structure that mirrors how the Wayback Machine organizes its content. Each website gets its own folder, and within that, each snapshot gets a folder named with its timestamp. The `cdx_entry.json` file in each folder contains the metadata we'll need to actually download that snapshot later.
 
+Run this script with:
+
+```bash
+python 1-query-cdx.py
+```
+
 The resulting structure looks like this:
 
 ```bash
@@ -181,7 +201,11 @@ data/                          # Main output directory
 │       ├── cdx_entry.json     # CDX metadata for this snapshot
 ```
 
-This approach has several advantages: it's easy to understand, it allows us to resume our work if something goes wrong, and it makes it simple to focus on specific websites or time periods later.
+This approach has several advantages:
+
+- It's easy to navigate in the folder structure
+- It allows us to resume our work if something goes wrong
+- It makes it simple to focus on specific websites or time periods later
 
 ## Downloading the website snapshots
 
@@ -189,7 +213,7 @@ With our CDX metadata in hand, we can now download the actual archived web pages
 
 ### Reading our saved metadata
 
-First, let's create a function to read back all the CDX entries we saved in the previous step. This will be useful for many steps later.
+First, let's examine how we read back all the CDX entries we saved in the previous step. Look at this function in `util.py`:
 
 ```python
 # util.py (part 2)
@@ -273,7 +297,7 @@ Notice several important details in this code:
 
 - We use the `id_` flag in our Wayback Machine URL, which tells the archive to serve us the original HTML without modifying any URLs. This gives us the authentic historical content.
 - We save each file using its "digest" (a unique fingerprint) as the filename. This helps us identify duplicate content later.
-- We save both the original encoded version and a UTF-8 version of each file. Japanese websites from 2000 might use encodings like Shift-JIS, EUC-JP, or ISO-2022-JP, and having both versions ensures we can work with the content regardless of encoding issues.
+- We save both the original encoded version and a UTF-8 version of each file. Japanese websites from 2000 might use encodings like `Shift-JIS`, `EUC-JP`, or `ISO-2022-JP`, and having both versions ensures we can work with the content regardless of encoding issues.
 - We also save the detected encoding to a separate file, which will be useful for debugging and analysis.
 
 ### Implementing smart caching

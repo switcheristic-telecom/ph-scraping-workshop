@@ -1,0 +1,13 @@
+standard,size_name,width,height
+JIAA,Small Banner,224,33
+JIAA,Regular Banner,468,60
+JIAA,Large Banner,728,90
+JIAA,Small Badge,120,60
+JIAA,Regular Badge,120,90
+JIAA,Large Badge,125,125
+JIAA,Small Rectangle,200,200
+JIAA,Regular Rectangle,300,250
+JIAA,Large Rectangle,336,280
+JIAA,Regular Skyscraper,120,600
+JIAA,Wide Skyscraper,160,600
+JIAA,Large Skyscraper,148,800
