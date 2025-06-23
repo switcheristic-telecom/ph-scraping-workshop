@@ -83,3 +83,4 @@ for frame_tag_with_parent_info in all_frame_tags_with_parent_info:
             print(
                 f"    Error downloading {frame_tag_src} at {cdx_entry['timestamp']}: {e}"
             )
+            input("Click Enter to continue")

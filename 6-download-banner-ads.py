@@ -59,6 +59,12 @@ for image_tag_with_parent_info in all_image_tags_with_parent_info:
         )
         with open(banner_cdx_entry_path, "w") as f1:
             json.dump(banner_cdx_entry, f1)
+    if (
+        banner_cdx_entry
+        and banner_cdx_entry["digest"] == "6ABYE2EFD5BH55JI2R6LSMVRT5JNWYFI"
+    ):
+        print(banner_cdx_entry)
+        input("Click Enter to continue")
 
     # If CDX entry is valid, download snapshot
     if banner_cdx_entry and banner_cdx_entry["statuscode"] == "200":
@@ -98,3 +104,4 @@ for image_tag_with_parent_info in all_image_tags_with_parent_info:
             print(
                 f"    Error downloading {image_tag_src} at {cdx_entry['timestamp']}: {e}"
             )
+            raise e

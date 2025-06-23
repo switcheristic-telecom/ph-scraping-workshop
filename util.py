@@ -54,24 +54,28 @@ import os, json
 OUTPUT_DIR = "data"
 
 
-def get_saved_website_entries() -> dict:
+def get_saved_website_entries() -> list[dict]:
     """Get all the saved website entries
     dict: {website: [cdx_entry, ...], website2: [cdx_entry, ...], ...}
     """
-    all_website_entries = {}
+    all_website_entries = []
 
     for website in os.listdir(OUTPUT_DIR):
         website_dir = os.path.join(OUTPUT_DIR, website)
-        all_website_entries[website] = []
 
         for timestamp_dir in os.listdir(website_dir):
             if os.path.isdir(os.path.join(website_dir, timestamp_dir)):
-                cdx_meta_path = os.path.join(
-                    website_dir, timestamp_dir, "cdx_entry.json"
-                )
+                website_snapshot_dir = os.path.join(website_dir, timestamp_dir)
+                cdx_meta_path = os.path.join(website_snapshot_dir, "cdx_entry.json")
                 with open(cdx_meta_path, "r") as f:
                     cdx_entry = json.load(f)
-                all_website_entries[website].append(cdx_entry)
+                all_website_entries.append(
+                    {
+                        "website": website,
+                        "snapshot_dir": website_snapshot_dir,
+                        "cdx_entry": cdx_entry,
+                    }
+                )
 
     return all_website_entries
 
@@ -165,25 +169,26 @@ def get_saved_frame_tags_with_parent_info() -> list[dict]:
     """Get all the saved frame tags for a given website directory"""
     all_frame_tags = []
     all_website_entries = get_saved_website_entries()
-    for website, entries in all_website_entries.items():
-        for cdx_entry in entries:
-            website_dir = os.path.join(OUTPUT_DIR, website, cdx_entry["timestamp"])
-            frame_tags_path = os.path.join(website_dir, "frame_tags.json")
-            try:
-                with open(frame_tags_path, "r") as f:
-                    frame_tags = json.load(f)
-                    frame_tags_with_dir = [
-                        {
-                            "website_dir": website_dir,
-                            "website": website,
-                            "parent_cdx_entry": cdx_entry,
-                            "frame_tags": frame_tag,
-                        }
-                        for frame_tag in frame_tags
-                    ]
-                    all_frame_tags.extend(frame_tags_with_dir)
-            except FileNotFoundError:
-                continue
+    for entry in all_website_entries:
+        website = entry["website"]
+        website_dir = entry["snapshot_dir"]
+        cdx_entry = entry["cdx_entry"]
+        frame_tags_path = os.path.join(website_dir, "frame_tags.json")
+        try:
+            with open(frame_tags_path, "r") as f:
+                frame_tags = json.load(f)
+                frame_tags_with_dir = [
+                    {
+                        "website_dir": website_dir,
+                        "website": website,
+                        "parent_cdx_entry": cdx_entry,
+                        "frame_tags": frame_tag,
+                    }
+                    for frame_tag in frame_tags
+                ]
+                all_frame_tags.extend(frame_tags_with_dir)
+        except FileNotFoundError:
+            continue
     return all_frame_tags
 
 
@@ -216,44 +221,45 @@ def get_saved_website_and_frame_entries() -> list[dict]:
     """Get all the saved frame tags for a given website directory"""
     all_website_and_frame_entries = []
     all_website_entries = get_saved_website_entries()
-    for website, entries in all_website_entries.items():
-        for cdx_entry in entries:
-            # Add the website entry
-            website_dir = os.path.join(OUTPUT_DIR, website, cdx_entry["timestamp"])
-            all_website_and_frame_entries.append(
-                {
-                    "website_dir": website_dir,
-                    "website": website,
-                    "cdx_entry": cdx_entry,
-                    "type": "website",
-                }
+    for entry in all_website_entries:
+        website = entry["website"]
+        website_dir = entry["snapshot_dir"]
+        cdx_entry = entry["cdx_entry"]
+        # Add the website entry
+        all_website_and_frame_entries.append(
+            {
+                "website_dir": website_dir,
+                "website": website,
+                "cdx_entry": cdx_entry,
+                "type": "website",
+            }
+        )
+
+        # Add the frame entries
+        frames_dir = os.path.join(website_dir, "frames")
+
+        # If frames directory does not exist, skip
+        if not os.path.exists(frames_dir):
+            continue
+
+        for frame_name in os.listdir(frames_dir):
+            frame_cdx_entry_path = os.path.join(
+                frames_dir, frame_name, "cdx_entry.json"
             )
-
-            # Add the frame entries
-            frames_dir = os.path.join(website_dir, "frames")
-
-            # If frames directory does not exist, skip
-            if not os.path.exists(frames_dir):
-                continue
-
-            for frame_name in os.listdir(frames_dir):
-                frame_cdx_entry_path = os.path.join(
-                    frames_dir, frame_name, "cdx_entry.json"
+            try:
+                with open(frame_cdx_entry_path, "r") as f:
+                    frame_cdx_entry = json.load(f)
+                frame_dir = os.path.join(frames_dir, frame_name)
+                all_website_and_frame_entries.append(
+                    {
+                        "website_dir": frame_dir,
+                        "website": website,
+                        "cdx_entry": frame_cdx_entry,
+                        "type": "frame",
+                    }
                 )
-                try:
-                    with open(frame_cdx_entry_path, "r") as f:
-                        frame_cdx_entry = json.load(f)
-                    frame_dir = os.path.join(frames_dir, frame_name)
-                    all_website_and_frame_entries.append(
-                        {
-                            "website_dir": frame_dir,
-                            "website": website,
-                            "cdx_entry": frame_cdx_entry,
-                            "type": "frame",
-                        }
-                    )
-                except FileNotFoundError:
-                    continue
+            except FileNotFoundError:
+                continue
     return all_website_and_frame_entries
 
 
@@ -272,6 +278,37 @@ def detect_and_save_image_tag_attrs(
 ##################
 ##### PART 8 #####
 ##################
+image_extensions = [
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "svg",
+    "webp",
+    "bmp",
+    "ico",
+    "tiff",
+    ".tif",
+]
+
+
+def get_image_file_extension(cdx_entry: dict) -> str:
+    """Get the file extension from a URL"""
+    # Remove query parameters after ? or #
+    url_extension = cdx_entry["original"].split("?")[0].split("#")[0].lower()
+
+    if url_extension not in image_extensions:
+        url_extension = None
+
+    mime_type = cdx_entry["mimetype"]
+    if mime_type.startswith("image/"):
+        mime_type_extension = mime_type.split("/")[1]
+        if mime_type_extension not in image_extensions:
+            mime_type_extension = None
+    else:
+        mime_type_extension = None
+
+    return url_extension or mime_type_extension
 
 
 def get_saved_image_tags_with_parent_info() -> list[dict]:
@@ -293,7 +330,7 @@ def get_saved_image_tags_with_parent_info() -> list[dict]:
                             "website": website,
                             "cdx_entry": cdx_entry,
                             "image_tag": image_tag,
-                            "extension": image_tag["src"].split(".")[-1],
+                            "extension": get_image_file_extension(cdx_entry),
                         }
                         for image_tag in image_tags
                     ]
@@ -354,7 +391,7 @@ def download_image_snapshot(cdx_entry: dict) -> dict:
     wayback_url = f"https://web.archive.org/web/{cdx_entry['timestamp']}im_/{cdx_entry['original']}"
     response = requests.get(wayback_url, timeout=30)
     response.raise_for_status()
-    extension = cdx_entry["original"].split(".")[-1]
+    extension = get_image_file_extension(cdx_entry)
     return {
         "digest": cdx_entry["digest"],
         "file": response.content,
@@ -367,6 +404,9 @@ def save_image_snapshot(img_snapshot: dict, save_dir: str):
     os.makedirs(save_dir, exist_ok=True)
     img_filename = f"{img_snapshot['digest']}.{img_snapshot['extension']}"
     img_path = os.path.join(save_dir, img_filename)
+    print("Image filename:")
+    print(img_filename)
+    print(f"Saving image to {img_path}")
     with open(img_path, "wb") as f:
         f.write(img_snapshot["file"])
 
@@ -404,9 +444,7 @@ def get_image_metadata(image_path: str):
             except (AttributeError, KeyError):
                 pass
 
-        banner_metadata = util.check_banner_properties(
-            metadata["width"], metadata["height"]
-        )
+        banner_metadata = check_banner_properties(metadata["width"], metadata["height"])
 
         metadata["iab_size"] = banner_metadata["iab_size"]
         metadata["jiaa_size"] = banner_metadata["jiaa_size"]
