@@ -21,8 +21,8 @@ Extract the zip file to create your project directory. The archive contains:
 - `5-detect-image-tags.py` - Detect images from the all downloaded website and frames
 - `6-download-banner-ads.py` - Download images that are likely to be banner ads
 - `7-summarize-banner-ads.py` - Summarize the banner ads
-- `banner-ads-summary-reference.csv` - Reference summary of the banner ads
 - `util.py` - Shared utility functions
+- `banner-ads-summary-reference.csv` - Reference summary of the banner ads collection
 - `README.md` - Additional instructions
 
 ## Setting up the environment
@@ -150,26 +150,18 @@ Now we can systematically query the CDX API for each website and organize the re
 
 ```python
 # 1-query-cdx.py (part 2)
-
 import os, json
 import util
-
 
 OUTPUT_DIR = "data"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-
 for website in japanese_websites:
-    print(f"Querying CDX for {website}")
-
     website_dir = os.path.join(OUTPUT_DIR, website)
     if os.path.exists(website_dir):
-        print(f"  Skipping - folder already exists")
         continue
 
     cdx_entries = util.query_wm_cdx_entries(website)
-
-    print(f"  Found {len(cdx_entries)} CDX entries")
     os.makedirs(website_dir, exist_ok=True)
 
     # Create folder structure for all entries of this website
@@ -177,13 +169,9 @@ for website in japanese_websites:
         for cdx_entry in cdx_entries:
             website_timestamp_dir = os.path.join(website_dir, cdx_entry["timestamp"])
             os.makedirs(website_timestamp_dir, exist_ok=True)
-
             cdx_entry_path = os.path.join(website_timestamp_dir, "cdx_entry.json")
             with open(cdx_entry_path, "w") as f:
                 json.dump(cdx_entry, f, indent=2)
-
-        print(f"  Created {len(cdx_entries)} snapshot entry folders")
-
 ```
 
 This script creates a organized folder structure that mirrors how the Wayback Machine organizes its content. Each website gets its own folder, and within that, each snapshot gets a folder named with its timestamp. The `cdx_entry.json` file in each folder contains the metadata we'll need to actually download that snapshot later.
@@ -219,38 +207,38 @@ First, let's examine how we read back all the CDX entries we saved in the previo
 
 ```python
 # util.py (part 2)
-import os, json
-
-OUTPUT_DIR = "data"
-
-def get_saved_website_entries() -> dict:
+def get_saved_website_entries() -> list[dict]:
     """Get all the saved website entries
-    dict: {website: [cdx_entry, ...], website2: [cdx_entry, ...], ...}
+    Returns a list of dicts with the following keys:
+    - website: the website name
+    - snapshot_dir: the directory of the website snapshot
+    - cdx_entry: the CDX entry of the website
     """
-    all_website_entries = {}
+    all_website_entries = []
 
     for website in os.listdir(OUTPUT_DIR):
         website_dir = os.path.join(OUTPUT_DIR, website)
-        all_website_entries[website] = []
 
         for timestamp_dir in os.listdir(website_dir):
             if os.path.isdir(os.path.join(website_dir, timestamp_dir)):
-                cdx_meta_path = os.path.join(
-                    website_dir, timestamp_dir, "cdx_entry.json"
-                )
+                website_snapshot_dir = os.path.join(website_dir, timestamp_dir)
+                cdx_meta_path = os.path.join(website_snapshot_dir, "cdx_entry.json")
                 with open(cdx_meta_path, "r") as f:
                     cdx_entry = json.load(f)
-                all_website_entries[website].append(cdx_entry)
+                all_website_entries.append(
+                    {
+                        "website": website,
+                        "snapshot_dir": website_snapshot_dir,
+                        "cdx_entry": cdx_entry,
+                    }
+                )
 
     return all_website_entries
 ```
 
 ```python
 #2-download-snapshot.py (part 1)
-
 import util
-
-
 all_website_entries = util.get_saved_website_entries()
 ```
 
@@ -260,7 +248,6 @@ Now comes the tricky part: actually downloading the web pages and handling their
 
 ```python
 # util.py (part 3)
-
 @retry
 def download_website_snapshot(cdx_entry: dict) -> dict:
     wayback_url = f"https://web.archive.org/web/{cdx_entry['timestamp']}id_/{cdx_entry['original']}"
@@ -271,7 +258,6 @@ def download_website_snapshot(cdx_entry: dict) -> dict:
         "file": response.content,
         "encoding": response.apparent_encoding,
     }
-
 
 def save_website_snapshot(snapshot: dict, save_dir: str):
     """Save a website snapshot (original and utf8 versions) and encoding information to a directory"""
@@ -292,7 +278,6 @@ def save_website_snapshot(snapshot: dict, save_dir: str):
     # Save encoding information
     with open(os.path.join(save_dir, "encoding.txt"), "w") as f:
         f.write(snapshot["encoding"])
-
 ```
 
 Notice several important details in this code:
@@ -308,18 +293,23 @@ Here's where we encounter a key insight about web archives: many snapshots of th
 
 ```python
 # util.py (part 4)
-
 def find_and_copy_cached_snapshot(cached_snapshot_dir: str, save_dir: str) -> bool:
     """Find and copy a cached snapshot to a directory if it exists. Return True if a snapshot was found and copied."""
     if os.path.exists(cached_snapshot_dir):
-        for filename in os.listdir(cached_snapshot_dir):
+        files = os.listdir(cached_snapshot_dir)
+        # If no files, return False
+        if not files:
+            return False
+        for filename in files:
             src = os.path.join(cached_snapshot_dir, filename)
             dst = os.path.join(save_dir, filename)
+            # If file already exists, copy it to the save_dir
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             with open(src, "rb") as fsrc, open(dst, "wb") as fdst:
                 fdst.write(fsrc.read())
         return True
     return False
+
 ```
 
 Now we can put it all together in our download script:
@@ -327,42 +317,491 @@ Now we can put it all together in our download script:
 ```python
 # 2-download-snapshot.py (part 2)
 
-OUTPUT_DIR = "data"
-CACHE_DIR = "cache"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-os.makedirs(CACHE_DIR, exist_ok=True)
+for entry in all_website_entries:
+    snapshot_dir = entry["snapshot_dir"]
+    cdx_entry = entry["cdx_entry"]
 
+    # Check if snapshot has already been downloaded
+    html_filename = f"{cdx_entry['digest']}.html"
+    html_path = os.path.join(snapshot_dir, html_filename)
 
-for website, entries in all_website_entries.items():
-    print(f"Found {len(entries)} snapshots for {website}")
+    if os.path.exists(html_path):
+        continue
 
-    # Download ALL entries for each website
-    for cdx_entry in entries:
-        snapshot_dir = os.path.join(OUTPUT_DIR, website, cdx_entry["timestamp"])
+    # Check if snapshot has already been cached
+    cache_snapshot_dir = os.path.join(CACHE_DIR, cdx_entry["digest"])
+    if util.find_and_copy_cached_snapshot(cache_snapshot_dir, snapshot_dir):
+        continue
 
-        # Check if snapshot has already been downloaded
-        html_filename = f"{cdx_entry['digest']}.html"
-        html_path = os.path.join(snapshot_dir, html_filename)
-
-        if os.path.exists(html_path):
-            print(f"  Skipping {cdx_entry['timestamp']} - already downloaded")
-            continue
-
-        # Check if snapshot has already been cached
-        cache_snapshot_dir = os.path.join(CACHE_DIR, cdx_entry["digest"])
-        if util.find_and_copy_cached_snapshot(cache_snapshot_dir, snapshot_dir):
-            print(f"  Loaded from cache {cdx_entry['timestamp']}, skipping")
-            continue
-
-        print(f"  Downloading snapshot from {cdx_entry['timestamp']}")
-
-        try:
-            snapshot = util.download_website_snapshot(cdx_entry)
-            util.save_website_snapshot(snapshot, snapshot_dir)
-            util.save_website_snapshot(snapshot, cache_snapshot_dir)
-            print(f"    Saved snapshot to {snapshot_dir}")
-        except Exception as e:
-            print(f"    Error downloading {cdx_entry['timestamp']}: {e}")
+    try:
+        snapshot = util.download_website_snapshot(cdx_entry)
+        util.save_website_snapshot(snapshot, snapshot_dir)
+        util.save_website_snapshot(snapshot, cache_snapshot_dir)
+    except Exception as e:
+        print(f"Error downloading {cdx_entry['timestamp']}: {e}")
 ```
 
 The cache directory organizes files by their digest (content fingerprint), making it easy to identify and reuse identical content across different timestamps and websites.
+
+Run the script with:
+
+```bash
+python 2-download-snapshot.py
+```
+
+The folder structure now includes the downloaded snapshot files:
+
+```bash
+data/
+├── example.com/
+│   └── 20000510123456/
+│       ├── ...
+│       ├── IU5AG2DC5GK33ALX3VFXLUEAIHRTCDQF.html # Original HTML file
+│       ├── IU5AG2DC5GK33ALX3VFXLUEAIHRTCDQF_utf8.html # UTF-8 encoded HTML file
+│       ├── encoding.txt       # Encoding information
+```
+
+## Detecting nested pages in HTML `<frame>` tags
+
+Now that we've downloaded the website snapshots, we can start looking for nested pages in the HTML `<frame>` tags.
+
+### Using BeautifulSoup to parse the HTML and find the `<frame>` tags
+
+[TO WRITE: we are using bs4 to parse the HTML and find the `<frame>` tags] [TO WRITE: note that the file we read in is the utf8 version, not the original encoding] [TO WRITE: explain the downbelow code snippet]
+
+```python
+# util.py (part 5)
+from bs4 import BeautifulSoup
+def detect_and_save_frame_tag_attrs(
+    soup: BeautifulSoup,
+    website_dir: str,
+) -> list[dict]:
+    """Find all frame tag with their attribute and return a list of dicts"""
+    all_frame_tags = soup.find_all("frame")
+    frame_tag_attrs = [frame.attrs for frame in all_frame_tags]
+    with open(os.path.join(website_dir, "frame_tags.json"), "w") as f:
+        json.dump(frame_tag_attrs, f)
+    return frame_tag_attrs
+```
+
+[TO WRITE: explain the downbelow code snippet]
+
+```python
+# 3-detect-frame-tags.py
+for entry in all_website_entries:
+    website = entry["website"]
+    snapshot_dir = entry["snapshot_dir"]
+    cdx_entry = entry["cdx_entry"]
+
+    # Check if snapshot has already been downloaded
+    utf8_html_filename = f"{cdx_entry['digest']}_utf8.html"
+    utf8_html_path = os.path.join(snapshot_dir, utf8_html_filename)
+
+    if not os.path.exists(utf8_html_path):
+        continue
+
+    with open(utf8_html_path, "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
+        util.detect_and_save_frame_tag_attrs(soup, snapshot_dir)
+```
+
+Run the script with:
+
+```bash
+python 3-detect-frame-tags.py
+```
+
+The resulting structure looks like this:
+
+```bash
+data/
+├── example.com/
+│   └── 20000510123456/
+│       ├── ...
+│       ├── frame_tags.json
+```
+
+[TO WRITE: In our dataset, `nikkeibp.co.jp` and `nikkei.co.jp` are the only two websites using `<frame>` tags to display banner ads, but it's good to include them, otherwise the original html doesn't tell us anything about the actual content of the website]
+
+## Downloading the detected frames
+
+### Retrieving the frame tags
+
+Similar to the `2-download-snapshot.py` script, we will write a helper function to retrieve the frame tags from the `frame_tags.json` file.
+
+```python
+# util.py (part 6)
+def get_saved_frame_tags_with_parent_info() -> list[dict]:
+    all_frame_tags = []
+    all_website_entries = get_saved_website_entries()
+    for entry in all_website_entries:
+        website = entry["website"]
+        website_dir = entry["snapshot_dir"]
+        cdx_entry = entry["cdx_entry"]
+        frame_tags_path = os.path.join(website_dir, "frame_tags.json")
+        try:
+            with open(frame_tags_path, "r") as f:
+                frame_tags = json.load(f)
+                frame_tags_with_dir = [
+                    {
+                        "website_dir": website_dir,
+                        "website": website,
+                        "parent_cdx_entry": cdx_entry,
+                        "frame_tags": frame_tag,
+                    }
+                    for frame_tag in frame_tags
+                ]
+                all_frame_tags.extend(frame_tags_with_dir)
+        except Exception as e:
+            continue
+    return all_frame_tags
+```
+
+### Designing the folder structure for the detected frames
+
+[TO WRITE: we are putting the detected frames into folder under the parent website folder, eg `data/nikkeibp.co.jp/20000510123456/frames/[frame_tag_src]`]. The `frame_tag_src` is the `src` attribute of the `<frame>` tag. Yet, they are not good folder names because they contain special characters and spaces. We will use the `url_to_filename` function to convert them into safe filenames.
+
+```python
+# util.py (part 7)
+def url_to_filename(url: str) -> str:
+    # Remove protocol and split on slashes
+    url = url.split("://")[-1].replace("/", "_")
+    # Replace any remaining invalid characters with underscores
+    return "".join(c if c.isalnum() or c in "._-" else "_" for c in url)
+```
+
+### Querying the CDX API for the closest snapshot entry
+
+Similar to downloading the original website snapshot, we will query the CDX API for each frame tag to find the closest snapshot entry. We limit the number of results to 1 (this also makes the query faster) and sort by the closest timestamp. [TO WRITE: talk about time skew]
+
+```python
+# util.py (part 8)
+
+@retry
+def query_wm_cdx_closest_entry(url: str, timestamp: str) -> dict | None:
+    cdx_url = f"https://web.archive.org/cdx/search/cdx?limit=1&sort=closest&url={url}&closest={timestamp}"
+    response = requests.get(cdx_url, timeout=30)
+    response.raise_for_status()
+    entries = parse_wm_cdx_api_response_str(response.text)
+    return entries[0] if entries else None
+```
+
+### Implementing the frame downloading
+
+[TO WRITE: we are using similar strategy as the download code for the original website snapshot, putting downloaded results into a cache folder] [TO WRITE:] [TO WRITE: The code is very verbose so we won't include it here, but you can find it in the `4-download-frames.py` script] [TO WRITE: Downbelow is a psuedo code for the download code]
+
+```python
+# 4-download-frames.py (pseudo code)
+for frame_tag_with_parent_info in all_frame_tags_with_parent_info:
+    # If frame tag src is a full URL, use it as is, else join with original URL
+    actual_frame_url = piece_together_actual_url(frame_tag_src_url, parent_url)
+    frame_cdx_entry = query_wm_cdx_closest_entry(actual_frame_url, parent_timestamp)
+    if frame_cdx_entry and frame_cdx_entry["statuscode"] == "200":
+      if file_exists:
+         continue
+      else if cached:
+          find_and_copy_cached_snapshot(frame_cdx_entry["digest"], frame_snapshot_dir)
+      else:
+        frame_snapshot = download_website_snapshot(frame_cdx_entry)
+        save_website_snapshot(frame_snapshot, frame_snapshot_dir)
+        save_website_snapshot(frame_snapshot, cache_snapshot_dir)
+```
+
+Run the script with:
+
+```bash
+python 4-download-frames.py
+```
+
+The resulting structure looks like this:
+
+```bash
+data/
+├── example.com/
+│   └── 20000510123456/
+│       ├── ...
+│       ├── frames/
+│       │   ├── ...
+│       │   ├── frame_url_1/
+│       │       ├── ...
+│       │       ├── cdx_entry.json # cdx entry of the frame
+│       │       ├── encoding.txt # encoding of the frame
+│       │       ├── [FRAME_DIGEST].html # original html file of the frame
+│       │       ├── [FRAME_DIGEST]_utf8.html # utf8 encoded html file of the frame
+```
+
+## Detecting image assets in HTML `<img>` tags
+
+Now we have both the original website snapshot and the nested frames. We can start looking for image assets in the `<img>` tags in all the html files.
+
+### Retrieving the original website and frame entries
+
+[TO WRITE: similarly, we will write a helper function to retrieve the original website and frame entries with adequate metadata] [TO WRITE: the function is very similar to the one for retrieving the frame tags, we will only show the api spec here]
+
+```python
+# util.py (part 9 - api spec)
+def get_saved_website_and_frame_entries() -> list[dict]:
+    """Get all the saved frame tags for a given website directory
+    Returns a list of dicts with the following keys:
+    - website_dir: the directory of the website
+    - website: the website name
+    - cdx_entry: the CDX entry of the website
+    - type: "website" or "frame"
+    """
+
+```
+
+### Using BeautifulSoup to parse the HTML and find the `<img>` tags
+
+[TO WRITE: we are using the same strategy as the frame detection, but this time we are looking for the `<img>` tags] [TO WRITE: one thing we are doing differently is that we are also looking for the link in the wrapping `<a>` tags for the `<img>` tags, because most banner ads are wrapped in `<a>` tags to go somewhere when clicked]
+
+```python
+# util.py (part 10)
+import urllib.parse
+
+def detect_and_save_image_tag_attrs(
+    soup: BeautifulSoup, website_dir: str, parent_cdx_entry: dict
+) -> list[dict]:
+    image_tags = []
+    for img in soup.find_all("img"):
+        image_tag_attrs = img.attrs
+        if img.parent.name == "a":
+            image_tag_attrs["parent_href"] = img.parent["href"]
+            if img.parent["href"].startswith("http"):
+                image_tag_attrs["full_parent_href"] = img.parent["href"]
+            else:
+                image_tag_attrs["full_parent_href"] = urllib.parse.urljoin(
+                    parent_cdx_entry["original"], img.parent["href"]
+                )
+        image_tags.append(image_tag_attrs)
+    with open(os.path.join(website_dir, "image_tags.json"), "w") as f:
+        json.dump(image_tags, f)
+
+    return image_tags
+```
+
+### Detect for all the images in the website
+
+[TO WRITE: Same drill, we run the detect function for every website and frame entry]
+
+```python
+# 5-detect-image-tags.py (simplified)
+all_website_and_frame_entries = util.get_saved_website_and_frame_entries()
+
+for entry in all_website_and_frame_entries:
+    website = entry["website"]
+    website_dir = entry["website_dir"]
+    cdx_entry = entry["cdx_entry"]
+
+    # Check if snapshot has already been downloaded
+    utf8_html_filename = f"{cdx_entry['digest']}_utf8.html"
+    utf8_html_path = os.path.join(website_dir, utf8_html_filename)
+
+    if not os.path.exists(utf8_html_path):
+        continue
+
+    with open(utf8_html_path, "r", encoding="utf-8") as f:
+        soup = BeautifulSoup(f, "html.parser")
+        image_tags = util.detect_and_save_image_tag_attrs(soup, website_dir, cdx_entry)
+```
+
+Run the script with:
+
+```bash
+python 5-detect-image-tags.py
+```
+
+The resulting structure looks like this:
+
+```bash
+data/
+├── example.com/
+│   └── 20000510123456/
+│       ├── ...
+│       ├── image_tags.json # image tags in the website
+│       ├── frames/
+│       │   ├── ...
+│       │   ├── frame_url_1/
+│       │       ├── ...
+│       │       ├── image_tags.json # image tags in the frame
+```
+
+## Download images if the size fits the banner ad criteria
+
+### Banner Ad Dimensions Detection
+
+[TO WRITE: We source the `iab-banner-ad-dimensions.csv` from the `jiaa-banner-ad-dimensions` folder in the `data` folder from a Japanese book "図解 インターネット広告"] [TO WRITE: explain IAB is international, JIAA is Japanese] [TO WRITE: there is a function in `util.py` to check if the image size fits the banner ad criteria]
+
+```python
+# util.py (part 11 - api spec)
+def check_banner_properties(width: int, height: int) -> dict:
+    """Return the banner ad type if the width and height matches the banner ad criteria
+    Returns a dict with the following keys:
+    - iab_size: the IAB banner category (if fits)
+    - jiaa_size: the JIAA banner category (if fits)
+    - is_banner_ad: True if the width and height matches the banner ad criteria (either IAB or JIAA)
+    """
+    pass
+```
+
+### Retrieving the image tags with parent info
+
+[TO WRITE: we are using the same strategy as the frame detection, but this time we are looking for the `<img>` tags] [TO WRITE: one thing we are doing differently is that we are also looking for the link in the wrapping `<a>` tags for the `<img>` tags, because most banner ads are wrapped in `<a>` tags to go somewhere when clicked]
+
+```python
+# util.py (part 12 - api spec)
+def get_saved_image_tags_with_parent_info() -> list[dict]:
+    """Get all the saved image tags for a given website directory
+    Returns a list of dicts with the following keys:
+    - website_dir: the directory of the website
+    - website: the website name
+    - cdx_entry: the CDX entry of the website
+    - image_tag: the image tag
+    """
+```
+
+### Downloading images recognized as banner ads
+
+[TO WRITE: we will go through all the image tags with parent info, and if the image size (IMPORTANT: according to the image tag data, not the actual image file, we will come back to this in the final summary of banner ad collection) fits the banner ad criteria, we will download the image]. The utility code that powers this is in part 13 of `util.py`.
+
+```python
+# 6-download-banner-ads.py (pseudo code)
+for image_tag_with_parent_info in all_image_tags_with_parent_info:
+    if not tag_has_src_width_height(image_tag):
+        continue
+    if not is_img_tag_a_banner_ad(image_tag):
+        continue
+    image_cdx_entry = query_wm_cdx_closest_entry(image_tag_src, parent_timestamp)
+    if image_cdx_entry and image_cdx_entry["statuscode"] == "200":
+      if file_exists:
+         continue
+      else if cached:
+          find_and_copy_cached_snapshot(image_cdx_entry["digest"], image_snapshot_dir)
+      else:
+        image_snapshot = download_image_snapshot(image_cdx_entry)
+        save_image_snapshot(image_snapshot, image_snapshot_dir)
+        save_image_snapshot(image_snapshot, cache_snapshot_dir)
+        save_image_tag_attrs(image_snapshot_dir)
+```
+
+Run the script with:
+
+```bash
+python 6-download-banner-ads.py
+```
+
+The resulting structure looks like this:
+
+```bash
+data/
+├── example.com/
+│   └── 20000510123456/
+│       ├── ...
+│       ├── banners
+│       │   ├── ...
+│       │   ├── banners_url_1/
+│       │   │   ├── ...
+│       │   │   ├── [IMAGE_DIGEST].[ext]
+│       │   │   ├── image_tag_attrs.json # image tag attributes
+│       │   │   ├── cdx_entry.json # cdx entry of the image
+```
+
+## Summarizing the banner ad collection
+
+[TO WRITE: we find all the images downloaded, and associate the banner ad images with the image tag parameters, the actual image metadata as we read it with PIL (there are some discrapencies between the image tag parameters and the actual image metadata, we will discuss this in the final summary of banner ad collection), and the cdx entry of the image, and the cdx entry of the parent website.]
+
+### Read image metadata using PIL
+
+[TO WRITE: we are using the `get_image_metadata` function in `util.py` to read the image metadata]
+
+```python
+# util.py (part 14 - api spec)
+def get_image_metadata(image_path: str) -> dict:
+    """Get the metadata of an image
+    Returns a dict with the following keys:
+    - width: the width of the image
+    - height: the height of the image
+    - size: the size of the image
+    - animated: whether the image is animated
+    - frame_count: the number of frames in the image
+    - animation_duration: the duration of the animation
+    - loop_count: the number of times the animation loops
+    - iab_size: the IAB banner category (if fits)
+    - jiaa_size: the JIAA banner category (if fits)
+    - corrupt: whether the image is corrupt
+    """
+```
+
+### Generating a spreadsheet summary
+
+[TO WRITE: the spreadsheet field include]
+
+- Parent website info
+  - `website`: the parent website name
+  - `website_timestamp`: the timestamp of the parent website
+- Image CDX entry
+  - `urlkey`: the urlkey of the image
+  - `timestamp`: the timestamp of the image
+  - `original`: the original url of the image
+  - `mimetype`: the mimetype of the image
+  - `statuscode`: the status code of the image
+  - `digest`: the digest of the image
+  - `length`: the length of the image
+- Image metadata
+  - `width`: the width of the image
+  - `height`: the height of the image
+  - `size`: the size of the image
+  - `animated`: whether the image is animated
+  - `frame_count`: the number of frames in the image
+  - `animation_duration`: the duration of the animation
+  - `loop_count`: the number of times the animation loops
+  - `iab_size`: the IAB banner category (if fits)
+  - `jiaa_size`: the JIAA banner category (if fits)
+  - `corrupt`: whether the image is corrupt
+- Image tag parameters
+  - `image_tag_width`: the width of the image tag
+  - `image_tag_height`: the height of the image tag
+  - `image_tag_banner_iab_size`: the IAB banner category (if fits)
+  - `image_tag_banner_jiaa_size`: the JIAA banner category (if fits)
+  - `image_tag_parent_href`: the parent href of the image tag
+  - `image_tag_full_parent_href`: the full parent href of the image tag
+  - `image_tag_alt_text`: the alt text of the image tag
+- Time skew
+  - `time_skew`: the time skew between the image and the parent website in seconds
+
+Example output:
+
+| Field                      | Value                                                                                                                                                           |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| website                    | nikkeibp.co.jp                                                                                                                                                  |
+| website_timestamp          | 20000511101011                                                                                                                                                  |
+| urlkey                     | jp,co,nikkeibp,bizad)/image/ng_biztech/hitachisuperh991001.gif                                                                                                  |
+| timestamp                  | 20000925212420                                                                                                                                                  |
+| original                   | http://bizad.nikkeibp.co.jp:80/image/ng_biztech/hitachisuperh991001.gif                                                                                         |
+| mimetype                   | im                                                                                                                                                              |
+| statuscode                 | 200                                                                                                                                                             |
+| digest                     | WGZQRI7HDFTA5CQ5BK4V2YYAZIXMHYWM                                                                                                                                |
+| length                     | 10016                                                                                                                                                           |
+| width                      | 468                                                                                                                                                             |
+| height                     | 60                                                                                                                                                              |
+| size                       | 9842                                                                                                                                                            |
+| animated                   | True                                                                                                                                                            |
+| frame_count                | 10                                                                                                                                                              |
+| animation_duration         | 5000                                                                                                                                                            |
+| loop_count                 | 0                                                                                                                                                               |
+| iab_size                   | Full Banner                                                                                                                                                     |
+| jiaa_size                  | Regular Banner                                                                                                                                                  |
+| corrupt                    | False                                                                                                                                                           |
+| time_skew                  | 11877249.0                                                                                                                                                      |
+| image_tag_width            | 468                                                                                                                                                             |
+| image_tag_height           | 60                                                                                                                                                              |
+| image_tag_banner_iab_size  | Full Banner                                                                                                                                                     |
+| image_tag_banner_jiaa_size | Regular Banner                                                                                                                                                  |
+| image_tag_parent_href      | /event.ng/Type=click&ProfileID=62&RunID=1419&AdID=1419&GroupID=11&FamilyID=1&TagValues=263&Redirect=http:%2F%2Fwww.super-h.com%2F                               |
+| image_tag_full_parent_href | http://bizad.nikkeibp.co.jp:80/event.ng/Type=click&ProfileID=62&RunID=1419&AdID=1419&GroupID=11&FamilyID=1&TagValues=263&Redirect=http:%2F%2Fwww.super-h.com%2F |
+| image_tag_alt_text         | HITACHI Click Here!                                                                                                                                             |
+
+```python
+# 7-summarize-banner-ads.py (pseudo code)
+
+```

@@ -1,9 +1,5 @@
 import os, json
 import util
-
-##################
-##### PART 1 #####
-##################
 import urllib.parse
 
 OUTPUT_DIR = "data"
@@ -16,7 +12,7 @@ all_frame_tags_with_parent_info = util.get_saved_frame_tags_with_parent_info()
 print(f"Found {len(all_frame_tags_with_parent_info)} frame tags")
 
 for frame_tag_with_parent_info in all_frame_tags_with_parent_info:
-    frame_tag = frame_tag_with_parent_info["frame_tags"]
+    frame_tag = frame_tag_with_parent_info["frame_tag"]
     website = frame_tag_with_parent_info["website"]
     website_dir = frame_tag_with_parent_info["website_dir"]
     cdx_entry = frame_tag_with_parent_info["parent_cdx_entry"]

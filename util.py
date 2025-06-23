@@ -56,7 +56,10 @@ OUTPUT_DIR = "data"
 
 def get_saved_website_entries() -> list[dict]:
     """Get all the saved website entries
-    dict: {website: [cdx_entry, ...], website2: [cdx_entry, ...], ...}
+    Returns a list of dicts with the following keys:
+    - website: the website name
+    - snapshot_dir: the directory of the website snapshot
+    - cdx_entry: the CDX entry of the website
     """
     all_website_entries = []
 
@@ -87,6 +90,12 @@ def get_saved_website_entries() -> list[dict]:
 
 @retry
 def download_website_snapshot(cdx_entry: dict) -> dict:
+    """Download a website snapshot from the Wayback Machine
+    Returns a dict with the following keys:
+    - digest: the digest of the website
+    - file: the website file
+    - encoding: the encoding of the website
+    """
     wayback_url = f"https://web.archive.org/web/{cdx_entry['timestamp']}id_/{cdx_entry['original']}"
     response = requests.get(wayback_url, timeout=30)
     response.raise_for_status()
@@ -127,12 +136,13 @@ def find_and_copy_cached_snapshot(cached_snapshot_dir: str, save_dir: str) -> bo
     """Find and copy a cached snapshot to a directory if it exists. Return True if a snapshot was found and copied."""
     if os.path.exists(cached_snapshot_dir):
         files = os.listdir(cached_snapshot_dir)
+        # If no files, return False
         if not files:
             return False
-
         for filename in files:
             src = os.path.join(cached_snapshot_dir, filename)
             dst = os.path.join(save_dir, filename)
+            # If file already exists, copy it to the save_dir
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             with open(src, "rb") as fsrc, open(dst, "wb") as fdst:
                 fdst.write(fsrc.read())
@@ -166,7 +176,13 @@ def detect_and_save_frame_tag_attrs(
 
 
 def get_saved_frame_tags_with_parent_info() -> list[dict]:
-    """Get all the saved frame tags for a given website directory"""
+    """Get all the saved frame tags for a given website directory
+    Returns a list of dicts with the following keys:
+    - website_dir: the directory of the website
+    - website: the website name
+    - cdx_entry: the CDX entry of the website
+    - frame_tag: the frame tag
+    """
     all_frame_tags = []
     all_website_entries = get_saved_website_entries()
     for entry in all_website_entries:
@@ -182,14 +198,20 @@ def get_saved_frame_tags_with_parent_info() -> list[dict]:
                         "website_dir": website_dir,
                         "website": website,
                         "parent_cdx_entry": cdx_entry,
-                        "frame_tags": frame_tag,
+                        "frame_tag": frame_tag,
                     }
                     for frame_tag in frame_tags
                 ]
                 all_frame_tags.extend(frame_tags_with_dir)
-        except FileNotFoundError:
+        except Exception as e:
+            print(f"Error loading frame tags for {website}: {e}")
             continue
     return all_frame_tags
+
+
+##################
+##### PART 7 #####
+##################
 
 
 def url_to_filename(url: str) -> str:
@@ -200,10 +222,15 @@ def url_to_filename(url: str) -> str:
     return "".join(c if c.isalnum() or c in "._-" else "_" for c in url)
 
 
+##################
+##### PART 8 #####
+##################
+
+
 @retry
 def query_wm_cdx_closest_entry(url: str, timestamp: str) -> dict | None:
     """Get the closest snapshot entry for a given URL and timestamp"""
-    cdx_url = f"https://web.archive.org/cdx/search/cdx?url={url}&closest={timestamp}"
+    cdx_url = f"https://web.archive.org/cdx/search/cdx?limit=1&sort=closest&url={url}&closest={timestamp}"
 
     response = requests.get(cdx_url, timeout=30)
     response.raise_for_status()
@@ -213,12 +240,18 @@ def query_wm_cdx_closest_entry(url: str, timestamp: str) -> dict | None:
 
 
 ##################
-##### PART 7 #####
+##### PART 9 #####
 ##################
 
 
 def get_saved_website_and_frame_entries() -> list[dict]:
-    """Get all the saved frame tags for a given website directory"""
+    """Get all the saved frame tags for a given website directory
+    Returns a list of dicts with the following keys:
+    - website_dir: the directory of the website
+    - website: the website name
+    - cdx_entry: the CDX entry of the website
+    - type: "website" or "frame"
+    """
     all_website_and_frame_entries = []
     all_website_entries = get_saved_website_entries()
     for entry in all_website_entries:
@@ -263,6 +296,10 @@ def get_saved_website_and_frame_entries() -> list[dict]:
     return all_website_and_frame_entries
 
 
+###################
+##### PART 10 #####
+###################
+
 import urllib.parse
 
 
@@ -288,70 +325,9 @@ def detect_and_save_image_tag_attrs(
     return image_tags
 
 
-##################
-##### PART 8 #####
-##################
-image_extensions = [
-    "jpg",
-    "jpeg",
-    "png",
-    "gif",
-    "svg",
-    "webp",
-    "bmp",
-    "ico",
-    "tiff",
-    ".tif",
-]
-
-
-def get_image_file_extension(cdx_entry: dict) -> str:
-    """Get the file extension from a URL"""
-    # Remove query parameters after ? or #
-    url_extension = cdx_entry["original"].split("?")[0].split("#")[0].lower()
-    url_extension = url_extension.split(".")[-1]
-
-    if url_extension not in image_extensions:
-        url_extension = None
-
-    mime_type = cdx_entry["mimetype"]
-    if mime_type.startswith("image/"):
-        mime_type_extension = mime_type.split("/")[1]
-        if mime_type_extension not in image_extensions:
-            mime_type_extension = None
-    else:
-        mime_type_extension = None
-
-    return url_extension or mime_type_extension
-
-
-def get_saved_image_tags_with_parent_info() -> list[dict]:
-    """Get all the saved image tags for all the website and frame entries"""
-    all_website_and_frame_entries = get_saved_website_and_frame_entries()
-    all_image_tags_with_parent_info = []
-    for entry in all_website_and_frame_entries:
-        website = entry["website"]
-        website_dir = entry["website_dir"]
-        cdx_entry = entry["cdx_entry"]
-        image_tags_path = os.path.join(website_dir, "image_tags.json")
-
-        try:
-            with open(image_tags_path, "r") as f:
-                image_tags = json.load(f)
-                all_image_tags_with_parent_info.extend(
-                    [
-                        {
-                            "website_dir": website_dir,
-                            "website": website,
-                            "cdx_entry": cdx_entry,
-                            "image_tag": image_tag,
-                        }
-                        for image_tag in image_tags
-                    ]
-                )
-        except FileNotFoundError:
-            continue
-    return all_image_tags_with_parent_info
+###################
+##### PART 11 #####
+###################
 
 
 def check_banner_properties(width: int, height: int) -> dict:
@@ -400,8 +376,98 @@ def check_banner_properties(width: int, height: int) -> dict:
     }
 
 
+###################
+##### PART 12 #####
+###################
+
+
+def get_saved_image_tags_with_parent_info() -> list[dict]:
+    """Get all the saved image tags for all the website and frame entries
+    Returns a list of dicts with the following keys:
+    - website_dir: the directory of the website
+    - website: the website name
+    - cdx_entry: the CDX entry of the website
+    - image_tag: the image tag
+    """
+    all_website_and_frame_entries = get_saved_website_and_frame_entries()
+    all_image_tags_with_parent_info = []
+    for entry in all_website_and_frame_entries:
+        website = entry["website"]
+        website_dir = entry["website_dir"]
+        cdx_entry = entry["cdx_entry"]
+        image_tags_path = os.path.join(website_dir, "image_tags.json")
+
+        try:
+            with open(image_tags_path, "r") as f:
+                image_tags = json.load(f)
+                all_image_tags_with_parent_info.extend(
+                    [
+                        {
+                            "website_dir": website_dir,
+                            "website": website,
+                            "cdx_entry": cdx_entry,
+                            "image_tag": image_tag,
+                        }
+                        for image_tag in image_tags
+                    ]
+                )
+        except FileNotFoundError:
+            continue
+    return all_image_tags_with_parent_info
+
+
+###################
+##### PART 13 #####
+###################
+
+image_extensions = [
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "svg",
+    "webp",
+    "bmp",
+    "ico",
+    "tiff",
+    ".tif",
+]
+
+
+def get_image_file_extension(cdx_entry: dict) -> str:
+    """Get the file extension from a URL or mime type
+    Returns a string with the file extension, or None if the extension is not in the list
+    """
+
+    # Remove query parameters after ? or #
+    url_extension = cdx_entry["original"].split("?")[0].split("#")[0].lower()
+    url_extension = url_extension.split(".")[-1]
+
+    # Incase the extension is not in the list, set it to None
+    if url_extension not in image_extensions:
+        url_extension = None
+
+    # If the mime type is an image, get the extension from the mime type
+    mime_type = cdx_entry["mimetype"]
+    if mime_type.startswith("image/"):
+        mime_type_extension = mime_type.split("/")[1]
+        if mime_type_extension not in image_extensions:
+            mime_type_extension = None
+    else:
+        mime_type_extension = None
+
+    # Prefer the extension from the URL, if not, use the extension from the mime type
+    return url_extension or mime_type_extension
+
+
 @retry
 def download_image_snapshot(cdx_entry: dict) -> dict:
+    """Download an image snapshot from the Wayback Machine
+    Returns a dict with the following keys:
+    - digest: the digest of the image
+    - file: the image file
+    - extension: the extension of the image
+    """
     wayback_url = f"https://web.archive.org/web/{cdx_entry['timestamp']}im_/{cdx_entry['original']}"
     response = requests.get(wayback_url, timeout=30)
     response.raise_for_status()
@@ -425,13 +491,26 @@ def save_image_snapshot(img_snapshot: dict, save_dir: str):
         f.write(img_snapshot["file"])
 
 
-##################
-##### PART 8 #####
-##################
+###################
+##### PART 14 #####
+###################
+from PIL import Image
 
 
-def get_image_metadata(image_path: str):
-    from PIL import Image
+def get_image_metadata(image_path: str) -> dict:
+    """Get the metadata of an image
+    Returns a dict with the following keys:
+    - width: the width of the image
+    - height: the height of the image
+    - size: the size of the image
+    - animated: whether the image is animated
+    - frame_count: the number of frames in the image
+    - animation_duration: the duration of the animation
+    - loop_count: the number of times the animation loops
+    - iab_size: the IAB banner category (if fits)
+    - jiaa_size: the JIAA banner category (if fits)
+    - corrupt: whether the image is corrupt
+    """
 
     metadata = {
         "width": None,

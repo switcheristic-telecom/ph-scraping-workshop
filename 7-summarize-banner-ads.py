@@ -1,5 +1,6 @@
 import os, json, csv
 import util
+from datetime import datetime
 
 OUTPUT_DIR = "data"
 CACHE_DIR = "cache"
@@ -61,12 +62,24 @@ for website in os.listdir(OUTPUT_DIR):
                         int(image_tag_width), int(image_tag_height)
                     )
 
+                website_timestamp_datetime = datetime.strptime(
+                    timestamp, "%Y%m%d%H%M%S"
+                )
+                image_timestamp_datetime = datetime.strptime(
+                    image["cdx_entry"].get("timestamp", None), "%Y%m%d%H%M%S"
+                )
+
+                time_skew = (
+                    image_timestamp_datetime - website_timestamp_datetime
+                ).total_seconds()
+
                 all_images.append(
                     {
                         "website": website,
                         "website_timestamp": timestamp,
                         **image["cdx_entry"],
                         **image["metadata"],
+                        "time_skew": time_skew,
                         "image_tag_width": image_tag_width,
                         "image_tag_height": image_tag_height,
                         "image_tag_banner_iab_size": image_tag_banner_properties.get(

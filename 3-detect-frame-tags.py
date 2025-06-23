@@ -1,16 +1,13 @@
 import os, json
 import util
-
-
-all_website_entries = util.get_saved_website_entries()
-
-
 from bs4 import BeautifulSoup
 
 OUTPUT_DIR = "data"
 CACHE_DIR = "cache"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(CACHE_DIR, exist_ok=True)
+
+all_website_entries = util.get_saved_website_entries()
 
 
 for entry in all_website_entries:

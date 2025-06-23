@@ -8,6 +8,7 @@ all_image_tags_with_parent_info = util.get_saved_image_tags_with_parent_info()
 
 print(f"Found {len(all_image_tags_with_parent_info)} image tags")
 
+
 for image_tag_with_parent_info in all_image_tags_with_parent_info:
     image_tag = image_tag_with_parent_info["image_tag"]
     website = image_tag_with_parent_info["website"]
