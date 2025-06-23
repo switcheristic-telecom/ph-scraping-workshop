@@ -1,0 +1,910 @@
+<HTML>
+<HEAD>
+<TITLE>インフォシーク</TITLE>
+<!-- 漢字 -->
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=EUC-JP">
+<STYLE TYPE="TEXT/CSS">
+<!--
+FONT.f12 {font-size: 12px; font-weight: normal}
+FONT.f9 {font-size: 9px; font-weight: normal}
+FONT.f10 {font-size: 10px; font-weight: normal}
+-->
+</STYLE>
+<STYLE TYPE="TEXT/CSS">
+<!--
+.iss { width: 302px; font-size:10pt;}
+.istd { line-height: 130%;}
+.istd2 { line-height: 110%;}
+#iscc table {background:#3366bb; color:#ffffff;}
+#iscc a {color:#ffffff;}
+#iscc small {color:#ffffff;}
+#sl {background:#3366bb;}
+
+-->
+</STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#333333" LINK="#3333CC" 
+ onLoad=document.FORMTEXT.qt.focus();>
+<CENTER>
+<!-- START HEADER -->
+<TABLE HEIGHT="74" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR>
+<TD WIDTH="220" VALIGN="TOP"><A HREF="/Home?pg=Home.html&svx=100100"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/infoseek_175_50.gif" WIDTH="175" HEIGHT="50" BORDER="0" ALT="infoseek"></A></TD>
+<TD WIDTH="336" ALIGN="CENTER" VALIGN="TOP">
+<!-- START BANNER -->
+<SMALL>
+<a href="http://www.infoseek.co.jp/redirect?sv=JP&lk=&tid=&ak=enjp-2076-1141-S1003&rd=http://employment.en-japan.com/scout/index.cfm" target="_top"><img border="0" width="336" height="50" src="http://www.infoseek.co.jp/images/ads/enjp1141.gif" alt="en-japan"></a><br><a href="http://www.infoseek.co.jp/redirect?sv=JP&lk=&tid=&ak=enjp-2076-1141-S1003&rd=http://employment.en-japan.com/scout/index.cfm" target="_top"><strong>スカウトで年収ＵＰを狙う！</strong></a>
+</SMALL>
+<!-- END BANNER -->
+</TD>
+<TD WIDTH="184" ALIGN="RIGHT" VALIGN="TOP"><FONT SIZE="2" STYLE="line-height:140%">
+2004年01月10日土曜日
+<BR>
+<a HREF="http://community.www.infoseek.co.jp/CHome?pg=community_top.html&sv=CT&svx=100100">今すぐメンバー登録</a>&nbsp;&nbsp;
+<A HREF="https://register.www.infoseek.co.jp/Login?svx=100100"><FONT COLOR="#CC0000">ログイン</FONT></A><BR>
+<A HREF="/Help?pg=help.html&svx=100100">ヘルプ</A>
+</FONT></TD>
+</TR>
+<TR><TD COLSPAN="3"><IMG SRC="http://www.infoseek.co.jp/images/isj00/isj00/common/im_clear.gif" WIDTH="740" HEIGHT="1"></TD></TR>
+</TABLE>
+<!-- END HEADER -->
+<TABLE WIDTH="740" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR BGCOLOR="#cc0000"><TD>
+	<TABLE WIDTH="100%" CELLPADDING="2" CELLSPACING="0" BORDER="0" BGCOLOR="#FFFFFF">
+	<TR BGCOLOR="#ffcccc"><TD ALIGN="CENTER" COLSPAN="2"><FONT STYLE="line-height:130%"><B>お知らせ</B></FONT></TD></TR>
+	</TABLE>
+	<TABLE WIDTH="100%" CELLPADDING="5" CELLSPACING="0" BORDER="0" BGCOLOR="#FFFFFF">
+	<TR VALIGN="TOP">
+	<TD NOWRAP><FONT COLOR="#CC0000" STYLE="line-height:130%">&lt;&lt;重要&gt;&gt;</FONT></TD>
+	<TD WIDTH="100%"><FONT STYLE="line-height:130%">
+	www.lycos.co.jp は2004年2月以降ご利用いただけません。ブックマークからお越しのユーザーの皆様はアドレスの変更をし、引き続き本サービスをご利用いただきますようお願い申し上げます。<BR>
+	</FONT></TD>
+	</TR></TABLE>
+</TD></TR></TABLE>
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="6" BORDER="0"><br>
+<!-- START SEARCH -->
+<DIV id="iscc">
+<TABLE WIDTH="740" CELLSPACING="0" CELLPADDING="0" BORDER="0"><FORM ACTION="/SRedirect" METHOD="GET" NAME="FORMTEXT">
+<TR>
+<TD WIDTH="47" ROWSPAN="2" VALIGN="BOTTOM"><A HREF="/Keyword?pg=nranking02_top_if.html&svx=100600"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_iss1.gif" WIDTH="47" HEIGHT="52" BORDER="0"></A></TD>
+<TD WIDTH="680" VALIGN="BOTTOM">
+<TABLE CELLSPACING="2" CELLPADDING="0" BORDER="0">
+<TR>
+<TD WIDTH="302"><SMALL><INPUT TYPE="TEXT" NAME="qt" MAXLENGTH="256" size="42" class="iss"></SMALL></TD>
+<TD><SMALL>&nbsp;<INPUT TYPE="SUBMIT" VALUE="　検　　　索　"></SMALL></TD>
+<TD><SMALL><NOBR><input type="radio" name="type" value="search" checked>Google<input type="radio" name="type" value="searchPlus">infoseek</NOBR></SMALL></TD>
+<!--<TD ALIGN="RIGHT" NOWRAP><SMALL><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/ic_useful.gif" BORDER="0" WIDTH="16" HEIGHT="16" HSPACE="1" ALIGN="ABSMIDDLE"><A HREF="/ISJ?pg=search_guide_if.html&svx=100600" CLASS="ir1a">検索がパワーアップ!!</A></SMALL></TD>-->
+<!--TD ALIGN="RIGHT" NOWRAP><SMALL><A HREF="/Maniac?pg=maniac_top.html&svx=100600">マニアック検索</A></SMALL></TD -->
+</TR>
+</TABLE>
+</TD>
+<TD WIDTH="15" VALIGN="TOP" ALIGN="RIGHT" ROWSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/r15_color.gif" WIDTH="15" HEIGHT="20" BORDER="0"></TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" CELLSPACING="2" CELLPADDING="0" BORDER="0">
+<TR>
+<TD NOWRAP><SMALL>
+<INPUT TYPE="SUBMIT" VALUE="英　和" NAME="entojp">
+<INPUT TYPE="SUBMIT" VALUE="和　英" NAME="jptoen">
+<INPUT TYPE="SUBMIT" VALUE="国　語" NAME="kokugo"></SMALL></TD>
+<TD NOWRAP><SMALL>辞書を引く&nbsp;</SMALL></TD>
+<TD NOWRAP><SMALL><INPUT TYPE="SUBMIT" VALUE="お買い物" NAME="shopping">
+<INPUT TYPE="SUBMIT" VALUE="オークション" NAME="auction"></SMALL></TD>
+<TD class="ir1a" NOWRAP><SMALL>から探す&nbsp;</SMALL></TD>
+<TD WIDTH="100%" ALIGN="RIGHT" NOWRAP><SMALL>
+</SMALL>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR><INPUT TYPE="hidden" NAME="svx" VALUE="100600"><INPUT TYPE="hidden" NAME="svp" VALUE="SEEK"></FORM>
+</TABLE>
+</DIV>
+<!-- END SEARCH -->
+<TABLE WIDTH="740" CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<TR VALIGN="TOP">
+<TD WIDTH="484">
+<!-- START SP -->
+<!--<IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="6" BORDER="0"><br>
+<table border="0" cellspacing="0" cellpadding="0"><tr><td><small><font color="#cc0000">[お知らせ]</font> ただ今、エンタメ・アニメ・壁紙・健康がつながりにくくなっています。
+</small></td></tr></table>--><!-- END SP -->
+<!-- START CONTENTS -->
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="6" BORDER="0"><br>
+<TABLE WIDTH="100%" CELLPADDING="1" CELLSPACING="0" BORDER="0"><TR BGCOLOR="#DEDEDE"><TD>
+	<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" BORDER="0" BGCOLOR="#EFEFEF">
+	<TR>
+	<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="24" BORDER="0"></TD>
+	<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ya.gif" WIDTH="5" HEIGHT="13" BORDER="0" HSPACE="1"></TD>
+	<TD WIDTH="100%"><SMALL>ツール：
+	<A HREF="/redirect?ak=ISCC-7013-1000-ZP202&rd=http://email.www.infoseek.co.jp/?Login&sv=RE&svx=100302&svp=SEEK">メール</A>
+	-
+	<A HREF="/redirect?ak=ISCC-7013-1000-ZP231&rd=http://isweb.www.infoseek.co.jp/">ホームページ作成</A>
+	-
+	<A HREF="/redirect?ak=ISCC-7013-1000-ZP203&rd=http://analyze.www.infoseek.co.jp/?sv=AC&svx=100302&svp=SEEK">アクセス解析</A>
+	-
+	<A HREF="http://toolbar.www.infoseek.co.jp/Tbar?pg=tbar_top.html&svx=100302&svp=SEEK">ツールバー</A>
+	-
+	<A HREF="http://ticker.www.infoseek.co.jp/Ticker?pg=ticker_top.html&sv=TK&svx=100302&svp=SEEK">ティッカー</A>
+	</SMALL></TD></TR></TABLE>
+</TD></TR></TABLE>
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="2" BORDER="0"><br>
+
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" BORDER="0" BGCOLOR="#FFFFF7">
+<!--情報--><TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="24" BORDER="0"></TD><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ya.gif" WIDTH="5" HEIGHT="13" BORDER="0" HSPACE="1"></TD>
+<TD WIDTH="100%"><SMALL>情報：<A HREF="http://news.www.infoseek.co.jp/?svx=100302&svp=SEEK">ニュース</A>
+-
+<A HREF="http://tenki.www.infoseek.co.jp/Tenki?pg=tk_top.html&sv=TE&svx=100302&svp=SEEK">天気</A>
+-
+<A HREF="http://money.www.infoseek.co.jp/MnTop?sv=MN&pg=mn_index.html&svx=100302&svp=SEEK">株価・外為</A>
+,
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_up.gif" WIDTH="17" HEIGHT="13" BORDER="0" ALT="UP!"><A HREF="/redirect?ak=ISCC-7013-1000-ZP233&rd=http://www.eloan.co.jp/infoseek/">ローン</A>
+-
+<A HREF="http://tv2.infoseek.co.jp/program.epg?site=006&template=tv_top&category=a&mode=06&lhour=3&svx=100302">テレビ番組</A>
+</SMALL></TD>
+<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ya3.gif" WIDTH="17" HEIGHT="13" BORDER="0"></TD>
+<TD NOWRAP><SMALL>
+<A HREF="#andmore">他のサービス</A>&nbsp;
+</SMALL></TD></TR></TABLE>
+
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" BORDER="0" BGCOLOR="#FFFFF7">
+<!--実用--><TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="24" BORDER="0"></TD><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ya.gif" WIDTH="5" HEIGHT="13" BORDER="0" HSPACE="1"></TD>
+<TD WIDTH="100%"><SMALL>実用：<A HREF="http://jiten.www.infoseek.co.jp/Eiwa?pg=jiten_etop.html&col=EW&svx=100302&svp=SEEK">辞書</A>
+-
+<A HREF="/Honyaku?pg=honyaku_top.html&svx=100302&svp=SEEK">翻訳</A>
+-
+<A HREF="http://map.www.infoseek.co.jp/?sv=RC&svx=100302&svp=SEEK">地図</A>
+-
+<A HREF="http://transfer.www.infoseek.co.jp/Train?pg=tr_route_top.html&sv=SR&svx=100302&svp=SEEK">乗換案内</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP205&rd=http://104.infoseek.co.jp/?svx=100302&svp=SEEK">電話番号</A>
+-
+<A HREF="/Yubin?pg=yubin_in.html&svx=100302&svp=SEEK">郵便番号</A>
+</SMALL></TD></TR>
+
+<!--生活--><TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="24" BORDER="0"></TD><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ya.gif" WIDTH="5" HEIGHT="13" BORDER="0" HSPACE="1"></TD>
+<TD><SMALL>生活：<IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_up.gif" WIDTH="17" HEIGHT="13" BORDER="0" ALT="UP!"><A HREF="http://house.www.infoseek.co.jp/House/top?sv=RF&svx=100302&svp=SEEK">住まい・不動産</A>
+-
+
+<A HREF="http://job.www.infoseek.co.jp/JobTop?pg=job_top.html&sv=SJ&svx=100302&svp=SEEK">求人・転職</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP206&rd=http://arbeit.www.infoseek.co.jp/">バイト</A>
+-
+<A HREF="http://edu.www.infoseek.co.jp/Edu?pg=gs_top.html&sv=JT&svx=100302&svp=SEEK">資格・おけいこ</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP207&rd=http://health.www.infoseek.co.jp/">健康</A>
+</SMALL></TD></TR>
+
+<!--趣味--><TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="24" BORDER="0"></TD><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ya.gif" WIDTH="5" HEIGHT="13" BORDER="0" HSPACE="1"></TD>
+<TD><SMALL>趣味：<A HREF="http://travel.www.infoseek.co.jp/Travel?pg=trv_top.html&sv=TR&svx=100302&svp=SEEK">旅行</A>
+-
+<A HREF="http://car.www.infoseek.co.jp/CarTop?pg=cartop.html&sv=KA&svx=100302&svp=SEEK">自動車</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP208&rd=http://books.rakuten.co.jp/infoseek/">読書</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP209&rd=http://pet.www.infoseek.co.jp/">ペット</A>
+-
+<A HREF="http://kenshou.infoseek.co.jp/Kenshou?pg=kenshou_top.html&sv=RK&svx=100302&svp=SEEK">懸賞</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP232&rd=http://entertainment.www.infoseek.co.jp/wp/">壁紙</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP210&rd=http://www.golfport.co.jp/infoseek/gindex.html?sv=GF&svx=100302&svp=SEEK">ゴルフ</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP211&rd=http://furima.rakuten.co.jp/infoseek/?SITETYPE=infoseek">オークション</A>
+</SMALL></TD></TR>
+
+<!--友達--><TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="24" BORDER="0"></TD><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ya.gif" WIDTH="5" HEIGHT="13" BORDER="0" HSPACE="1"></TD>
+<TD><SMALL>友達：<A HREF="http://profile.www.infoseek.co.jp/PHome?pg=profile_top.html&sv=CP&svx=100302&svp=SEEK">自己紹介</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP212&rd=http://photo.www.infoseek.co.jp/default.asp?sv=RH&svx=100302&svp=SEEK">アルバム</A>
+-
+
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP213&rd=http://club.www.infoseek.co.jp/">クラブ</A>
+-
+<A HREF="http://chat.www.infoseek.co.jp/Chat?pg=chat_home.html&sv=CC&svx=100302&svp=SEEK">チャット</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP214&rd=http://game.www.infoseek.co.jp/?svx=100302&svp=SEEK">ネットワークゲーム</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP215&rd=http://girls.www.infoseek.co.jp/ecard/">eカード</A>
+</SMALL></TD></TR>
+
+<!--娯楽--><TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="24" BORDER="0"></TD><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ya.gif" WIDTH="5" HEIGHT="13" BORDER="0" HSPACE="1"></TD>
+<TD><SMALL>娯楽：<A HREF="/redirect?ak=ISCC-7013-1000-ZP230&rd=http://entertainment.www.infoseek.co.jp/">エンタメ</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP216&rd=http://movie.www.infoseek.co.jp">映画</A>
+-
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_up.gif" WIDTH="17" HEIGHT="13" BORDER="0" ALT="UP!"><A HREF="/redirect?ak=ISCC-7013-1000-ZP217&rd=http://music.www.infoseek.co.jp">音楽</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP218&rd=http://games.www.infoseek.co.jp/info/">ゲーム</A>
+-
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_up.gif" WIDTH="17" HEIGHT="13" BORDER="0" ALT="UP!"><A HREF="/redirect?ak=ISCC-7013-1000-ZP219&rd=http://anime.www.infoseek.co.jp">アニメ</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP220&rd=http://girls.www.infoseek.co.jp/fortunes/">占い</A>
+-
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_up.gif" WIDTH="17" HEIGHT="13" BORDER="0" ALT="UP!"><A HREF="/redirect?ak=ISCC-7013-1000-ZP221&rd=http://bb.www.infoseek.co.jp/BBTop?pg=bb_index.html&sv=BB">BBガイド・動画</A>
+</SMALL></TD></TR>
+
+</TABLE>
+
+
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" BORDER="0" BGCOLOR="#FFFFDF">
+<!--GirlsPlus--><TR>
+<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="24" BORDER="0"></TD>
+<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ya.gif" WIDTH="5" HEIGHT="13" BORDER="0" HSPACE="1"></TD>
+<TD><A HREF="/redirect?ak=ISCC-7013-1000-ZP222&rd=http://girls.www.infoseek.co.jp/"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/ic_gplus2.gif" WIDTH="48" HEIGHT="24" BORDER="0" HSPACE="1" ALT="GirlsPlus"></A></TD>
+<TD WIDTH="100%"><SMALL>：<A HREF="/redirect?ak=ISCC-7013-1000-ZP223&rd=http://girls.www.infoseek.co.jp/beauty/">美容</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP224&rd=http://girls.www.infoseek.co.jp/wellness/">ダイエット</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP225&rd=http://girls.www.infoseek.co.jp/love/">恋愛</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP226&rd=http://girls.www.infoseek.co.jp/wedding/">結婚</A>
+-
+<A HREF="/redirect?ak=ISCC-7013-1000-ZP227&rd=http://girls.www.infoseek.co.jp/leisure/">グルメ・レシピ</A>
+-
+<A HREF="http://girlsshop.www.infoseek.co.jp/Gshop?pg=gshop_top.html&sv=GS&svx=100302&svp=SEEK">お買い物</A>
+</SMALL></TD>
+</TR></TABLE>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR BGCOLOR="#DEDEDE"><TD HEIGHT="1"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="1"></TD></TR></TABLE>
+<!-- END CONTENTS -->
+<!-- START PR -->
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="12" BORDER="0"><BR>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="CENTER" ROWSPAN="4">
+<DIV id="iscc">
+<TABLE WIDTH="100%" HEIGHT="96" BORDER="0" CELLSPACING="0" CELLPADDING="1"><TR><TD ALIGN="CENTER"><FONT CLASS="f10" COLOR="#FFFFFF">オ<BR>ス<BR>ス<BR>メ</FONT></TD></TR></TABLE>
+</DIV>
+</TD>
+<TD HEIGHT="24"><SMALL>&nbsp;<A HREF="/redirect?ak=sont-4006-1004-ZP200&rd=http://www.so-net.ne.jp/business/">成長するビジネスに、成長するソリューションを。<FONT COLOR="#990000">So-net for Business</FONT></A></SMALL></TD>
+</TR>
+<TR><TD HEIGHT="24"><SMALL>&nbsp;<A HREF="/redirect?ak=jal_-4003-1011-ZP200&rd=http://www.jal.co.jp/5931/index_sp_web.html">【JALで<FONT COLOR="#990000">グアム26,000円</FONT>〜】JALホームページ限定発売スーパーWeb悟空1/13迄</A></SMALL></TD></TR>
+<TR><TD HEIGHT="24"><SMALL>&nbsp;<A HREF="/redirect?ak=nova-4000-1004-ZP200&rd=http://www.nova.ne.jp/promo/promo_nav_fl.html?banner_id=80">英会話を始めるなら今がチャンス！新春キャンペーン実施中【NOVA】</A></SMALL></TD></TR>
+<TR><TD HEIGHT="24"><SMALL>&nbsp;<A HREF="/redirect?ak=iq__-4002-1004-ZP200&rd=http://www.jinzai-bank.net/edit/view.cfm?disp=pr000040101">企業の採用意欲が急回復。<FONT COLOR="#990000">年収UPスカウト</FONT>を受けるなら今[人材バンクネット]</A></SMALL></TD></TR>
+</TABLE>
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="8" BORDER="0"><BR>
+<!-- END PR -->
+<!-- START RAKUTEN -->
+	<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR>
+	<TD ROWSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_shop.gif" WIDTH="35" HEIGHT="34"></TD>
+	<TD COLSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="14"></TD>
+	</TR>
+	<TR HEIGHT="20" BGCOLOR="#990000">
+	<TD WIDTH="100%" NOWRAP><A HREF="/redirect?ak=SHOP-7004-1000-ZP205&rd=http://shopping.www.infoseek.co.jp/Shtop?pg=sh_top.html&sv=SH"><FONT SIZE="2" COLOR="#FFFFFF">ショッピング</FONT></A></TD>
+	<TD NOWRAP><FONT SIZE="2" COLOR="#FFFFFF">Powered by 楽天（商品数：6,360,000点）</FONT></TD>
+	<TD VALIGN="TOP"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/r15_red.gif" WIDTH="15" HEIGHT="20" BORDER="0"></TD>
+	</TR></TABLE>
+	<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR BGCOLOR="#CCCCCC"><TD HEIGHT="1"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="1"></TD></TR></TABLE>
+
+	<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="2" BORDER="0" BGCOLOR="#EFE3D2">
+	<TR VALIGN="TOP">
+	<TD WIDTH="100%" CLASS="istd2"><SMALL>
+	&nbsp;<A HREF="/redirect?ak=SHOP-7004-1000-ZP201&rd=http://shopping.www.infoseek.co.jp/Fashion?pg=sh_fashion.html&sv=SH">スタッフ今週のオススメ</A>
+	|
+	<A HREF="/redirect?ak=SHOP-7004-1000-ZP202&rd=http://event.infoseek.rakuten.co.jp/ranking/">売れ筋ランキング</A>
+	|
+	<A HREF="/redirect?ak=SHOP-7004-1000-ZP206&rd=http://girls.www.infoseek.co.jp/shopping/special/diary/200312/">着まわしダイアリー</A>
+	</SMALL></TD></TR>
+	</TABLE>
+	<!----- PATTERN 1 ----->
+	<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="1" BORDER="0" BGCOLOR="EFE3D2"><TR VALIGN="TOP"><TD>
+		<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="0" BGCOLOR="FFF9EE">
+		<TR VALIGN="TOP">
+		<TD WIDTH="50%"><A HREF="/redirect?ak=SHOP-2000-1000-ZP622&rd=http://event.infoseek.rakuten.co.jp/pc/pc/dell/"><IMG SRC="http://www.infoseek.co.jp/images/isj00/ad/ae19089/0109_dell_dim4600C_1.gif" WIDTH="60" BORDER="0" ALIGN="LEFT"></A>
+		<SMALL><A HREF="/redirect?ak=SHOP-2000-1000-ZP623&rd=http://event.infoseek.rakuten.co.jp/pc/pc/dell/" STYLE="line-height:160%">Dimension(TM) 4600C</A><BR>静音性とデザイン性に優れた省スペース型PC<A HREF="/redirect?ak=SHOP-2000-1000-ZP624&rd=http://event.infoseek.rakuten.co.jp/pc/pc/dell/">...詳細</A>
+		</SMALL></TD>
+		<TD WIDTH="50%"><A HREF="/redirect?ak=SHOP-2000-1000-ZP213&rd=http%3a%2f%2fevent.infoseek.rakuten.co.jp%2fauto%2fselection%2f2004%2f0108%2f"%20><IMG SRC="http://image.infoseek.co.jp/shopping/img1027696314.jpg" WIDTH="64" BORDER="0" ALIGN="LEFT"></A>
+		<SMALL><A HREF="/redirect?ak=SHOP-2000-1000-ZP214&rd=http%3a%2f%2fevent.infoseek.rakuten.co.jp%2fauto%2fselection%2f2004%2f0108%2f"%20STYLE%3d"line-height%3a160%25">名車・高級車大特集！</A><BR>男なら一度は憧れる名車から、話題の高級車まで<A HREF="/redirect?ak=SHOP-2000-1000-ZP215&rd=http%3a%2f%2fevent.infoseek.rakuten.co.jp%2fauto%2fselection%2f2004%2f0108%2f"%20>...詳細</A>
+		</SMALL></TD>
+		</TR>
+		</TABLE>
+
+		<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="0" BGCOLOR="FFF9EE">
+		<TR VALIGN="TOP">
+		<TD WIDTH="33%"><SMALL><FONT COLOR="#990000">・</FONT><A HREF="/redirect?ak=SHOP-2000-1000-ZP446&rd=http://www.rakuten.co.jp/kurione/484709/485525/503353/">プルプルお肌欲しい？</A></SMALL></TD>
+		<TD WIDTH="33%"><SMALL><FONT COLOR="#990000">・</FONT><A HREF="/redirect?ak=SHOP-2000-1000-ZP447&rd=http://www.rakuten.co.jp/chinatown/530178/">激安！ダイエットティ</A></SMALL></TD>
+		<TD WIDTH="33%"><SMALL><FONT COLOR="#990000">・</FONT><A HREF="/redirect?ak=SHOP-2000-1000-ZP448&rd=http://www.rakuten.co.jp/espritline/">英語：怠け者に福来る</A></SMALL></TD>
+		</TR>
+		<TR VALIGN="TOP">
+		<TD WIDTH="33%"><SMALL><FONT COLOR="#990000">・</FONT><A HREF="/redirect?ak=SHOP-2000-1000-ZP414&rd=http://directory.infoseek.rakuten.co.jp/rms/sd/directory/vc?s=1&tz=200067">いざ雪山へボード格安</A></SMALL></TD>
+		<TD><SMALL><FONT COLOR="#990000">・</FONT><A HREF="/redirect?ak=SHOP-2000-1000-ZP415&rd=http://event.infoseek.rakuten.co.jp/ranking/health/100984.html">今年はスリム系でいく</A></SMALL></TD>
+		<TD><SMALL><FONT COLOR="#990000">・</FONT><A HREF="/redirect?ak=SHOP-2000-1000-ZP416&rd=http://event.infoseek.rakuten.co.jp/pc/sale/weekend/01/">週末はデジカメを吟味</A></SMALL></TD>
+		</TR>
+		<TR VALIGN="TOP">
+		<TD><SMALL><FONT COLOR="#990000">・</FONT><A HREF="/redirect?ak=SHOP-2000-1000-ZP407&rd=http://event.infoseek.rakuten.co.jp/fashion/sale/">春先取り大セール！</A></SMALL></TD>
+<TD WIDTH="33%"><SMALL><FONT COLOR="#990000">・</FONT><A HREF="/redirect?ak=SHOP-2000-1000-ZP418&rd=http://event.infoseek.rakuten.co.jp/dime/2004/0122/special/01/">トレンドモバイル特集</A></SMALL></TD>
+		<TD><SMALL><FONT COLOR="#990000">・</FONT><A HREF="/redirect?ak=SHOP-2000-1000-ZP419&rd=http://event.infoseek.rakuten.co.jp/media/sale/dvd/">新作DVD電撃セール</A></SMALL></TD>
+		
+		</TR>
+		</TABLE>
+	</TD></TR></TABLE>
+
+<!-- END RAKUTEN -->
+<!-- START DIRECTORY -->
+	<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+	<td rowspan="2"><img src="http://www.infoseek.co.jp/images/isj00/home/tic_dry.gif" width="35" height="34"></td>
+	<td colspan="2"><img src="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" width="1" height="14"></td>
+	</tr>
+	<tr height="20" bgcolor="#527BCE">
+	<td width="100%" NOWRAP>
+	<a href="/DHome?pg=dir_top.html&svp=SEEK&svx=100301"><font size="2" color="#FFFFFF">おすすめリンク集</font></a></td>
+	<td valign="TOP"><img src="http://www.infoseek.co.jp/images/isj00/home/r15_blue.gif" width="15" height="20" border="0"></td>
+	</tr></table>
+
+	<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr bgcolor="#CCCCCC"><td height="1"><img src="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" width="1" height="1"></td></tr></table>
+	<table width="100%" cellspacing="0" cellpadding="2" border="0" bgcolor="#EFEFEF">
+	<tr valign="TOP">
+	<td width="100%" class="istd2"><small>
+	&nbsp;いよいよ受験シーズン
+	<a href="http://www.infoseek.co.jp/Topic/5/70/462/2145">センター試験</a>
+	|
+	<a href="http://www.infoseek.co.jp/Topic/5/70">入試</a>
+	<a href="/DHome">...</a>
+	</small></td>
+	</tr>
+	</table>
+
+	<table width="100%" cellspacing="0" cellpadding="1" border="0" bgcolor="EEEEEE"><tr valign="TOP"><td>
+		<table width="100%" cellspacing="0" cellpadding="3" border="0" bgcolor="FFFFFF">
+		<tr valign="TOP">
+		<td class="istd2"><small>
+		・<a href="Topic/1"><b>クルマ</b></a><br>&nbsp;
+		<a href="Topic/1/21">購入ガイド</a>&nbsp;
+		<a href="Topic/1/28">メーカー</a>&nbsp;
+		<a href="Topic/1/20">バイク</a>&nbsp;
+		<a href="Topic/11/141/1047/5189">中古車</a>
+		<a href="Topic/1">...</a>
+		</small></td>
+
+		<td class="istd2"><small>
+		・<a href="Topic/2"><b>住まい</b></a><br>&nbsp;
+		<a href="Topic/11/141/1059">不動産</a>&nbsp;
+		<a href="Topic/2/38/319">賃貸</a>&nbsp;
+		<a href="Topic/2/38/320">売買</a>&nbsp;
+		<a href="Topic/2/32/302">インテリア</a>
+		<a href="Topic/2">...</a>
+		</small></td>
+		</tr>
+
+		<tr valign="TOP">
+		<td class="istd2"><small>
+		・<a href="Topic/3"><b>キャリア</b></a><br>&nbsp;
+		<a href="Topic/3/47/345">求人</a>&nbsp;
+		<a href="Topic/3/47">転職</a>&nbsp;
+		<a href="Topic/3/44/338">派遣会社</a>&nbsp;
+		<a href="Topic/3/41">アルバイト</a>
+		<a href="Topic/3">...</a>
+		</small></td>
+
+		<td class="istd2"><small>
+		・<a href="Topic/4"><b>女性</b></a><br>&nbsp
+		<a href="/Topic/9/123/827">ダイエット</a>&nbsp;
+		<a href="/Topic/4/59">ビューティ</a>&nbsp;
+		<a href="/Topic/4/61">結婚</a>
+		<a href="/Topic/4">...</a>
+		</small></td>
+		</tr>
+
+		<tr valign="TOP">
+		<td class="istd2"><small>
+		・<a href="Topic/5"><b>学び</b></a><br>&nbsp;
+		<a href="Topic/5/68">資格</a>&nbsp;
+		<a href="Topic/5/64">留学</a>&nbsp;
+		<a href="Topic/5/71">通信教育</a>&nbsp;
+		<a href="Topic/5/74/486">語学</a>
+		<a href="Topic/5">...</a>
+		</small></td>
+
+		<td class="istd2"><small>
+		・<a href="Topic/6"><b>エンターテインメント</b></a><br>&nbsp;
+		<a href="Topic/6/83">ゲーム</a>&nbsp;
+		<a href="Topic/6/80">映画</a>&nbsp;
+		<a href="Topic/6/79">音楽</a>&nbsp;
+		<a href="Topic/6/78">占い</a>&nbsp;
+		<a href="Topic/6/86">テレビ</a>
+		<a href="Topic/6">...</a>
+		</small></td>
+		</tr>
+
+		<tr valign="TOP">
+		<td class="istd2"><small>
+		・<a href="Topic/7"><b>マネー</b></a><br>&nbsp;
+		<a href="Topic/7/102">マーケット</a>&nbsp;
+		<a href="Topic/7/92">株式</a>&nbsp;
+		<a href="Topic/7/93">為替</a>&nbsp;
+		<a href="Topic/7/101">保険</a>
+		<a href="Topic/7">...</a>
+		</small></td>
+
+		<td class="istd2"><small>
+		・<a href="Topic/8"><b>旅行・タウン情報</b></a><br>&nbsp;
+		<a href="Topic/8/107">国内</a>&nbsp;
+		<a href="Topic/8/105">海外</a>&nbsp;
+		<a href="Topic/8/108">宿泊</a>&nbsp;
+		<a href="Topic/8/112/752/4452">格安航空券</a>
+		<a href="Topic/8">...</a>
+		</small></td>
+		</tr>
+
+		<tr valign="TOP">
+		<td class="istd2"><small>
+		・<a href="Topic/9"><b>暮らし</b></a><br>&nbsp;
+		<a href="Topic/9/122">ファッション</a>&nbsp;
+		<a href="Topic/9/116">グルメ</a>&nbsp;
+		<a href="/Topic/9/117/782">出会い</a>&nbsp;
+		<a href="Topic/9/123">美容</a>
+		<a href="Topic/9">...</a>
+		</small></td>
+
+		<td class="istd2"><small>
+		・<a href="Topic/10"><b>ショッピング</b></a><br>&nbsp;
+		<a href="Topic/10/128">オークション</a>&nbsp;
+		<a href="Topic/10/128/881">フリマ</a>&nbsp;
+		<a href="Topic/10/128/882">リサイクル</a>
+		<a href="Topic/10">...</a>
+		</small></td>
+		</tr>
+
+		<tr valign="TOP">
+		<td class="istd2"><small>
+		・<a href="Topic/11"><b>ビジネス</b></a><br>&nbsp;
+		<a href="Topic/11/151">電子商取引</a>&nbsp;
+		<a href="Topic/11/147">経営</a>&nbsp;
+		<a href="Topic/11/149/1133">調査･統計</a>
+		<a href="Topic/11">...</a>
+		</small></td>
+
+		<td class="istd2"><small>
+		・<a href="Topic/12"><b>医療･健康</b></a><br>&nbsp;
+		<a href="Topic/12/165">病気</a>&nbsp;
+		<a href="Topic/12/164">病院</a>&nbsp;
+		<a href="Topic/12/161/1207">健康食品</a>&nbsp;
+		<a href="Topic/12/161/1217">美容整形</a>
+		<a href="Topic/12">...</a>
+		</small></td>
+		</tr>
+
+		<tr valign="TOP">
+		<td class="istd2"><small>
+		・<a href="Topic/13"><b>コンピュータ</b></a><br>&nbsp;
+		<a href="Topic/13/172/1302/5633">Windows</a>&nbsp;
+		<a href="Topic/13/175/1332">Mac</a>&nbsp;
+		<a href="Topic/13/175">ハード</a>&nbsp;
+		<a href="Topic/13/172">ソフト</a>
+		<a href="Topic/13">...</a>
+		</small></td>
+
+		<td class="istd2"><small>
+		・<a href="Topic/15"><b>趣味･スポーツ</b></a><br>&nbsp;
+		<a href="Topic/15/195">サッカー</a>&nbsp;
+		<a href="Topic/15/194/1483">ゴルフ</a>&nbsp;
+		<a href="Topic/15/201">野球</a>&nbsp;
+		<a href="Topic/15/192">アウトドア</a>
+		<a href="Topic/15">...</a>
+		</small></td>
+		</tr>
+
+		<tr valign="TOP">
+		<td class="istd2"><small>
+		・<a href="Topic/14"><b>インターネット</b></a><br>&nbsp;
+		<a href="Topic/14/180/1379">無料サービス</a>&nbsp;
+		<a href="Topic/14/189">プロバイダ</a>&nbsp;
+		<a href="Topic/13/174/1323">xDSL</a>
+		<a href="Topic/14">...</a>
+		</small></td>
+
+		<td class="istd2"><small>
+		・<a href="Topic/16"><b>アート・カルチャー</b></a><br>&nbsp;
+		<a href="Topic/16/209">博物館</a>&nbsp;
+		<a href="Topic/16/207/1616">カメラ</a>&nbsp;
+		<a href="Topic/16/207/1615">工芸</a>&nbsp;
+		<a href="Topic/16/205">展覧会</a>
+		<a href="Topic/16">...</a>
+		</small></td>
+		</tr>
+
+		<tr valign="TOP">
+		<td class="istd2"><small>
+		・<a href="Topic/17"><b>メディア・情報源</b></a><br>&nbsp;
+		<a href="Topic/17/214/1668">テレビ局</a>&nbsp;
+		<a href="Topic/17/213/1657">新聞社</a>&nbsp;
+		<a href="Topic/17/217">出版</a>&nbsp;
+		<a href="Topic/17/221/1691">辞書</a>
+		<a href="Topic/17">...</a>
+		</small></td>
+
+		<td class="istd2"><small>
+		・<a href="Topic/18"><b>infoseekオススメ</b></a><br>&nbsp;
+<!--
+		<a href="Topic/18/229">ニュース</a>&nbsp;
+-->
+		<a href="Topic/18/231">不動産</a>&nbsp;
+		<a href="Topic/18/224/1702">アニメ</a>&nbsp;
+		<a href="Topic/18/222">isweb</a>
+		<a href="Topic/18">...</a>
+		</small></td>
+		</tr>
+		</table>
+	</td></tr></table>
+<!-- END DIRECTORY -->
+<!-- START CONTENTS2 -->
+<A NAME="andmore"> </A>
+<BR>
+<TABLE CELLSPACING="0" CELLPADDING="1" BORDER="0" BGCOLOR="FFFFFF">
+<TR>
+<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ya.gif" WIDTH="5" HEIGHT="13" BORDER="0" HSPACE="1"></TD>
+<TD WIDTH="100%"><SMALL>その他のサービス</SMALL></TD>
+</TR>
+</TABLE>
+
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0">
+<!--ネットライフ支援--><TR><TD ROWSPAN="7"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+<TD ALIGN="RIGHT" NOWRAP><SMALL>ネットライフ支援&nbsp;</SMALL></TD><TD><SMALL>：</SMALL></TD><TD WIDTH="100%"><SMALL>
+<NOBR><A HREF="/redirect?ak=ISCC-7014-1000-ZP201&rd=http://wlan.www.infoseek.co.jp/?svx=101510&svp=SEEK">無線LANスポット</A></NOBR>
+-
+<NOBR><A HREF="/redirect?ak=ISCC-7014-1000-ZP202&rd=http://forward.infoseek.co.jp/?svx=101510&svp=SEEK">転送メール</A></NOBR>
+-
+<NOBR><A HREF="/redirect?ak=ISCC-7014-1000-ZP203&rd=http://mag2.infoseek.co.jp/?svx=101510&svp=SEEK">メルマガ</A></NOBR>
+-
+<NOBR><A HREF="http://ml.infoseek.co.jp/">メーリングリスト</A></NOBR>
+</SMALL></TD></TR>
+
+<!--ホームページ支援--><TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+<TD ALIGN="RIGHT" NOWRAP><SMALL>ホームページ支援&nbsp;</SMALL></TD><TD><SMALL>：</SMALL></TD><TD WIDTH="100%"><SMALL>
+<NOBR><A HREF="http://bbs.www.infoseek.co.jp/Top?sv=CB&svx=101510&svp=SEEK">レンタル掲示板</A></NOBR>
+-
+<NOBR><A HREF="http://rchat.www.infoseek.co.jp/Rchat?pg=rchat_home.html&sv=CR&svx=101510&svp=SEEK">レンタルチャット</A></NOBR>
+-
+<NOBR><A HREF="/redirect?ak=ISCC-7014-1000-ZP204&rd=http://domains.infoseek.co.jp/?svx=101510&svp=SEEK">ドメイン取得</A></NOBR>
+-
+<NOBR><A HREF="/redirect?ak=ISCC-7014-1000-ZP209&rd=http://plaza.rakuten.co.jp/rd.phtml?oem=is&url=/">日記</A></NOBR>
+</SMALL></TD></TR>
+
+<!--携帯電話--><TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+<TD ALIGN="RIGHT" NOWRAP><SMALL>携帯電話&nbsp;</SMALL></TD><TD><SMALL>：</SMALL></TD><TD WIDTH="100%"><SMALL>
+<NOBR><A HREF="http://k-tai.www.infoseek.co.jp/Ktai?pg=k-tai_index.html&sv=MO&svx=101510&svp=SEEK">モバイル</A></NOBR>
+-
+<NOBR><A HREF="http://jamin.ne.jp/index_pc.html?svx=101510&svp=SEEK">メル友検索</A></NOBR>
+-
+<NOBR><A HREF="http://k-tai.www.infoseek.co.jp/Ktai?pg=k-tai_index.html&svx=101510&svp=SEEK">無料着メロ</A></NOBR>
+-
+<NOBR><A HREF="http://k-tai.www.infoseek.co.jp/Ktai?pg=k-tai_uranai_if.html&sv=MO&svx=101510&svp=SEEK">占いメール</A></NOBR>
+
+</SMALL></TD></TR>
+
+<!--B to B--><TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+<TD ALIGN="RIGHT" NOWRAP><SMALL>B to B&nbsp;</SMALL></TD><TD><SMALL>：</SMALL></TD><TD WIDTH="100%"><SMALL>
+<NOBR><A HREF="http://business.rakuten.co.jp/infoseek/index.cfm?afl=vfr&svx=101510&svp=SEEK">商談</A></NOBR>
+-
+<NOBR><A HREF="http://research.infoseek.co.jp/survey/?svx=101510&svp=SEEK">リサーチ</A></NOBR>
+</SMALL></TD></TR>
+
+<!--パムのおすすめ--><TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+<TD ALIGN="RIGHT" NOWRAP><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/ic_pum.gif" WIDTH="17" HEIGHT="20" HSPACE="3" BORDER="0"></TD><TD><SMALL>：</SMALL></TD><TD WIDTH="100%"><SMALL>
+<A HREF="http://delivery.infoseek.co.jp/is/index.do?sv=DR&svx=101510&svp=SEEK">出前・宅配</A>
+-
+<NOBR><A HREF="/redirect?ak=ISCC-7014-1000-ZP205&rd=http://chu.infoseek.co.jp/?svx=101510&svp=SEEK">育成掲示板</A></NOBR>
+-
+<NOBR><A HREF="/redirect?ak=ISCC-7014-1000-ZP206&rd=http://po.infoseek.co.jp/?svx=101510&svp=SEEK">ポイントメール</A></NOBR>
+-
+<NOBR><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_up.gif" WIDTH="17" HEIGHT="13" BORDER="0" ALT="UP!"><A HREF="http://elesal.infoseek.co.jp/EMmusic?pg=em_top.html&sv=EM&svx=101510&svp=SEEK">洋楽広場</A></NOBR>
+</SMALL></TD></TR>
+
+</TABLE>
+<FONT CLASS="f10" SIZE="1"><BR></FONT>
+<!-- END CONTENTS2 -->
+</TD>
+<TD WIDTH="6"><IMG src="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="6" HEIGHT="1" BORDER="0"></TD>
+<TD WIDTH="250">
+<!-- START iscc -->
+<TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0" ALIGN="RIGHT">
+<TR valign="top">
+<TD valign="middle"><font class="f10" color="#666666">色をお選びください&nbsp;</font></TD>
+<TD style="background-color: #990000"><a href="/Preference?cc=1&prefrd=http%3A//www.infoseek.co.jp/Home%3Fpg%3DHome.html&mc=0"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tab_color.gif" WIDTH="18" HEIGHT="14" BORDER="0"></a></TD>
+<TD style="background-color: #3366bb"><a href="/Preference?cc=1&prefrd=http%3A//www.infoseek.co.jp/Home%3Fpg%3DHome.html&mc=1"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tab_color.gif" WIDTH="18" HEIGHT="14" BORDER="0"></a></TD>
+<TD style="background-color: #ff9988"><a href="/Preference?cc=1&prefrd=http%3A//www.infoseek.co.jp/Home%3Fpg%3DHome.html&mc=2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tab_color.gif" WIDTH="18" HEIGHT="14" BORDER="0"></a></TD>
+<TD style="background-color: #99cc33"><a href="/Preference?cc=1&prefrd=http%3A//www.infoseek.co.jp/Home%3Fpg%3DHome.html&mc=3"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tab_color.gif" WIDTH="18" HEIGHT="14" BORDER="0"></a></TD>
+<TD style="background-color: #ff9900"><a href="/Preference?cc=1&prefrd=http%3A//www.infoseek.co.jp/Home%3Fpg%3DHome.html&mc=4"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tab_color.gif" WIDTH="18" HEIGHT="14" BORDER="0"></a></TD>
+<TD style="background-color: #000000"><a href="/Preference?cc=1&prefrd=http%3A//www.infoseek.co.jp/Home%3Fpg%3DHome.html&mc=5"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tab_color.gif" WIDTH="18" HEIGHT="14" BORDER="0"></a></TD>
+<TD><IMG src="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="4" HEIGHT="1" BORDER="0"></TD>
+</TR>
+</TABLE>
+<BR CLEAR="ALL">
+<!-- END iscc -->
+<!-- START INAD -->
+<a href="http://www.infoseek.co.jp/redirect?sv=JP&lk=&tid=&ak=CLER-2003-1000-S2108&rd=http://www.infoseek.co.jp/?svx=23" target="_top"><img border="0" width="1" height="1" src="http://www.infoseek.co.jp/images/ads/CLER1000.gif" alt=""></a><br>
+<!-- END INAD -->
+<!-- START OUTAD -->
+<!-- END OUTAD -->
+<!-- START NEWS -->
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ROWSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_news.gif" WIDTH="35" HEIGHT="34"></TD>
+<TD COLSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="14"></TD>
+</TR>
+<TR HEIGHT="20" BGCOLOR="#666666">
+<TD WIDTH="100%" NOWRAP><A HREF="http://news.www.infoseek.co.jp/?svx=100306"><FONT SIZE="2" COLOR="#FFFFFF">ニュース</FONT></A></TD>
+<TD VALIGN="TOP"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/r15_6.gif" WIDTH="15" HEIGHT="20" BORDER="0"></TD>
+</TR></TABLE>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR BGCOLOR="#CCCCCC"><TD HEIGHT="1"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="1"></TD></TR></TABLE>
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="1" BORDER="0" BGCOLOR="EEEEEE"><TR VALIGN="TOP"><TD>
+<!-- START TOP NEWS -->
+
+<!-- END TOP NEWS -->
+<!-- START NEWS PHOTO -->
+<!-- START NEWS SP --><!-----
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="1" BORDER="0" BGCOLOR="#EFEFEF">
+	<TR VALIGN="TOP">
+	<TD WIDTH="100%" CLASS="istd2"><SMALL>&nbsp;[]&nbsp;<A HREF="http://www.infoseek.co.jp/redirect?ak=NEWS-7004-1000-ZP201&rd="></A></SMALL></TD>
+	</TR>
+</TABLE>----->
+<!-- END NEWS SP -->
+<!-- START PHOTO NEWS -->
+<TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="2" BGCOLOR="FFFFF7">
+	<TR><TD><A HREF="http://www.infoseek.co.jp/redirect?ak=NEWS-7002-1000-ZP201&rd=http%3a//news.www.infoseek.co.jp/sports/story.html%3fq%3d10reutersJAPAN134934%26cat%3d17">
+	<IMG SRC="http://image.infoseek.co.jp/news/toppage/20040110_JAPAN-134934-1_picture-48931_thumbnail.jpg" BORDER="0" WIDTH="120" HEIGHT="72" HSPACE="2" VSPACE="2"></A></TD>
+	<TD CLASS="istd2"><SMALL><A HREF="http://www.infoseek.co.jp/redirect?ak=NEWS-7003-1000-ZP201&rd=http%3a//news.www.infoseek.co.jp/sports/story.html%3fq%3d10reutersJAPAN134934%26cat%3d17"><FONT COLOR="#666666">サッカー＝パルマのタンツィ会長が辞任へ（ロイター）</FONT></A></SMALL></TD></TR>
+</TABLE>
+<!-- END PHOTO NEWS -->
+<!-- END NEWS PHOTO -->
+<!-- START TOP NEWSDESK -->
+<TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="FFFFF7">
+<TR>
+<TR BGCOLOR="#EFEFEF"><TD><SMALL><A HREF="http://news.www.infoseek.co.jp/topics/?svx=100306">トピックス</A></SMALL></TD></TR>
+<TD CLASS="istd2"><SMALL>
+・<A HREF="http://www.infoseek.co.jp/redirect?ak=NEWS-7000-1000-ZP201&rd=http%3a//news.www.infoseek.co.jp/topics/society/iraq_bill.html">陸自の脅威、300倍の放射線　</A><BR>
+・<A HREF="http://www.infoseek.co.jp/redirect?ak=NEWS-7000-1000-ZP201&rd=http%3a//news.www.infoseek.co.jp/topics/science/mars.html">“火星に水”示唆するデータ</A><BR>
+・<A HREF="http://www.infoseek.co.jp/redirect?ak=NEWS-7000-1000-ZP201&rd=http%3a//news.www.infoseek.co.jp/topics/entertainment/publish.html">ビジネスマン注目「経済小説」</A><BR>
+・<A HREF="http://www.infoseek.co.jp/redirect?ak=NEWS-7000-1000-ZP201&rd=http%3a//news.www.infoseek.co.jp/topics/sports/giants.html">堀内監督、Gフロントに異議</A><BR>
+・<A HREF="http://www.infoseek.co.jp/redirect?ak=NEWS-7000-1000-ZP201&rd=http%3a//news.www.infoseek.co.jp/topics/entertainment/tv_drama.html">日本初 携帯向け短編映画</A><BR>
+・<A HREF="http://www.infoseek.co.jp/redirect?ak=NEWS-7000-1000-ZP201&rd=http%3a//news.www.infoseek.co.jp/topics/entertainment/kouhaku.html">安室の腕から刺青消えた事情</A><BR>
+</SMALL></TD>
+</TR>
+</TABLE>
+<!-- END TOP NEWSDESK -->
+</TD>
+</TR>
+</TABLE>
+<!-- END NEWS -->
+<!-- START INFOMATION -->
+<isimport>
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="8"><BR>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR VALIGN="TOP">
+<TD><table border="0" cellpadding="1" cellspacing="0" width="124" bgcolor="#FF6600">
+<tr><td align="center"><a href="/redirect?ak=ISCC-7015-1060-ZP262&rd=http://movie.infoseek.co.jp/"><font size="2" color="#ffffff">ムービー</font></a></td></tr>
+<tr><td>
+<table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff"><tr>
+<td height="52"><a href="/redirect?ak=ISCC-7015-1060-ZP263&rd=http://movie.www.infoseek.co.jp/feature/dogville/"><IMG src="http://www.infoseek.co.jp/images/isj00/info/lunchbox/20031215/dogvil.gif" border="0" width="122" height="52" alt="ドッグヴィル CMコンテスト開催中！"></a></td>
+</tr></table>
+</td></tr></table>
+
+</TD>
+<TD ALIGN="RIGHT"><table border="0" cellpadding="1" cellspacing="0" width="124" bgcolor="#FF9900">
+<tr><td align="center"><a href="/redirect?ak=ISCC-7015-1064-ZP270&rd=http://www.infoseek.co.jp/Special?pg=enjapan_0311_if.html"><font size="2" color="ffffff">特集</font></a></td></tr>
+<tr><td>
+<table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="ffffff"><tr>
+<td height="52"><a href="/redirect?ak=ISCC-7015-1064-ZP271&rd=http://www.infoseek.co.jp/Special?pg=enjapan_0311_if.html"><IMG src="http://www.infoseek.co.jp/images/isj00/info/lunchbox/20031223/job_enjapan3.gif" border="0" width="122" height="52" alt="企業からスカウトされて年収UP!"></a></td>
+</tr></table>
+</td></tr></table>
+
+</TD>
+</TR></TABLE>
+<!-- END INFOMATION -->
+<!-- START What's New! -->
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR>
+<TD ROWSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_wnew.gif" WIDTH="25" HEIGHT="34"></TD>
+<TD COLSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="14"></TD>
+</TR>
+<TR HEIGHT="20" BGCOLOR="#666666">
+<TD WIDTH="100%" NOWRAP>
+<A HREF="http://www.infoseek.co.jp/Guide?pg=gid_new.html&svx=100403&svp=SEEK"><FONT SIZE="2" COLOR="#FFFFFF">What's New!</FONT></A></TD>
+<TD VALIGN="TOP"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/r15_6.gif" WIDTH="15" HEIGHT="20" BORDER="0"></TD>
+</TR></TABLE>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR BGCOLOR="#CCCCCC"><TD HEIGHT="1"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="1"></TD></TR></TABLE>
+
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="1" BORDER="0" BGCOLOR="EEEEEE"><TR VALIGN="TOP"><TD>
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="0" BORDER="0" BGCOLOR="FFFFF7"><TR>
+<TD WIDTH="1"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="5" HEIGHT="1" BORDER="0"></TD>
+<TD CLASS="istd"><SMALL>
+
+・<A HREF="/redirect?ak=ISCC-4000-1008-ZP460&rd=http://movie.www.infoseek.co.jp/">ヒュー・グラントが恋する英国首相に!?</A><BR>
+・<A HREF="/redirect?ak=ISCC-4000-1008-ZP458&rd=http://music.www.infoseek.co.jp/feature/britney2/">ブリトニー、密着レポート＆写真大公開</A><BR>
+・<A HREF="/redirect?ak=ISCC-4000-1008-ZP452&rd=http://isweb.www.infoseek.co.jp/Icont?pg=iw_noadspec_if.html&sv=IW">URL変わらずにiswebの広告を外せます！</A><BR>
+・<A HREF="/redirect?ak=ISCC-4000-1008-ZP437&rd=http://www.infoseek.co.jp/Special?pg=enjapan_0311_if.html">２００４年、仕事探しはどうですか？</A><BR>
+
+<!--
+・<A HREF="/redirect?ak=ISCC-4000-1008-ZP453&rd=http://music.www.infoseek.co.jp/interview/alicia_keys/">グラミー賞歌手、ラブ・ライフを語る！</A><BR>
+・<A HREF="/redirect?ak=ISCC-4000-1008-ZP449&rd=http://entertainment.www.infoseek.co.jp/wp/">ダウンロードする！「壁紙」</A><BR>
+・<A HREF="/redirect?ak=ISCC-4000-1008-ZP448&rd=http://news.www.infoseek.co.jp/2003/">ニュースで振り返る2003年</A><BR>
+・<A HREF="/redirect?ak=ISCC-4000-1008-ZP450&rd=http://movie.www.infoseek.co.jp/feature/call_movie/missing.html">液晶テレビや旅行券をプレゼント！</A><BR>
+・<A HREF="/redirect?ak=ISCC-4000-1008-ZP443&rd=http://girls.www.infoseek.co.jp/ecard/nenga/">お年玉くじ付き電子年賀状を送ろう！</A><BR>
+-->
+
+<!-- 以下ADホシ無し -->
+<!-- 以下ADホシ無し -->
+
+<!-- 以下広告 -->
+</SMALL></TD></TR></TABLE>
+
+
+<TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="1" BGCOLOR="FFFFF7">
+
+<TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/dot_wnew.gif" WIDTH="10" HEIGHT="10" BORDER="0" ALIGN="ABSMIDDLE" VSPACE="5"></TD><TD><SMALL>
+<A HREF="/redirect?ak=ISCC-4000-1008-ZP451&rd=http://house.www.infoseek.co.jp/House/hz_housespecial?pg=004&sv=RF">保谷、海浜幕張、東大宮のぶらり街歩き</A></SMALL></TD></TR>
+
+<TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/dot_wnew.gif" WIDTH="10" HEIGHT="10" BORDER="0" ALIGN="ABSMIDDLE" VSPACE="5"></TD><TD><SMALL>
+<A HREF="/redirect?ak=ISCC-4000-1008-ZP455&rd=http://profile.www.infoseek.co.jp/Profile?sv=CP&pg=prf_love_top_if.html&svx=240501">結婚・恋愛、2004年は運命の人と</A></SMALL></TD></TR>
+
+<TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/dot_wnew.gif" WIDTH="10" HEIGHT="10" BORDER="0" ALIGN="ABSMIDDLE" VSPACE="5"></TD><TD><SMALL>
+<A HREF="/redirect?ak=ISCC-4000-1008-ZP456&rd=http://edu.www.infoseek.co.jp/EduSpecial?pg=toeic_top_if.html">英語で自由にコミュニケーション！</A></SMALL></TD></TR>
+
+<TR><TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/dot_wnew.gif" WIDTH="10" HEIGHT="10" BORDER="0" ALIGN="ABSMIDDLE" VSPACE="5"></TD><TD><SMALL>
+<A HREF="/redirect?ak=ISCC-4000-1008-ZP459&rd=http://girls.www.infoseek.co.jp/pickup/pantene/">あのパンテーンから１万人にプレゼント</A></SMALL></TD></TR>
+
+</TABLE>
+</TD></TR></TABLE>
+
+<!-- END What's New! -->
+<!-- START WEATHER -->
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="10"><BR>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0">
+<TR HEIGHT="20" BGCOLOR="#666666">
+<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="5" HEIGHT="20"></TD>
+<TD WIDTH="100%" NOWRAP>
+<A HREF="http://tenki.www.infoseek.co.jp/Tenki?svx=100306&sv=TE&pg=tk_top.html"><FONT SIZE="2" COLOR="#FFFFFF">きょうの天気</FONT></A></TD>
+<TD VALIGN="TOP"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/r15_6.gif" WIDTH="15" HEIGHT="20" BORDER="0"></TD>
+</TR></TABLE>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR BGCOLOR="#CCCCCC"><TD HEIGHT="1"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="1"></TD></TR></TABLE>
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="1" BORDER="0" BGCOLOR="EEEEEE"><TR VALIGN="TOP"><TD>
+<TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="FFFFF7">
+<TR>
+<TD WIDTH="50%" NOWRAP><SMALL>・<A HREF="http://tenki.www.infoseek.co.jp/Tenki?svx=100306&sv=TE&pg=tk_yr_kan_4410.html">東京</A></SMALL></TD>
+<TD ALIGN="CENTER" NOWRAP><SMALL><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/twic_sun.gif" WIDTH="26" HEIGHT="26" ALIGN="ABSMIDDLE" ALT="晴れ"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/t_tenki_bou.gif" WIDTH="12" HEIGHT="9" ALIGN="ABSMIDDLE" HSPACE="4" ALT="のち"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/twic_cloud.gif" WIDTH="26" HEIGHT="26" ALIGN="ABSMIDDLE" ALT="曇り"></SMALL></TD>
+<TD WIDTH="50%" ALIGN="RIGHT" NOWRAP><SMALL><A HREF="http://www.infoseek.co.jp/Preference?svx=100306&pg=istop_weather.html">設定</A></SMALL></TD>
+</TR>
+</TABLE>
+</TD></TR></TABLE>
+<!-- END WEATHER -->
+<!-- START FINANCE -->
+<table WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><tr>
+<td ROWSPAN="2"><img SRC="http://www.infoseek.co.jp/images/isj00/home/tic_mkt.gif" WIDTH="35" HEIGHT="34"></td>
+<td COLSPAN="2"><img SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="14"></td>
+</tr>
+<tr HEIGHT="20" BGCOLOR="#666666">
+<td WIDTH="100%" NOWRAP>
+<a HREF="http://money.www.infoseek.co.jp/MnTop?sv=MN&pg=mn_index.html&svx=100306"><font SIZE="2" COLOR="#FFFFFF">マネー</font></a></td>
+<td VALIGN="TOP"><img SRC="http://www.infoseek.co.jp/images/isj00/home/r15_6.gif" WIDTH="15" HEIGHT="20" BORDER="0"></td>
+</tr></table>
+<table WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><tr BGCOLOR="#CCCCCC"><td HEIGHT="1"><img SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="1"></td></tr></table>
+<table WIDTH="100%" CELLSPACING="0" CELLPADDING="1" BORDER="0" BGCOLOR="EEEEEE"><tr VALIGN="TOP"><td>
+<table WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="0" BGCOLOR="FFFFF7">
+<tr>
+<td><img SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="4" HEIGHT="22"></td>
+<td NOWRAP><small>・</small></td>
+<td NOWRAP><small>日経平均</small></td>
+<td ALIGN="RIGHT" NOWRAP><small>&nbsp;10,965.05</small></td>
+<td ALIGN="RIGHT" NOWRAP><small>&nbsp;<FONT COLOR="#CC0000">+127.40</FONT></small></td>
+<td><small>　</small></td>
+</tr>
+<tr>
+<td><img SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="4" HEIGHT="22"></td>
+<td NOWRAP><small>・</small></td>
+<td NOWRAP><small>米ドル</small></td>
+<td ALIGN="RIGHT" NOWRAP><small>&nbsp;106.74</small></td>
+<td ALIGN="RIGHT" NOWRAP><small>&nbsp;<FONT COLOR="#CC0000">+0.59</FONT></small></td>
+<td WIDTH="35%"><small>　</small></td>
+</tr>
+</table>
+</td></tr></table>
+<!-- END FINANCE -->
+<!-- START FORTUNE -->
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR>
+<TD ROWSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_ftell.gif" WIDTH="35" HEIGHT="34"></TD>
+<TD COLSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="14"></TD>
+</TR>
+<TR HEIGHT="20" BGCOLOR="#666666">
+<TD WIDTH="100%" NOWRAP>
+<A HREF="http://uranai.www.infoseek.co.jp/Uranai?pg=uranai_top.html&sv=RX&svx=100306"><FONT SIZE="2" COLOR="#FFFFFF">今日の占い</FONT></A></TD>
+<TD VALIGN="TOP"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/r15_6.gif" WIDTH="15" HEIGHT="20" BORDER="0"></TD>
+</TR></TABLE>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR BGCOLOR="#CCCCCC"><TD HEIGHT="1"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="1"></TD></TR></TABLE>
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="1" BORDER="0" BGCOLOR="EEEEEE"><TR VALIGN="TOP"><TD>
+<TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="FFFFF7">
+<TR>
+<TD NOWRAP><SMALL>・<A HREF="http://uranai.www.infoseek.co.jp/Uranai?pg=uranai_horotau.html&sv=RX&svx=100306">牡牛座</A>　全体運：</SMALL></TD>
+<TD NOWRAP><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tui_sogo.gif" WIDTH="15" HEIGHT="15" HSPACE="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tui_sogo.gif" WIDTH="15" HEIGHT="15" HSPACE="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tui_sogo.gif" WIDTH="15" HEIGHT="15" HSPACE="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tui_sogo.gif" WIDTH="15" HEIGHT="15" HSPACE="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tui_sogo.gif" WIDTH="15" HEIGHT="15" HSPACE="2"></TD>
+<TD ALIGN="RIGHT" NOWRAP><SMALL><A HREF="http://www.infoseek.co.jp/Preference?pg=istop_uranai.html&svx=100306">設定</A></SMALL></TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BORDER="0" CELLSPACING="0" CELLPADDING="2" BGCOLOR="FFFFF7">
+<TR>
+<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="3" HEIGHT="1"></TD>
+<TD CLASS="istd2"><SMALL>元気いっぱい。行動的になればな…<A HREF="http://uranai.www.infoseek.co.jp/Uranai?pg=uranai_horotau.html&sv=RX&svx=100306">つづき</A></SMALL></TD>
+</TR>
+</TABLE>
+</TD></TR></TABLE>
+<!-- END FORTUNE -->
+<!-- START KEYWORD RANKING -->
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR>
+<TD ROWSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/tic_kwr.gif" WIDTH="35" HEIGHT="34"></TD>
+<TD COLSPAN="2"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="14"></TD>
+</TR>
+<TR HEIGHT="20" BGCOLOR="#7BCF93">
+<TD WIDTH="100%" NOWRAP>
+<A HREF="http://www.infoseek.co.jp/Keyword?pg=ranking.html&svp=SEEK&svx=100404"><FONT SIZE="2" COLOR="#FFFFFF">キーワードランキング</FONT></A></TD>
+<TD VALIGN="TOP"><IMG SRC="http://www.infoseek.co.jp/images/isj00/home/r15_green.gif" WIDTH="15" HEIGHT="20" BORDER="0"></TD>
+</TR></TABLE>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0"><TR BGCOLOR="#CCCCCC"><TD HEIGHT="1"><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="1"></TD></TR></TABLE>
+
+<!--更新ソース開始-->
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="2" BORDER="0" BGCOLOR="#EFEFEF">
+<TR>
+<TD><SMALL>
+&nbsp;時事
+｜
+<A HREF="http://www.infoseek.co.jp/Keyword?pg=ranking.html&svp=SEEK&svx=100404">その他のランキング</A>
+</SMALL></TD>
+</TR>
+</TABLE>
+
+<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="1" BORDER="0" BGCOLOR="EEEEEE"><TR VALIGN="TOP"><TD>
+	<TABLE WIDTH="100%" CELLSPACING="0" CELLPADDING="3" BORDER="0" BGCOLOR="FFFFFF">
+	<TR VALIGN="top">
+	<TD CLASS="istd2"><SMALL>
+	1位 <A HREF="http://www.infoseek.co.jp/OTitles?qt=%BD%E9%B7%D8&sv=JP&svp=SEEK&svx=100404&col=OW">初詣</A><br>
+	2位 <A HREF="http://www.infoseek.co.jp/OTitles?qt=%A5%E2%A1%BC%A5%CB%A5%F3%A5%B0%CC%BC%A1%A3&sv=JP&svp=SEEK&svx=100404&col=OW">モーニング…</A><br>
+	3位 <A HREF="http://www.infoseek.co.jp/OTitles?qt=%B9%C8%C7%F2%B2%CE%B9%E7%C0%EF&sv=JP&svp=SEEK&svx=100404&col=OW">紅白歌合戦</A><br>
+
+	</SMALL></TD>
+	<TD CLASS="istd2"><SMALL>
+	4位 <A HREF="http://www.infoseek.co.jp/OTitles?qt=%C8%A2%BA%AC%B1%D8%C5%C1&sv=JP&svp=SEEK&svx=100404&col=OW">箱根駅伝</A><br>
+	5位 <A HREF="http://www.infoseek.co.jp/OTitles?qt=%BD%E9%C6%FC%A4%CE%BD%D0&sv=JP&svp=SEEK&svx=100404&col=OW">初日の出</A><br>
+	<A HREF="http://www.infoseek.co.jp/Keyword?pg=ranking_news_if.html&svp=SEEK&svx=100404">...つづき</A>
+	</SMALL></TD>
+	</TR>
+	</TABLE>
+</TD></TR></TABLE>
+<!--更新ソース終了-->
+<!-- END KEYWORD RANKING -->
+<!-- FlashMovie02 -->
+<IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="1" HEIGHT="10" BORDER="0"><BR>
+<a href="http://www.infoseek.co.jp/redirect?sv=JP&lk=&tid=&ak=CLER-2003-1000-S2139&rd=http://www.infoseek.co.jp/?svx=23" target="_top"><img border="0" width="1" height="1" src="http://www.infoseek.co.jp/images/ads/CLER1000.gif" alt=""></a><br>
+<!-- FlashMovie02 -->
+</TD>
+</TR>
+<TR>
+<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="484" HEIGHT="1" BORDER="0"></TD>
+<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="6" HEIGHT="4" BORDER="0"></TD>
+<TD><IMG SRC="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" WIDTH="250" HEIGHT="1" BORDER="0"></TD>
+</TR>
+</TABLE>
+<!-- START FOOTER -->
+<br>
+<table width="740" border="0" cellspacing="0" cellpadding="4" bgcolor="#eeeeee">
+<tr>
+<td align="CENTER"><font size="2" class="f12" color="#999999">
+<a href="/ISJ?pg=isj_prof.html&lk=noframes&svx=199700"><font color="#555555">会社案内</font></a> |
+<a href="/ISJ?pg=isj_adi.html&lk=noframes&sf=1%13&svx=199700"><font color="#555555">広告掲載について</font></a> |
+<a href="/Help?pg=help_addurl.html&lk=noframes&sf=1&svx=199700"><font color="#555555">サイト登録</font></a> |
+<a href="/Linkkit?pg=lkt_top.html&lk=noframes&sf=1&svx=199700"><font color="#555555">リンクキット</font></a> |
+<a href="/Notice?pg=legal.html&lk=noframes&sf=1&svx=199700"><font color="#555555">免責事項</font></a> |
+<a href="/Help?pg=help.html&lk=noframes&sf=1&svx=199700"><font color="#555555">お問い合わせ</font></a> |
+<a href="/ISJ?pg=isj_release_top.html&lk=noframes&svx=199700"><font color="#555555">リリース</font></a></font></td>
+</tr>
+</table>
+<table width="740" border="0" cellspacing="0" cellpadding="0">
+<tr bgcolor="#990000"><td height="3"><img src="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" width="1" height="3" border="0"></td></tr>
+<tr bgcolor="#CCCCCC"><td height="1"><img src="http://www.infoseek.co.jp/images/isj00/common/im_clear.gif" width="1" height="1" border="0"></td></tr>
+</table>
+<table width="740" border="0" cellspacing="0" cellpadding="2">
+<tr bgcolor="#FFFFFF">
+<td align="CENTER" nowrap><font size="1" class="f10">
+infoseek, およびinfoseekロゴは 楽天株式会社の商標です。<br>
+これら以外のマークは、それぞれ関係各社の商標および登録商標です。<br>
+Copyright (c) 1997-2004 <a href="http://www.rakuten.co.jp/info/">Rakuten, Inc.</a> All Rights Reserved.</font></td>
+</tr>
+</table>
+<!-- END FOOTER -->
+</CENTER>
+</BODY>
+</HTML>
