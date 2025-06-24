@@ -28,9 +28,7 @@ Extract the zip file to create your project directory. The archive contains:
 
 ## Building a list of historical URLs to scrape
 
-For our study, we need a representative sample of popular Japanese websites from 2000. The business magazine Nikkei BP published a list of the top 50 most visited websites by home users in Japan in May 2000, which has been preserved in a 2000 study about cultural differences in e-commerce between the United States and Japan [^PAPER]. You are going to use the list as the basis for scraping. 
-
-### Refining our dataset
+For our study, we need a sample of popular Japanese websites from 2000. The media company Nikkei BP published a list of the top 50 most visited websites by home users in Japan in May 2000, which has been preserved in a 2000 study about cultural differences in e-commerce between the United States and Japan [^PAPER]. We are going to use the list as the basis for scraping. 
 
 To make the analysis more focused, we added two columns indicating the language and the category of the website. Using archived versions of these websites as well as information about them on Wikipedia, we manually categorized the sites using the same categorization scheme as the original study: portal (web directories and search engines), content (news, entertainment), services (web-based tools), ISP (internet service providers), shopping (e-commerce), and corporate (company websites). The final CSV file looks like this: 
 
@@ -47,30 +45,9 @@ For this lesson, we will focus specifically on Japanese-language websites in the
 
 Now we will use the CDX Server API to find archived snapshots the Wayback Machine has available for each site from the month of May 2000.
 
-### Reading the list of websites
-
-We will first load the curated list of Japanese websites. We will only load websites whose category is "portal" or "content". 
-
-```python
-# 1-query-cdx.py (part 1)
-
-import csv
-
-CATEGORY_OF_INTEREST = ["portal", "content"]
-
-japanese_websites = []
-with open("nikkeibp-may2000.csv", "r") as file:
-    reader = csv.DictReader(file)
-    for row in reader:
-        if (
-            row.get("is_japanese") == "true"
-            and row.get("category") in CATEGORY_OF_INTEREST
-        ):
-            japanese_websites.append(row["website"])
-```
 
 ### Working with the CDX API
-Now, we will construct a [utility function]() to query the Wayback Machine CDX Server API. We use the tenacity library to decorate our query_wm_cdx_entries function so that any transient failures (like timeouts or rate-limits) automatically trigger up to 10 retry attempts, with an exponential back-off wait (starting at 2 seconds, doubling each time up to 32 s) and an extra 2 seconds pause after each failed try.
+Now, we will construct a utility function to query the Wayback Machine CDX Server API. We use the tenacity library to decorate our query_wm_cdx_entries function so that any transient failures (like timeouts or rate-limits) automatically trigger up to 10 retry attempts, with an exponential back-off wait (starting at 2 seconds, doubling each time up to 32 s) and an extra 2 seconds pause after each failed try.
 
 ```python
 # util.py (part 1)
