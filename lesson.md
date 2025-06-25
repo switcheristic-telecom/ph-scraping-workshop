@@ -53,12 +53,12 @@ By the end of this lesson, you will learn:
 
 The rest of the lesson is roughly structured into two parts. In the first part, we will briefly review how the Wayback Machine works, its limitations, and introduce the Wayback Machine CDX Server API, which we can use to find all available archived snapshots of a given URL on the Wayback Machine. Next, we will showcase how to detect and scrape different types of media content on an archived web page, with a focus on legacy formats that you may encounter in web pages from the 1990s-early 2000s. 
 
-The second part is the case study where we will use the tools and techniques we introduced in the first part to scrape the Wayback Machine for banner ads appearing on popular Japanese websites in the month of May 2000. We will use the dataset to gauge . 
+The second part is a case study where we will use the tools and techniques we introduced in the first part to scrape the Wayback Machine for banner ads appearing on popular Japanese websites in the month of May 2000. 
 
 
-# Getting Started with Programmatic Access to the Wayback Machine
+# Getting started with programmatic access to the Wayback Machine
 
-In this tutorial, we will focus on scraping archived web content on the Wayback Machine. Founded in 1996, the Internet Archive’s Wayback Machine is the world’s first web archive, and today it holds billions of web pages from around the world dating back to 1996, publicly accessible through its website at [web.archive.org](http://web.archive.org). The Wayback Machine proactively archives the web, mainly by running a **web crawler**, which is a program that automatically follows and saves links on the web. Given its founding date and the worldwide scope of its collection, the Wayback Machine is also the only place where some of the earliest web pages on the Internet may be found. 
+In this tutorial, we will focus on scraping archived web content on the Wayback Machine. Founded in 1996, the Internet Archive’s Wayback Machine is the world’s first web archive, and today it holds billions of web pages from around the world, publicly accessible through its website at [web.archive.org](http://web.archive.org). The Wayback Machine proactively archives the web, mainly by running a web crawler, which is a program that automatically follows and saves links on the web. Given its founding date and the worldwide scope of its collection, the Wayback Machine is also the only place where some of the earliest web pages on the Internet may be found. 
 
 There are different ways to access archived web data on the Wayback Machine programmatically. In this tutorial, we are going to use the Wayback Machine’s CDX Server API to retrieve available archived copies of web resources at a given URL on the Wayback Machine. CDX, or crawl index records, is a metadata index generated during the crawling process describing web data archived by the Wayback Machine’s crawler. Aside from the CDX API, the Wayback Machine can also be queried through the [Memento Protocol API](https://ws-dl.blogspot.com/2013/07/2013-07-15-wayback-machine-upgrades.html) and the [Wayback Machine Availability API](https://archive.org/help/wayback_api.php). All three APIs are available free of charge, though the CDX Server API returns much more information about each archived snapshot of a given URL than the two other alternatives mentioned above, such as HTTP status codes and sizes of the snapshots. 
 
@@ -67,13 +67,17 @@ In addition to APIs, researchers may also be interested in accessing archived we
 
 ## Before you scrape: understanding the limits of web archives
 
-To ensure that we can interpret scraped archived web data correctly, it is important to know a number of important caveats when it comes to archived web content. Web archive scholars have long emphasized that archived web content differs significantly from traditional archival materials, and archived web content may not be identical to what existed online in the past. As Niels Brügger notes, an archived web page is "better understood as an actively created and subjective reconstruction" of what the original page may have looked like at a given point in time [^1]. There are three main factors responsible for this discrepancy: 
+To ensure that we can interpret scraped archived web data correctly, it is important to know a number of important caveats when it comes to archived web content. Web archive scholars have long emphasized that archived web content differs significantly from traditional archival materials, and archived web content may not be identical to what existed online in the past. As Niels Brügger notes, an archived web page is "better understood as an actively created and subjective reconstruction" of what the original page may have looked like at a given point in time [^1]. There are four main factors responsible for this discrepancy: 
 
-First, unlike print media, how content on the web looks and behaves depends on many technical and non-technical factors, such as the user's browser of choice, hardware and software configurations, geographical location, and local laws and regulations. A user visiting youtube.com from Seoul using a mobile device and a user visiting youtube.com from Singapore using a desktop computer will be greeted with two very different web pages. Even a web page with fixed content may be rendered differently in different web browsers - a problem less pronounced today than in the 1990s, when competing browser vendors attempted to set up proprietary web standards. When a web archive preserves a web page, it typically captures only what was served to the crawler at that particular time, from a particular location, using a particular set of hardware, software, and network configuration. As a result, the archived version may not reflect how the page may have appeared to different groups of users when it was available on the live web.
+First, unlike print media, how content on the web looks and behaves depends on many technical and non-technical factors, such as the user's browser of choice, hardware and software configurations, geographical location, and local laws and regulations. A user visiting youtube.com from Seoul using a mobile device and a user visiting youtube.com from Singapore using a desktop computer will be greeted with two very different web pages. When a web archive preserves a web page, it typically captures only what was served to the crawler at that particular time, from a particular location, using a particular set of hardware, software, and network configuration. As a result, the archived version may not reflect how the page may have appeared to different groups of users when it was available on the live web.
 
-Second, hardware and software today may differ significantly from those available when many archived web pages were originally created. A web page from the 1990s designed for 15-inch CRT monitors at 800 * 600 resolution may not be rendered correctly on an 32-inch ultrawide monitor made in 2024. Similarly, a modern web browser may not be able to display Flash animations that were popular in the 2000s. There are recent efforts such as oldweb.today [^OLDWEB] and Ruffle [^FLASHSUPPORT] that seek to address this issue through emulating old web browsers and implementing the capability to playback legacy media formats in today's browsers.
+Second, hardware and software today may differ significantly from those available when many archived web pages were originally created. A web page from the 1990s designed for 15-inch monitor at 800 * 600 resolution may not be rendered correctly on an 32-inch ultrawide monitor made in 2024. Similarly, a modern web browser may not be able to display Flash animations that were popular in the 2000s. There are recent efforts such as oldweb.today [^OLDWEB] and Ruffle [^FLASHSUPPORT] that seek to address this issue through emulating old web browsers and implementing the capability to playback legacy media formats in today's browsers.
 
-The third factor, and arguably the most important factor that you should be aware of before you start your own scraping project, is that archived web pages as they appear on web archives like the Wayback Machine are often not *temporally coherent*. For example, below is a screenshot of Wayback Machine's [archived snapshot](https://web.archive.org/web/19990202064014/http://hudir.hungary.com/) from February 2, 1999 of http://hudir.hungary.com/, an English-language web directory of Hungary-related links. The page features a banner ad that advertises an event to be held at a Ford car dealership in November 2004 \- which is certainly unusual for a web page ostensibly from 1999. This is a case of what some scholars call **temporal violation** or **time skew**. 
+Third, web archive crawlers are less 
+
+The third factor, and arguably the most important factor that you should be aware of before you start your own scraping project, is that archived web pages as they appear on web archives like the Wayback Machine are often not *temporally coherent*. For example, below is a screenshot of Wayback Machine's [archived snapshot](https://web.archive.org/web/19990202064014/http://hudir.hungary.com/) from February 2, 1999 of http://hudir.hungary.com/, an English-language web directory of Hungary-related links. The page features a banner ad that advertises an event to be held at a Ford car dealership in November 2004 \- which is certainly unusual for a web page ostensibly from 1999. This is a case of what some scholars call temporal violation or time skew. 
+
+{% include figure.html filename="hudir.png" alt="A screenshot of a Wayback Machine capture of hudir.hungary.com made on February 2, 1999" caption="A screenshot of " %}
 
 Time skew occurs on archived web pages on the Wayback Machine because it cannot always capture every element of a page at the exact same moment. A web page consists of an HTML document defining its structure and textual content, along with numerous auxiliary resources such as images that are linked in the HTML file. Ideally, all these resources should be archived at the same moment as the HTML file. In practice, this is often not possible due to network and hardware constraints. As a result, when the user selects an archived snapshot of a web page at a given date on the Wayback Machine's interface, the Wayback Machine will parse the archived HTML file, rewrite links to page resources to point them to archived copies that are captured on the closest date to the date specified, and serve the resulting page to the user.
 
@@ -83,17 +87,13 @@ This process, also known as **recomposition** or **replay** in web archive liter
 
 To better understand how the Wayback Machine serves archived web content, let’s observe an archived snapshot of Google’s home page saved by the Wayback Machine in 1999, available at [https://web.archive.org/web/19990117032727/http://www.google.com/](https://web.archive.org/web/19990117032727/http://www.google.com/). 
 
-### URL components
-
 We can begin by looking at the URL itself. Typically, the URL of an archived web resource on the Wayback Machine looks like this:
 
 ```
 https://web.archive.org/web/[timestamp in yyyymmddhhmmss][optional request flag]/[original URL]
 ```
 
-The timestamp in the URL is in Coordinated Universal Time (UTC). Therefore, this particular snapshot of Google’s home page was captured on January 17, 1999, 03:27:27 UTC. The timestamp is sometimes followed by an optional request flag, whose role we will explain shortly. 
-
-If you provide an incomplete timestamp, or a timestamp on which the Wayback Machine does not have an archived snapshot of the given URL, the Wayback Machine will automatically find and return the snapshot captured at the closest available timestamp to the one given. For example, if you visit [https://web.archive.org/web/**19990116**/http://www.google.com/](https://web.archive.org/web/19990116/http://www.google.com/), the Wayback Machine will automatically redirect you to the archived snapshot of [google.com](http://Google.com) captured at the closest available timestamp to 19990116, which is 19990117032727. This behavior applies to all types of archived web content - including web pages, images, videos, and other types of media. 
+The timestamp in the URL is in Coordinated Universal Time (UTC). Therefore, this particular snapshot of Google’s home page was captured on January 17, 1999, 03:27:27 UTC. The timestamp is sometimes followed by an optional request flag, whose role we will explain shortly. If you provide an incomplete timestamp, or a timestamp on which the Wayback Machine does not have an archived snapshot of the given URL, the Wayback Machine will automatically find and return the snapshot captured at the closest available timestamp to the one given. For example, if you visit [https://web.archive.org/web/**19990116**/http://www.google.com/](https://web.archive.org/web/19990116/http://www.google.com/), the Wayback Machine will automatically redirect you to the archived snapshot of [google.com](http://Google.com) captured at the closest available timestamp to 19990116, which is 19990117032727. This behavior applies to all types of archived web content - including web pages, images, videos, and other types of media. 
 
 ### Examining time skew using the Wayback Machine toolbar
 
@@ -137,9 +137,11 @@ Researchers scraping the Wayback Machine may find the following two flags useful
 The Wayback Machine’s CDX Server API allows us to see all available archived snapshots of a given URL on the Wayback Machine, along with metadata of these snapshots. In other words, the CDX Server API provides us with the same information that we may access through the Wayback Machine’s calendar interface, but we will be able to process the information programmatically using a language like Python. The API supports all types of archived web files, not just web pages. 
 
 Accessing the Wayback Machine’s CDX API is as simple as accessing any other REST APIs. The URL endpoint to access the API is: 
+
 ```
 http://web.archive.org/cdx/search/cdx?url=[The URL you want to check available archived snapshots thereof]
 ```
+
 Using Python’s requests library, we can make a simple request to query all available archived snapshots of a given URL. As an example, here are the results of all available archived snapshots of [lycos.co.jp](http://lycos.co.jp), the Japanese version of the Lycos, a web search engine popular in the 1990s and early 2000s: 
 
 ```python
@@ -193,7 +195,7 @@ Our new API request returns only 70 results. In contrast, our original API reque
 
 ## Choosing a download method
 
-Most of the tools for scraping live websites can be used to download archived pages from the Wayback Machine. In this tutorial, we will rely on Python’s requests library because it’s lightweight, easy to script, and handles basic HTTP fetches reliably. 
+Most of the tools for scraping live websites can be used to download archived pages from the Wayback Machine. In this lesson, we will rely on Python’s requests library because it’s lightweight, easy to script, and handles basic HTTP fetches reliably. 
 
 An inherent limitation of downloading the HTML data using requests or a download tool like wget is that any on-page client-side JavaScript content is not executed. Some web pages may use JavaScript to populate content or redirect users to another web page. If you find yourself needing to scrape historical web pages that involve heavy client-side scripting, consider using a browser automation framework such as Selenium or Puppeteer. These tools can help you launch a real browser to download the web pages, and they are able to execute scripts and let you interact with the page and select particular page elements for scraping. However, these tools generally demand more system resources, and you need to check whether replaying archived scripts might alter the integrity or authenticity of the content you are examining. 
 
@@ -258,13 +260,13 @@ In this section, we will give a brief overview of how common types of web media 
 
 Images are inserted into a web page with the `<img>` tag, with the path to the image recorded in the `src` attribute of the `<img>` element. Many images also come with an `alt` attribute, which provides a textual description of the image usually known as alt text. The alt text is usually displayed when the image cannot be loaded, or if the user is using a screen reader. For researchers today, the alt text might be helpful to identify the intended content or function of an image when the original file is missing or when conducting textual analysis of archived pages.
 
-In web pages from the 1990s and early 2000s, it was also a common practice to specify image height and width using height and width attributes in the `<img>` element. This allows browsers to finish rendering the layout of the web page even when the image is not fully loaded or if it fails to load. Researchers today may use the provided width and height information to find images fitting specific dimensions, which we will demonstrate in our case study.  
+In web pages from the 1990s and early 2000s, it was also a common practice to specify image height and width using `height` and `width` attributes in the `<img>` element. This allows browsers to finish rendering the layout of the web page even when the image is not fully loaded or if it fails to load. Researchers today may use the provided width and height information to find images fitting specific dimensions, which we will demonstrate in our case study.  
 
 As mentioned above, by default the Wayback Machine rewrites image URLs with the `im_` request flag. You should append the same flag when scraping the image files to ensure that you get the original image files. 
 
 ### Sound and video
 
-On web pages authored in the 2010s and later, sound files and video files are usually embedded using the `<audio>` and `<video>` tags (the two tags are used essentially in the same way). The following example HTML snippet is taken from an [archived snapshot](https://web.archive.org/web/20150411044752/https://www.wework.com/) of the home page of WeWork from 2014, which contains a video background:
+On web pages authored in the 2010s and later, sound files and video files are usually embedded using the `<audio>` and `<video>` tags, and the syntax of both tags are very similar. The following example HTML snippet is taken from an [archived snapshot](https://web.archive.org/web/20150411044752/https://www.wework.com/) of the home page of WeWork from 2014, which contains a video background:
 
 ```html
 <video autoplay="autoplay" id="myvideo" loop="loop" muted="muted" src="//web.archive.org/web/20150411044752im_/https://da6bhbkkgqxyz.cloudfront.net/production/assets/welcome/wework_members-video_background_small-92daabed06e4e3aafdede211d9070544.mp4"></video>
@@ -284,7 +286,7 @@ Some web pages may employ custom media players, which may make the media files l
 
 `<embed>` and `<object>` are two HTML tags commonly used to add non-image media resources on web pages  in the 1990s and early 2000s. During the browser wars of the late 1990s, `<embed>` was preferred by Netscape while Internet Explorer pushed the `<object>` element as a container for web media content. As a result, many early webpages included both tags (often nested) to ensure their media would play correctly in whichever browser the visitor used [^BROWSERWAR]. 
 
-Fortunately, you will be able to find out the path to the content linked using information contained in either tag. The following is a real-life example, taken from an archived snapshot of the website of the [Integrated Digital Media Program]((https://web.archive.org/web/20040625234530/http://www.poly.edu:80/huss/idm/idmi.html)) of the Polytechnic University in New York (Now NYU Tandon School of Engineering), featuring Shockwave content:     
+Fortunately, you will be able to find out the path to the content linked using information contained in either tag. The following is a real-life example, taken from an archived snapshot of the website of the [Integrated Digital Media Program]((https://web.archive.org/web/20040625234530/http://www.poly.edu:80/huss/idm/idmi.html)) of NYU's Tandon School of Engineering, featuring Shockwave content:
 
 ```html
 <object classid="clsid:166B1BCA-3F9C-11CF-8075-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/director/sw.cab#version=8,5,0,0" width="800" height="600">
@@ -306,6 +308,10 @@ In most cases, types of different embedded media files can be distinguished by t
 | Macromedia Director (Shockwave) | dcr |
 | Macromedia Flash | swf |
 | VRML | wrl, wrz |
+
+
+# Case study: scraping Japanese banner ads from 2000
+
 
 
 # Further readings
