@@ -53,7 +53,7 @@ By the end of this lesson, you will learn:
 
 The rest of the lesson is roughly structured into two parts. In the first part, we will briefly review how the Wayback Machine works, its limitations, and introduce the Wayback Machine CDX Server API, which allows us to access archived content on the Wayback Machine programmatically. Next, we will showcase how to detect and scrape different types of media content on an archived web page, with a focus on legacy formats that you may encounter in web pages from the 1990s-early 2000s. 
 
-The second part is a case study where we will use the tools and techniques we introduced in the first part to scrape the Wayback Machine for banner ads appearing on popular Japanese websites in the month of May 2000. We will look at how such a dataset can 
+The second part is a case study where we will use the tools and techniques we introduced in the first part to scrape the Wayback Machine for banner ads appearing on popular Japanese websites in the month of May 2000. We will look at how such a dataset can TKTKTKTK
 
 
 # Getting started with programmatic access to the Wayback Machine
