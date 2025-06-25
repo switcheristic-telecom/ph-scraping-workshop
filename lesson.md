@@ -79,13 +79,17 @@ The third factor, and arguably the most important factor that you should be awar
 
 {% include figure.html filename="hudir.png" alt="A screenshot of a Wayback Machine capture of hudir.hungary.com made on February 2, 1999" caption="A screenshot of " %}
 
-Time skew occurs on archived web pages on the Wayback Machine because it cannot always capture every element of a page at the exact same moment. A web page consists of an HTML document defining its structure and textual content, along with numerous auxiliary resources such as images that are linked in the HTML file. Ideally, all these resources should be archived at the same moment as the HTML file. In practice, this is often not possible due to network and hardware constraints. As a result, when the user requests an archived snapshot of a web page on the Wayback Machine's web interface, the Wayback Machine will parse the retrieve the archived HTML file, rewrite links to page resources to point them to archived copies that are captured on the closest date to the date specified, and serve the resulting page to the user.
+Time skew occurs on archived web pages on the Wayback Machine because it cannot always capture every element of a page at the exact same moment. A web page consists of an HTML document defining its structure and textual content, along with numerous auxiliary resources such as images that are linked in the HTML file. Ideally, all these resources should be archived at the same moment as the HTML file. In practice, this is often not possible due to network and hardware constraints. 
 
-This process, also known as **composition** or **replay** in web archive literature, delivers a "best effort" web page that may resemble its past appearance and functionalities. However, it also means that parts of the page may come from different moments in time, which can result in misleading combinations of content that never actually appeared together in the live web version. For researchers, time skews can complicate historical interpretation and raises important questions about what exactly an archived web page represents. When we scrape media resources on archived web pages on the Wayback Machine, we need to pay attention to whether - and to what extent - the resources we are scraping suffer from time skew. We will demonstrate how to detect time skew both from the Wayback Machine interface and programmatically in the sections to follow. 
+As a result, when the user requests an archived snapshot of a web page on the Wayback Machine's web interface, the Wayback Machine delivers a "best effort" web page where the resources on the page may be loaded from the archived snapshots of themselves captured at a different date that is closest to the HTML's capture date. The resulting page may resemble its past appearance and functionalities. However, it also means that parts of the page may come from different moments in time, which can result in misleading combinations of content that never actually appeared together in the live web version. 
+
+The Wayback Machine allows us to see the capture dates of linked resources on the archived web page by clicking “About this capture” on the toolbar [^TOOLBAR] that appears by default when you load an archived snapshot from its calendar interface. In the above example, the banner ad image was captured in November 2004 - 5 years and 10 months after the capture date of the web page. 
+
+For researchers, time skews can complicate historical interpretation and raises important questions about what exactly an archived web page represents. When we scrape media resources on archived web pages on the Wayback Machine, we need to pay attention to whether - and to what extent - the resources we are scraping suffer from time skew. We will demonstrate how to detect time skew both from the Wayback Machine interface and programmatically in the sections to follow. 
 
 ## Anatomy of an archived web page on the Wayback Machine
 
-To better understand how the Wayback Machine serves archived web content, let’s observe an archived snapshot of Google’s home page saved by the Wayback Machine in 1999, available at [https://web.archive.org/web/19990117032727/http://www.google.com/](https://web.archive.org/web/19990117032727/http://www.google.com/). 
+To better understand how the Wayback Machine serves archived web content, let’s observe an archived snapshot of Google’s home page saved by the Wayback Machine in 1999, available at [https://web.archive.org/web/19990117032727/http://www.google.com/](https://web.archive.org/web/19990117032727/http://www.google.com/). Click the link, and you should be able to see an archived snapshot of Google's homepage. 
 
 We can begin by looking at the URL itself. Typically, the URL of an archived web resource on the Wayback Machine looks like this:
 
@@ -93,21 +97,11 @@ We can begin by looking at the URL itself. Typically, the URL of an archived web
 https://web.archive.org/web/[timestamp in yyyymmddhhmmss][optional request flag]/[original URL]
 ```
 
-The timestamp in the URL is in Coordinated Universal Time (UTC). Therefore, this particular snapshot of Google’s home page was captured on January 17, 1999, 03:27:27 UTC. The timestamp is sometimes followed by an optional request flag, whose role we will explain shortly. If you provide an incomplete timestamp, or a timestamp on which the Wayback Machine does not have an archived snapshot of the given URL, the Wayback Machine will automatically find and return the snapshot captured at the closest available timestamp to the one given. For example, if you visit [https://web.archive.org/web/**19990116**/http://www.google.com/](https://web.archive.org/web/19990116/http://www.google.com/), the Wayback Machine will automatically redirect you to the archived snapshot of [google.com](http://Google.com) captured at the closest available timestamp to 19990116, which is 19990117032727. This behavior applies to all types of archived web content - including web pages, images, videos, and other types of media. 
+### Timestamp and timestamp redirection behavior
 
-### Examining time skew using the Wayback Machine toolbar
+The timestamp in the URL is in Coordinated Universal Time (UTC). Therefore, this particular snapshot of Google’s home page was captured on January 17, 1999, 03:27:27 UTC. The timestamp is sometimes followed by an optional request flag, whose role we will explain shortly. 
 
-Now, you can open the URL in your browser, and you will be greeted with an archived version of Google’s homepage in 1999.
-
-{% include figure.html filename="google-screenshot-1.png" alt="A screenshot of a Wayback Machine capture of google.com made on January 17, 1999, 03:27:27 UTC" caption="Wayback Machine capture of google.com made on January 17, 1999" %}
-
-The first thing you may notice is the existence of a toolbar on the top of the page. The toolbar allows you to quickly navigate between archived snapshots captured at different points in time. It also allows you to view timestamps of linked resources on the archived web page by clicking “About this capture” [^TOOLBAR], which should give you a sense of to what degree the page suffers from time skew. 
-
-{% include figure.html filename="google-screenshot-about-capture.png" alt="A screenshot of a Wayback Machine capture of google.com made on January 17, 1999, 03:27:27 UTC, with the About This Capture toolbar section open" caption="Wayback Machine capture of google.com made on January 17, 1999, displaying About This Capture section" %}
-
-In our case, we can see that the Google logo \- the only image file on the page \- is actually archived 3 months 17 days from the timestamp of the current snapshot. While this is technically a mild case of time skew, we can be sure that the logo should be identical to what may have been displayed on Google’s website on the date of the page snapshot by triangulating with other sources. In contrast, the Hungarian Ford advertisement in the example given in the last section was captured in November 2004 - 5 years and 10 months after the capture date of the web page. 
-
-### Inspecting the archived web page
+If you provide an incomplete timestamp, or a timestamp on which the Wayback Machine does not have an archived snapshot of the given URL, the Wayback Machine will automatically find and return the snapshot captured at the closest available timestamp to the one given. For example, if you visit [https://web.archive.org/web/**19990116**/http://www.google.com/](https://web.archive.org/web/19990116/http://www.google.com/), the Wayback Machine will automatically redirect you to the archived snapshot of [google.com](http://Google.com) captured at the closest available timestamp to 19990116, which is 19990117032727. This behavior applies to all types of archived web content - including web pages, images, videos, and other types of media. 
 
 Next, we can examine the source code of the archived web page using the inspector, which is a browser feature that allows us to view elements on the page and their corresponding sections in the HTML source code. On most browsers, you can press Ctrl+Shift+I (Windows/Linux) or Cmd+Option+I (Mac) to open the inspector. 
 
@@ -226,13 +220,14 @@ If you are using browser automation software like Selenium to download web pages
 
 ## Dealing with frames
 
-In the late 1990s and early 2000s, the HTML frame was a popular yet controversial method used by some web developers to build complicated page layouts, such as independently scrollable navigation sections. Here is an example of a web page built using frames: 
+In the late 1990s and early 2000s, the HTML frame was a popular yet controversial method used by some web developers to build complicated page layouts, such as independently scrollable navigation sections. Here is an example of a an archived snapshot of a web page built using frames: 
 
 ```
 
+
 ```
 
-## Dealing Wayback Machine rate limiting
+## Dealing with Wayback Machine rate limiting
 
 Like many public web services, the Wayback Machine employs rate limiting to prevent server overload from excessive requests. The Wayback Machine currently does not make its thresholds for rate limiting public, though there are [user reports](https://github.com/edgi-govdata-archiving/wayback/issues/137#issuecomment-1845803523) citing conversations with Internet Archive employees confirming the existence of rate limiting thresholds. When you exceed rate limits, the Wayback Machine may temporarily block your IP address or return HTTP error codes like 429 (Too Many Requests) or 503 (Service Temporarily Unavailable). 
 
