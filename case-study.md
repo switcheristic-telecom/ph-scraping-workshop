@@ -2,7 +2,7 @@
 
 In the rest of this lesson, you will build a dataset of banner ads appearing on popular Japanese-language websites in the year 2000 by scraping the Wayback Machine. Such a dataset can help researchers in several areas, including researchers working on the history of web advertising, e-commerce, online visual culture, and web archiving. 
 
-In 2023, the authors of this lesson built Banner Depot 2000, a 
+
 
 ## Download the lesson materials
 
@@ -26,28 +26,15 @@ Extract the zip file to create your project directory. The archive contains:
 - `util.py` - Shared utility functions
 - `banner-ads-summary-reference.csv` - Reference summary of the banner ads collection
 
-## Building a list of historical URLs to scrape
+## Building a seed URL list to scrape
 
-For our study, we need a sample of popular Japanese websites from 2000. The media company Nikkei BP published a list of the top 50 most visited websites by home users in Japan in May 2000, which has been preserved in a 2000 study about cultural differences in e-commerce between the United States and Japan [^PAPER]. We are going to use the list as the basis for scraping. 
+For our study, we need a sample of popular Japanese websites. The media company Nikkei BP published a list of the top 50 most visited websites by home users in Japan in May 2000, which has been preserved in a 2000 study about cultural differences in e-commerce between the United States and Japan [^PAPER]. We are going to use the list as the basis for scraping. Using archived , e further narrow our target down to 
 
-To make the analysis more focused, we added two columns indicating the language and the category of the website. Using archived versions of these websites as well as information about them on Wikipedia, we manually categorized the sites using the same categorization scheme as the original study: portal (web directories and search engines), content (news, entertainment), services (web-based tools), ISP (internet service providers), shopping (e-commerce), and corporate (company websites). The final CSV file looks like this: 
-
-```csv
-# nikkeibp-may2000.csv
-rank,website,is_japanese,category
-1,yahoo.co.jp,true,portal
-2,microsoft.com,false,corporate
-```
-
-For this lesson, we will focus specifically on Japanese-language websites in the portal and content categories. These types of sites were most likely to feature banner advertising, since they relied on attracting large audiences and generating revenue through ads. This gives us 16 websites to examine - a manageable number for learning purposes while still providing enough data for meaningful analysis.
-
-## Querying for snapshot availability from the Wayback Machine
-
-Now we will use the CDX Server API to find archived snapshots the Wayback Machine has available for each site from the month of May 2000.
-
-
+## Downloading web pages
 ### Working with the CDX API
-Now, we will construct a utility function to query the Wayback Machine CDX Server API. We use the tenacity library to decorate our query_wm_cdx_entries function so that any transient failures (like timeouts or rate-limits) automatically trigger up to 10 retry attempts, with an exponential back-off wait (starting at 2 seconds, doubling each time up to 32 s) and an extra 2 seconds pause after each failed try.
+First, we will construct a utility function to query the Wayback Machine CDX Server API. The function 
+
+We use the tenacity library to decorate our query_wm_cdx_entries function so that any transient failures (like timeouts or rate-limits) automatically trigger up to 10 retry attempts, with an exponential back-off wait (starting at 2 seconds, doubling each time up to 32 s) and an extra 2 seconds pause after each failed try.
 
 ```python
 # util.py (part 1)
@@ -524,11 +511,7 @@ data/
 
 ### Banner Ad Dimensions Detection
 
-As mentioned earlier, in the late 1990s and early 2000s, web developers usually put dimensions in `<img>` tags to help the browser render the layout of the web page before the image loads. We can take advantage of the dimensions provided in the <img> tags to detect banner ads, because banner ad sizes 
-
-
-
-The banner ad dimension standards come from two sources: the `⁠iab-banner-ad-dimensions.csv` contains International Advertising Bureau standards, while ⁠`jiaa-banner-ad-dimensions.csv` contains standards from the Japan Interactive Advertising Association. Both data were sourced from the Japanese book "図解 インターネット広告" (Illustrated Internet Advertising), which documented early Japanese web advertising practices.
+As mentioned earlier, in the late 1990s and early 2000s, web developers usually put dimensions in `<img>` tags to help the browser render the layout of the web page before the image loads. We can take advantage of the dimensions provided in the <img> tags to detect banner ads. 
 
 There is a function in `⁠util.py` to check if image dimensions match banner ad criteria:
 

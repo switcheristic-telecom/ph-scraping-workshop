@@ -58,7 +58,7 @@ The second part is a case study where we will use the tools and techniques we in
 
 # Getting started with programmatic access to the Wayback Machine
 
-There are different ways to access archived web content on the Wayback Machine programmatically. In this tutorial, we are going to use the Wayback Machine’s CDX Server API to retrieve available archived copies of web resources at a given URL on the Wayback Machine. Aside from the CDX Server API, the Wayback Machine can also be queried through the [Memento Protocol API](https://ws-dl.blogspot.com/2013/07/2013-07-15-wayback-machine-upgrades.html) and the [Wayback Machine Availability API](https://archive.org/help/wayback_api.php). All three APIs are available free of charge, though the CDX Server API returns much more information about archived web content than the two other alternatives mentioned above, such as sizes of the archived files and their HTTP response codes, which can indicate whether a file is archived successfully. 
+There are different ways to access archived web content on the Wayback Machine programmatically. In this tutorial, we are going to use the Wayback Machine’s CDX Server API to retrieve available archived copies of web resources at a given URL on the Wayback Machine. Aside from the CDX Server API, the Wayback Machine can also be queried through the [Memento Protocol API](https://ws-dl.blogspot.com/2013/07/2013-07-15-wayback-machine-upgrades.html) and the [Wayback Machine Availability API](https://archive.org/help/wayback_api.php). All three APIs are available free of charge, though the CDX Server API provides much more information about archived web content than the other two APIs, such as sizes of the archived files and their HTTP response codes, which can indicate whether a file is archived successfully. 
 
 In addition to APIs, researchers may also be interested in accessing archived web content through integrated research platforms such as the Internet Archive’s [Archives Research Compute Hub](https://archive-it.org/arch/) [^ARCH]. Researchers intending to use these platforms generally need to have access to raw archived web content in WARC format or enter a partnership with an archiving organization such as the Internet Archive, but they can provide advanced features such as full-text search and data visualization. If your research involves a large number of URLs that makes manually scraping impractical, using a research toolkit or platform might be a better choice. 
 
@@ -67,7 +67,7 @@ In addition to APIs, researchers may also be interested in accessing archived we
 
 The earliest institutional attempts to preserve information available on the web started shortly after the web became the main medium for the presentation and transmission of information over the Internet around the mid-1990s. The ensuing years saw the emergence of a range of web archiving initiatives. Founded in 1996, the Internet Archive’s Wayback Machine is the world’s first web archive, and today it holds billions of web pages from around the world, publicly accessible through its website at [web.archive.org](http://web.archive.org). Given its founding date and the worldwide scope of its collection, the Wayback Machine is also the only place where some of the earliest web pages on the Internet may be found. 
 
-The Wayback Machine proactively archives the web, mainly by running a web crawler, which is a program that systematically browses and downloads content on the web to be archived. Any content on the web - be it a web page, a photo, an audio clip, or even a software installer in a zip file - that is saved from the web at a particular point in time is commonly referred to as an archived snapshot, and we often use the verbs crawl and capture to refer to the act of saving web content for inclusion in the archive. 
+The Wayback Machine proactively archives the web, mainly by running a web crawler, which is a program that systematically browses and downloads content on the web to be archived. Any content on the web - be it a web page, a photo, an audio clip, or even a software installer in a zip file - that is saved from the web at a particular point in time is commonly referred to as an archived snapshot, and we often use the verb capture to refer to the act of saving web content for inclusion in the archive. 
 
 Web archive scholars have long emphasized that web archives differs significantly from traditional archives, and archived web content may not be identical to what existed online in the past. As web archive scholar Niels Brügger writes, an archived web page is "better understood as an actively created and subjective reconstruction" of what the original page may have looked like at a given point in time [^1]. There are three main factors responsible for this discrepancy: 
 
@@ -79,7 +79,7 @@ The third factor, and arguably the most important factor that you should be awar
 
 {% include figure.html filename="hudir.png" alt="A screenshot of hudir.hungary.com in 1999 displaying a banner ad promoting an event in 2004" caption="A screenshot of hudir.hungary.com in 1999 displaying a banner ad promoting an event in 2004" %}
 
-Time skew occurs on the Wayback Machine because the web crawler program cannot always capture every element of a web page at the exact same moment. As a result, when the user requests an archived snapshot of a web page on the Wayback Machine's web interface, the Wayback Machine delivers a "best effort" reconstruction of how an archived web page may look and behave in the past: it modifies URLs of linked resources on the archived page so that they may be loaded from the closest available versions in the archive, even if those versions were captured on different dates. The resulting page may resemble the past appearance and functionalities of the original web page. However, it also means that parts of the page may come from different moments in time, which can result in misleading combinations of content that never actually appeared together. 
+Time skew occurs on the Wayback Machine because the web crawler program cannot always capture every element of a web page at the exact same moment. As a result, when the user requests an archived snapshot of a web page on the Wayback Machine's web interface, the Wayback Machine delivers a "best effort" reconstruction of how an archived web page may look and behave in the past: it modifies URLs of linked resources on the archived page so that they may be loaded from the closest available versions in the archive, even if those versions were captured on different dates. The resulting page may resemble the past appearance and functionalities of the original web page. However, it also means that parts of the page may come from different moments in time - sometimes months or even years apart from each other - which can result in misleading combinations of content that never actually appeared together. 
 
 The Wayback Machine allows us to see the capture dates of linked resources on an archived web page by clicking “About this capture” on the toolbar [^TOOLBAR] that appears by default when you load an archived snapshot from its calendar interface. In the above example, the banner ad image was captured in November 2004 - 5 years and 10 months after the capture date of the web page - and it is not even the most time skewed element on the web page, with two GIF images on the page captured 17 years after the web page's capture date. 
 
@@ -116,7 +116,7 @@ Lastly, you may notice the rewritten image URL contains a request flag `im_`.  A
 - `cs_` and `js_`: These flags are usually added to CSS and JavaScript files by the Wayback Machine when serving an archived web page. These flags tell the Wayback Machine to rewrite any URLs in these files to point to their archived versions according to the timestamp provided, and add a note of archival capture information to the file. To retrieve CSS and JS files as they are originally archived, use the `id_` flag as described below.   
 - `oe_`: Similar to `im_`, but is used for embedded objects like Flash, Shockwave, VRML, etc. 
 - `id_`: This flag instructs the Wayback Machine to return an archived web page without modifying any URLs in the document. This will cause many in-page resources to fail to load in a browser, but it allows researchers to analyze the original HTML exactly as it was archived. 
-- `if_` and `_fw`: This flag removes the Wayback Machine toolbar from an archived web page, but the URLs of resources and hyperlinks will still be rewritten. Useful for capturing screenshots, or if you want to take advantage of the rewritten URLs during the scraping process. These flags are originally designed to be used by the Wayback Machine when replaying archived web content involving `<iframe>` and `<frame>` elements, which we will cover later in the lesson. 
+- `if_` and `_fw`: Both flags remove the Wayback Machine toolbar from an archived web page, but the URLs of resources and hyperlinks will still be rewritten. Useful for capturing screenshots, or if you want to take advantage of the rewritten URLs during the scraping process. These flags are originally designed to be used by the Wayback Machine when replaying archived web content involving `<iframe>` and `<frame>` elements, which we will cover later in the lesson. 
 
 
 ## Using the Wayback Machine CDX Server API
@@ -182,9 +182,22 @@ Our new API request returns only 70 results. In contrast, our original API reque
 
 ## Choosing a download method
 
-Most of the tools for scraping live websites can be used to download archived pages from the Wayback Machine. In this lesson, we will rely on Python’s requests library because it’s lightweight, easy to script, and handles basic HTTP fetches reliably. 
+Most of the tools for scraping live websites can be used to download archived pages from the Wayback Machine. In this lesson, we will rely on Python’s requests library because it’s lightweight, easy to script, and handles basic HTTP fetches reliably.  
 
-An inherent limitation of downloading the HTML data using requests or a download tool like wget is that any on-page client-side JavaScript is not executed. Some web pages may use JavaScript to populate content or redirect users to another web page. If you find yourself needing to scrape historical web pages that involve client-side scripting, consider using a browser automation framework such as Selenium or Puppeteer. However, these tools generally demand more system resources, and you need to check whether executing archived scripts might alter the integrity or authenticity of the content you are examining. 
+An inherent limitation of downloading the HTML data using requests or a download tool like wget is that any on-page client-side JavaScript is not executed. Some web pages may use JavaScript to populate content or redirect users to another web page. If you find yourself needing to scrape historical web pages that involve client-side scripting, consider using a browser automation framework such as [Selenium](https://www.selenium.dev/) or [Puppeteer](https://pptr.dev/). However, these tools generally demand more system resources, and you need to check whether executing archived scripts might alter the integrity or authenticity of the content you are examining. 
+
+## Downloading from the Wayback Machine while detecting time skew
+
+In the following example, we present a simple Python function that uses the requests library to download content from the Wayback Machine while detecting potential time skew. 
+
+```python
+from datetime import datetime # used to calculate time difference
+import requests
+
+def download_wm_snapshot(snapshot_url, file_name): 
+    [CODE TK]
+
+```
 
 ## Dealing with legacy encoding for non-English web pages
 
@@ -213,16 +226,33 @@ If you are using browser automation software like Selenium to download web pages
 
 ## Dealing with frames
 
-In the late 1990s and early 2000s, the HTML frame was a popular yet controversial method used by some web developers to build complex page layouts, such as independently scrollable navigation sections. For example, the 
+In the late 1990s and early 2000s, the `<frame>` element was a popular yet controversial method used by some web developers to build complex page layouts. 
 
+In lieu of a `<body>` element under the `<head>` element, a `<frame>`-based web page consists of a parent `<frameset>` element that defines how the browser window is divided into separate `<frame>`s. Each `<frame>` then loads its own HTML document. While this approach allowed for modular design, it also introduced accessibility, usability, and archival challenges. 
+
+The example below is taken from a [2000 snapshot](https://web.archive.org/web/20000620031256/http://www.zooregon.org/) of the website of the Oregon Zoo in the United States. This web page is divided into two frames: a frame for displaying the navigation section on the left, and a content frame on the right. 
+
+Load the URL in your browser and open the inspector, and the first thing that you may notice is that the archived web page is encapsulated in an `<iframe>` element with its `id` as `playback`. If you append the `if_` or `id_` flag to the timestamp, you will be able to access the archived web page without the `<iframe>` encapsulation. Part of the archived HTML file is reproduced below: 
+
+```html
+<head>...</head>
+<frameset>
+    <noframes>
+	    <body>This site requires Netscape 3.0 or IE 3.0 or higher.</body>
+    </noframes>
+	<frame noresize="" src="/web/20000620031256fw_/http://www.zooregon.org/menuframe.htm" name="menuframe" scrolling="no" data-ruffle-polyfilled="">
+	<frame noresize="" src="/web/20000620031256fw_/http://www.zooregon.org/bodyframe.htm" name="bodyframe" scrolling="auto" data-ruffle-polyfilled="">
+</frameset>
 ```
 
+As you may see, each `<frame>` has its own `src` attribute that has the URL of the embedded HTML document, with an `fw_` request flag. While you can see the HTML code of the web page embedded in each frame in the inspector window, you will need to fetch the embedded HTML pages separately if you download the main web page using requests. 
 
-```
+This also raises a challenge, as you need to figure out when the document in each frame was archived, and in turn when the resources in each embedded document was archived, in order to assess whether the main web page itself and its frames (and, possibly, frames inside them) suffer from time skew. In the following example, we use a Python function to process 
+
 
 ## Dealing with Wayback Machine rate limiting
 
-Like many public web services, the Wayback Machine employs rate limiting to prevent server overload from excessive requests. The Wayback Machine currently does not make its thresholds for rate limiting public, though there are [user reports](https://github.com/edgi-govdata-archiving/wayback/issues/137#issuecomment-1845803523) citing conversations with Internet Archive employees confirming the existence of rate limiting thresholds. When you exceed rate limits, the Wayback Machine may temporarily block your IP address or return HTTP error codes like 429 (Too Many Requests) or 503 (Service Temporarily Unavailable). 
+Like many public web services, the Wayback Machine employs rate limiting to prevent server overload from excessive requests. The Wayback Machine currently does not make its thresholds for rate limiting public, though there are [user reports](https://github.com/edgi-govdata-archiving/wayback/issues/137#issuecomment-1845803523) citing conversations with Internet Archive employees confirming the existence of rate limiting for both the CDX Server API and the web archive. When you exceed rate limits, the Wayback Machine may temporarily block your IP address or return HTTP error codes like 429 (Too Many Requests) or 503 (Service Temporarily Unavailable). 
 
 To handle these limitations, we can implement an [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) retry strategy using Python's `⁠tenacity` library. This approach automatically retries failed requests with progressively longer delays between attempts:
 
