@@ -37,7 +37,7 @@ You can follow the lesson on any mainstream operating system you prefer, includi
 - pillow  
 - tenacity 
 
-We recommend that you install [Anaconda](https://anaconda.org/), a distribution of Python specifically designed for data science research for this lesson. A standard installation of Anaconda includes the first three libraries, and you can easily install tenacity by running `pip install tenacity`. Refer to the Programming Historian course [Installing Python Modules with pip](https://programminghistorian.org/en/lessons/installing-python-modules-pip) for more information.  
+We recommend that you install [Anaconda](https://anaconda.org/), a distribution of Python specifically designed for data science research for this lesson. A standard installation of Anaconda includes the first three libraries, and you can easily install tenacity by running `pip install tenacity`. 
 
 ## Learning outcomes
 
@@ -213,7 +213,7 @@ If you are using browser automation software like Selenium to download web pages
 
 ## Dealing with frames
 
-In the late 1990s and early 2000s, the HTML frame was a popular yet controversial method used by some web developers to build complicated page layouts, such as independently scrollable navigation sections. Here is an example of a an archived snapshot of a web page built using frames: 
+In the late 1990s and early 2000s, the HTML frame was a popular yet controversial method used by some web developers to build complex page layouts, such as independently scrollable navigation sections. For example, the 
 
 ```
 
