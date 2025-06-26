@@ -247,7 +247,7 @@ Load the URL in your browser and open the inspector, and the first thing that yo
 
 As you may see, each `<frame>` has its own `src` attribute that has the URL of the embedded HTML document, with an `fw_` request flag. While you can see the HTML code of the web page embedded in each frame in the inspector window, you will need to fetch the embedded HTML pages separately if you download the main web page using requests. 
 
-This also raises a challenge, as you need to figure out when the document in each frame was archived, and in turn when the resources in each embedded document was archived, in order to assess whether the main web page itself and its frames (and, possibly, frames inside them) suffer from time skew. In the following example, we use a Python function to process 
+This also raises a challenge, as you need to figure out when the document in each frame was archived, and in turn when the resources in each embedded document was archived, in order to assess whether the main web page itself and its frames (and, possibly, frames inside them) suffer from time skew. In the following example, we use a Python function to process TKTKTK
 
 
 ## Dealing with Wayback Machine rate limiting
@@ -337,6 +337,8 @@ In most cases, types of different embedded media files can be distinguished by t
 For web archives in historical research, see For a history of web archiving, see Ian Milligan's [Averting the Digital Dark Age: How Archivists, Librarians, and Technologists Built the Web a Memory](https://www.press.jhu.edu/books/title/53671/averting-digital-dark-age).  
 
 The Environmental Data and Governance Initiative (EDGI) produces a Python library aptly named *wayback* that packages a number of Wayback Machine CDX Server API features into Python functions that can be readily imported into your project. Refer to [https://github.com/edgi-govdata-archiving/wayback](https://github.com/edgi-govdata-archiving/wayback) for more information. 
+
+The Memento Framework ...
 
 HTML reference books published in the late 1990s and early 2000s are incredibly helpful for today’s researchers to understand web authoring practices prevalent in that era that are today largely forgotten. Some of the books are now available to borrow on the Internet Archive:
  
