@@ -10,13 +10,15 @@ In the case study, we are going to build a miniature version of that dataset by 
 
 ## Building a seed URL list to scrape
 
-To begin with, we will need a list of popular Japanese-language web pages to scrape banner ads from. For the purposes of this lesson, we are going to use a list of the top-50 most visited URLs by home Internet users in Japan in May 2000, produced by the Japanese financial media company Nikkei BP. The list was used in a study of e-commerce cultures in the United States and Japan in 2000 by Japanese Internet researcher Kumiko Aoki. 
+To begin with, we will need a list of popular Japanese-language web pages to scrape banner ads from. For the purposes of this lesson, we are going to use a list of the top-50 most visited URLs by home Internet users in Japan in May 2000, produced by the Japanese financial media company Nikkei BP. The list is cited and preserved in a comparative study of e-commerce cultures in the United States and Japan in 2000 by Japanese Internet researcher Kumiko Aoki. 
 
 In the study, Aoki made the following observation about ads on popular Japanese websites in May 2000: 
- - Overall, banner ads are used sparingly. Among  only three sites carried more than five banner ads. 
+ - Overall, banner ads are used sparingly. Among the 47 Japanese websites observed, only three sites carried more than five banner ads. 
  - Companies fill their websites with their own banner ads. 
 
-By scraping the dataset, we should be able to verify these claims. In addition, we will be able to see to how well these websites are archived on the Wayback Machine. 
+By scraping the dataset, we should be able to verify these claims. In addition, we will be able to see to how well these websites and banner ads featured on them are archived on the Wayback Machine. 
+
+### CSV file structure
 
 While it should be trivial to manually copy the content of the table to a CSV file, we have prepared the CSV file for you in advance for your convenience. You can download the CSV file, as well as a Python notebook containing all code snippets in the case study section [here](URL:TKTKTKTKTKTK). 
 
@@ -29,7 +31,6 @@ In the CSV file, we removed four websites that do not feature Japanese-language 
 To scrape banner ad images from these URLs, we need to first obtain available snapshots of these URLs on the Wayback Machine. To do this, we will use the CDX Server API. Since the CDX Server API is subject to rate limiting, we will decorate our download function with the tenacity library. Below, we define a reusable `retry` decorator using the tenacity library with these rules: 
  - `stop_after_attempt(10)`: Give up after 10 total tries.
  - `wait_exponential(multiplier=1, min=2, max=64)`: Between retries, wait an exponentially increasing interval: start at 2 seconds, then roughly 4, 8, 16, up to a ceiling of 64 seconds.
-
 
 ```python
 import tenacity, time
@@ -65,7 +66,7 @@ def download_cdx_data(url):
 
 Then, we will loop through all URLs in the CSV file, and download the CDX data for each URL. 
 
-As URLs tend to contain special characters such as slashes that may not be used in file names on most operating systems, we are going to calculate a [MD5 hash](https://en.wikipedia.org/wiki/MD5) for each URL in the list, and use the hash to identify URLs in our dataset. 
+As URLs tend to contain special characters such as slashes that may not be used in file names on most operating systems, we are going to calculate an [MD5 hash](https://en.wikipedia.org/wiki/MD5) for each URL in the list, and use the hash to identify URLs in our dataset. 
 
 ```python
 
@@ -106,7 +107,7 @@ for url in urls_data:
         print(f"Error fetching CDX data for {url['url']}: {e}")
 ```
 
-Depending on your Internet connection, the CDX Server API scraping might take 10-20 minutes to finish. You may see multiple attempts at downloading one URL - this is because the tenacity library is managing to retry downloading if a previous attempt has failed. Should the scraping process be interrupted, you should be able to rerun the code, and the code is able to detect any data already downloaded and resume downloading the rest of the data. 
+Depending on your Internet connection, the CDX Server API scraping might take 10-20 minutes to finish. You may see multiple attempts at downloading one URL - this is because the tenacity library automatically retries a request if a previous attempt has failed. Should the scraping process be interrupted, you should be able to rerun the code, and the code is able to detect any data already downloaded and resume downloading the rest of the data. 
 
 ### Downloading archived snapshots
 
@@ -149,25 +150,68 @@ def choose_random_snapshots_to_download(cdx_file_path, num_snapshots=2):
     selected_snapshots = random.sample(list(unique_snapshots), min(num_snapshots, len(unique_snapshots)))
     return selected_snapshots
 ```
-Now, we will use the above function to sample and download snapshots. We will employ the encoding detection mechanism built into the requests library and save all downloaded files in UTF-8 encoding for further processing. 
+Now, we will use the above function to sample and download snapshots. We will employ the encoding detection mechanism built into the requests library and save all downloaded files in UTF-8 encoding for further processing. The downloaded HTML files will be named as `[timestamp].html` and saved in the directory created for each URL. 
 
+```python
+# walk through all cdx files and download snapshots
+@retry
+def download_snapshot(url,timestamp):
+    time.sleep(0.5)  # While this establishes a with lower request frequency than 480 per second, we want to be conservative here so avoid hitting the rate limit
+    url = f"https://web.archive.org/web/{timestamp}id_/{url}"
+    response = requests.get(url)
+    response.encoding = response.apparent_encoding  
+    return response.text 
 
+# Download snapshots for each URL by iterating through the downloaded CDX files
+cdx_files = Path("data").glob("*/cdx.csv")
+for cdx_file in cdx_files:
+    print(f"Processing CDX file: {cdx_file}")
+    snapshots = choose_random_snapshots_to_download(cdx_file)
+    
+    for snapshot in snapshots:
+        url, timestamp = snapshot[2], snapshot[1]
+        print(f"Downloading snapshot for URL: {url} at timestamp: {timestamp}...")
+        
+        try:
+            html_content = download_snapshot(url, timestamp)
+            # Save the HTML content to a file named after the MD5 hash of the URL
+            html_file_path = cdx_file.parent / f"{timestamp}.html"
+            with open(html_file_path, 'w', encoding='utf-8') as html_file:
+                html_file.write(html_content)
+            print(f"Snapshot saved at {html_file_path}")
+        except Exception as e:
+            print(f"Error downloading snapshot for {url} at {timestamp}: {e}")
+
+```
 
 ### Dealing with frames
 
 After we downloaded all snapshots, we can first do a quick check and see if any web pages contain the `<frameset>` element: 
 
 ```python
-
-
+# Search for all downloaded HTML files and see if they contain the element <frameset>
+html_files = Path("data").glob("*/**/*.html")
+for html_file in html_files:
+    try:
+        with open(html_file, 'r', encoding='utf-8') as file:
+            content = file.read()
+            if '<frameset' in content:
+                print(f"Found <frameset> in {html_file}")
+    except Exception as e:
+        print(f"Error reading {html_file}: {e}")
 ```
+
+Since in the last step we randomly sampled HTML pages to download, you may encounter a different set of HTML files containing the element, or you may not encounter any at all. Below we provide one typical example where the 
+
 
 
 ### Looking for banner ads on downloaded web pages
 
 After we downloaded all the archived snapshots, we can proceed to identify banner ads in these snapshots. As mentioned earlier, in the 1990s and early 2000s, it was a common practice to provide the `width` and `height` attributes of `<img>` tags. This is good news to us, because it allows us to identify banner ads without downloading all images referenced on the page. 
 
-Soon after the advent of the first banner ads, advertisers and ad networks attempted to standardize banner ad dimensions in a bid to 
+Soon after the advent of the first banner ads, advertisers and ad networks attempted to standardize banner ad dimensions in a bid to . In the United States, the standardization effort is spearheaded by the Internet Advertising Bureau, an organization set up by 
+
+In Japan, the Japanese Internet Advertising Association published a local standard for 
 
 The following function analyzes a download HTML file and outputs a list of image URLs from the 
 
@@ -179,11 +223,16 @@ def output
 
 The following function 
 
-## Data insights
+## Preliminary data insights
 
-Despite its small size, we can gain some preliminary insights from our dataset. The 
+Despite its small size, we can gain some preliminary observations from our dataset. First, 
 
+We can further observe the claim by comparing our small Japanese-language dataset with the banner ads dataset we collected earlier. 
+
+## Optimizing the scraping procedures
+
+While 
 
 ## Building a gallery of Japanese banner ads
 
-As the last step, we will build a simple gallery of 
+As the last step in this case study, we will build a simple HTML gallery of all banner ads collected. To do this, we will write a 
