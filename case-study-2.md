@@ -110,13 +110,9 @@ Depending on your Internet connection, the CDX Server API scraping might take 10
 
 ### Downloading archived snapshots
 
-For the purpose of this lesson, we will randomly select two archived snapshots of each website to analyze. 
+For the purpose of this lesson, we will randomly select two archived snapshots of each website to analyze. The following is a function that parses a downloaded CDX file, and after checking and removing snapshots already downloaded, 
 
 ```python
-# Analyze each CDX file and choose random snapshots for each URL 
-# (if there is only one available snapshot to choose from, choose that one). 
-# Make sure that the two snapshots have different digests. 
-
 import random
 def choose_random_snapshots_to_download(cdx_file_path, num_snapshots=2):
 
@@ -127,7 +123,9 @@ def choose_random_snapshots_to_download(cdx_file_path, num_snapshots=2):
     downloaded_htmls = snapshots_dir.glob('*.html')
     # get file names without the extension
     downloaded_htmls = [html_file.stem for html_file in downloaded_htmls]
+    print(f"Already downloaded {len(downloaded_htmls)} snapshots for {cdx_file_path}")
     num_snapshots -= len(downloaded_htmls)
+    print(f"Number of new snapshots to download: {num_snapshots}")
 
     if num_snapshots <= 0:
         print(f"No new snapshots to download for {cdx_file_path}. Already have {len(downloaded_htmls)} downloaded.")
@@ -151,6 +149,8 @@ def choose_random_snapshots_to_download(cdx_file_path, num_snapshots=2):
     selected_snapshots = random.sample(list(unique_snapshots), min(num_snapshots, len(unique_snapshots)))
     return selected_snapshots
 ```
+Now, we will use the above function to sample and download snapshots. We will employ the encoding detection mechanism built into the requests library and save all downloaded files in UTF-8 encoding for further processing. 
+
 
 
 ### Dealing with frames
@@ -165,7 +165,7 @@ After we downloaded all snapshots, we can first do a quick check and see if any 
 
 ### Looking for banner ads on downloaded web pages
 
-After we downloaded all the archived snapshots, we can proceed to identify banner ads in these snapshots. As mentioned earlier, in the 1990s and early 2000s, web developers and web authoring software used to put image dimension information in the `width` and `height` attributes of `<img>` tags. This is good news to us, because it allows us to identify banner ads without downloading all images referenced on the page. 
+After we downloaded all the archived snapshots, we can proceed to identify banner ads in these snapshots. As mentioned earlier, in the 1990s and early 2000s, it was a common practice to provide the `width` and `height` attributes of `<img>` tags. This is good news to us, because it allows us to identify banner ads without downloading all images referenced on the page. 
 
 Soon after the advent of the first banner ads, advertisers and ad networks attempted to standardize banner ad dimensions in a bid to 
 
