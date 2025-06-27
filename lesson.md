@@ -58,30 +58,36 @@ The second part is a case study where we will use the tools and techniques we in
 
 # Getting started with programmatic access to the Wayback Machine
 
-There are different ways to access archived web content on the Wayback Machine programmatically. In this tutorial, we are going to use the Wayback Machine’s CDX Server API to retrieve available archived copies of web resources at a given URL on the Wayback Machine. Aside from the CDX Server API, the Wayback Machine can also be queried through the [Memento Protocol API](https://ws-dl.blogspot.com/2013/07/2013-07-15-wayback-machine-upgrades.html) and the [Wayback Machine Availability API](https://archive.org/help/wayback_api.php). All three APIs are available free of charge, though the CDX Server API provides much more information about archived web content than the other two APIs, such as sizes of the archived files and their HTTP response codes, which can indicate whether a file is archived successfully. 
+There are different ways to access archived web content on the Wayback Machine programmatically. In this tutorial, we are going to use the Wayback Machine’s CDX Server API to retrieve available archived copies of web resources at a given URL on the Wayback Machine. Aside from the CDX Server API, the Wayback Machine can also be queried through the [Memento Protocol API](https://ws-dl.blogspot.com/2013/07/2013-07-15-wayback-machine-upgrades.html) and the [Wayback Machine Availability API](https://archive.org/help/wayback_api.php). All three APIs are available free of charge, though the CDX Server API provides much more information about archived web content than the other two APIs, such as sizes of the archived files and their HTTP response codes, which we will use in our scraping. 
 
 In addition to APIs, researchers may also be interested in accessing archived web content through integrated research platforms such as the Internet Archive’s [Archives Research Compute Hub](https://archive-it.org/arch/) [^ARCH]. Researchers intending to use these platforms generally need to have access to raw archived web content in WARC format or enter a partnership with an archiving organization such as the Internet Archive, but they can provide advanced features such as full-text search and data visualization. If your research involves a large number of URLs that makes manually scraping impractical, using a research toolkit or platform might be a better choice. 
 
 
 ## Before you scrape: understanding how the Wayback Machine works and its limits
 
-The earliest institutional attempts to preserve information available on the web started shortly after the web became the main medium for the presentation and transmission of information over the Internet around the mid-1990s. The ensuing years saw the emergence of a range of web archiving initiatives. Founded in 1996, the Internet Archive’s Wayback Machine is the world’s first web archive, and today it holds billions of web pages from around the world, publicly accessible through its website at [web.archive.org](http://web.archive.org). Given its founding date and the worldwide scope of its collection, the Wayback Machine is also the only place where some of the earliest web pages on the Internet may be found. 
+### How the web is archived
 
-The Wayback Machine proactively archives the web, mainly by running a web crawler, which is a program that systematically browses and downloads content on the web to be archived. Any content on the web - be it a web page, a photo, an audio clip, or even a software installer in a zip file - that is saved from the web at a particular point in time is commonly referred to as an archived snapshot, and we often use the verb capture to refer to the act of saving web content for inclusion in the archive. 
+The earliest institutional attempts to preserve information available on the web started shortly after the web became the main medium for the presentation and transmission of information over the Internet around the mid-1990s. The ensuing years saw the emergence of a range of web archiving initiatives. Founded in 1996, the Internet Archive’s Wayback Machine is the world’s first web archive, and today it holds billions of web pages from around the world, publicly accessible through its website at [web.archive.org](http://web.archive.org) [^WAYBACK-MACHINE-NAME]. Given its founding date and the worldwide scope of its collection, the Wayback Machine is also the only place where some of the earliest web pages on the Internet may be found. 
 
-Web archive scholars have long emphasized that web archives differs significantly from traditional archives, and archived web content may not be identical to what existed online in the past. As web archive scholar Niels Brügger writes, an archived web page is "better understood as an actively created and subjective reconstruction" of what the original page may have looked like at a given point in time [^1]. There are three main factors responsible for this discrepancy: 
+The Wayback Machine proactively archives the web by running a web crawler, which is a program that systematically browses and downloads content on the web to be archived. When the Wayback Machine archives a web page, it attempts to archive both the HTML and its linked resources. We often use the verb capture to refer to the act of saving web content for inclusion in the archive. Any web content - be it a web page, a photo, an audio clip, or even a software installer in a zip file - that is captured at a particular point in time is commonly referred to as an archived snapshot.  
 
-First, how content on the web looks and behaves depends on many technical and non-technical factors, such as the user's browser of choice, hardware and software configurations, geographical location, and local laws and regulations. A user visiting youtube.com from Seoul using a mobile device and a user visiting youtube.com from Singapore using a desktop computer will be greeted with two very different web pages. When a web archive preserves a web page, it typically captures only what was served to the crawler at that particular time, from a particular location, using a particular set of hardware, software, and network configuration. As a result, the archived version may not reflect how content available at a given URL may have appeared to different groups of users when it was available on the live web.
+### Limitations of web archives
 
-Second, hardware and software today may differ significantly from those available when many archived web pages were originally created. A web page from the 1990s designed to be displayed on 15-inch monitors at 800 * 600 resolution may not be rendered correctly on an 32-inch ultrawide monitor made in 2024. Similarly, a modern web browser may not be able to display Flash animations that were popular in the 2000s. There are recent efforts such as oldweb.today [^OLDWEB] and Ruffle [^FLASHSUPPORT] that seek to address this issue through emulating old web browsers and implementing the capability to playback legacy media formats in today's browsers.
+Web archive scholars have long emphasized that web archives differs significantly from traditional archives, and archived web content may not be identical to what existed online in the past. As web archive scholar Niels Brügger writes, an archived web page is "better understood as an actively created and subjective reconstruction" of what the original page may have looked like at a given point in time [^1]. While we are not going to dive deep into the technical details of web archiving, you should be aware of the following four factors leading to this discrepancy: 
 
-The third factor, and arguably the most important factor that you should be aware of for scraping media files appearing on archived web pages and using them as historical sources, is that archived web pages as they appear on web archives like the Wayback Machine are often not *temporally coherent*. For example, below is a screenshot of Wayback Machine's [archived snapshot](https://web.archive.org/web/19990202064014/http://hudir.hungary.com/) from February 2, 1999 of HuDir, an English-language web directory of Hungary-related links. The page features a banner ad that advertises an event to be held in November 2004 - which is certainly unusual for a web page ostensibly from 1999. This is a case of what some scholars call temporal violation or time skew. 
+First, any web archive can only capture content that is publicly accessible on the web. Any web content requiring authentication - for example, web pages on company intranets and learning management systems requiring user login - cannot be archived by an web crawler. Web archives also cannot capture server-side programs, which means while you can access a snapshot of google.com taken in 1998 to observe its user interface, you cannot use the archived snapshot of google.com to search the 1998 web. 
+
+Second, the web is a dynamic medium, and content that is served from a single URL may appear and behave differently to different users based on many contextual factors, including the user’s browser, device, software settings, location, and even local laws and regulations. A user visiting youtube.com from Seoul using a mobile phone and a user visiting youtube.com from Singapore using a desktop computer will be greeted with two very different web pages. When a web archive archives a web page, it typically captures only what was served to the crawler at that particular time, from a particular location, using a particular set of hardware, software, and network configuration. As a result, an archived snapshot of a URL may not reflect how content available at that URL may have appeared to different groups of users when it was available on the live web. 
+
+Third, hardware and software today may differ significantly from those available when many archived web pages were originally created. A web page from the 1990s designed to be displayed on 15-inch monitors at 800 * 600 resolution may not be rendered correctly on an 32-inch ultrawide monitor made in 2024. Similarly, a modern web browser may not be able to display Flash animations that were popular in the 2000s. There are recent efforts such as oldweb.today [^OLDWEB] and Ruffle [^FLASHSUPPORT] that seek to address this issue through emulating old web browsers and implementing the capability to playback legacy media formats in today's browsers.
+
+The fourth factor, and arguably the most important factor that you should be aware of for scraping media files appearing on archived web pages and using them as historical sources, is that archived web pages as they appear on web archives like the Wayback Machine are often not *temporally coherent*. For example, below is a screenshot of Wayback Machine's [archived snapshot](https://web.archive.org/web/19990202064014/http://hudir.hungary.com/) from February 2, 1999 of HuDir, an English-language web directory of Hungary-related links. The page features a banner ad that advertises an event to be held in November 2004 - which is certainly unusual for a web page ostensibly from 1999. This is a case of what some scholars call temporal violation or time skew. 
 
 {% include figure.html filename="hudir.png" alt="A screenshot of hudir.hungary.com in 1999 displaying a banner ad promoting an event in 2004" caption="A screenshot of hudir.hungary.com in 1999 displaying a banner ad promoting an event in 2004" %}
 
-Time skew occurs on the Wayback Machine because the web crawler program cannot always capture every element of a web page at the exact same moment. As a result, when the user requests an archived snapshot of a web page on the Wayback Machine's web interface, the Wayback Machine delivers a "best effort" reconstruction of how an archived web page may look and behave in the past: it modifies URLs of linked resources on the archived page so that they may be loaded from the closest available versions in the archive, even if those versions were captured on different dates. The resulting page may resemble the past appearance and functionalities of the original web page. However, it also means that parts of the page may come from different moments in time - sometimes months or even years apart from each other - which can result in misleading combinations of content that never actually appeared together. 
+Time skew occurs on the Wayback Machine because the web crawler program cannot always capture every element of a web page at the exact same moment. As a result, when the user requests an archived snapshot of a web page on the Wayback Machine's web interface, the Wayback Machine delivers a "best effort" reconstruction of how an archived web page may look and behave in the past: it modifies URLs of linked resources on the archived page so that they may be loaded from the closest available versions in the archive, even if those versions were captured on different dates than the HTML document itself. The resulting page may resemble the past appearance and functionalities of the original web page. However, it also means that parts of the page may come from different moments in time - sometimes months or even years apart from each other - which can result in misleading combinations of content that never actually appeared together. 
 
-The Wayback Machine allows us to see the capture dates of linked resources on an archived web page by clicking “About this capture” on the toolbar [^TOOLBAR] that appears by default when you load an archived snapshot from its calendar interface. In the above example, the banner ad image was captured in November 2004 - 5 years and 10 months after the capture date of the web page - and it is not even the most time skewed element on the web page, with two GIF images on the page captured 17 years after the web page's capture date. 
+The Wayback Machine allows us to see the capture dates of linked resources on an archived web page by clicking “About this capture” on the toolbar [^TOOLBAR]. The toolbar appears by default when you load an archived snapshot from its calendar interface. In the above example, the banner ad image was captured in November 2004 - 5 years and 10 months after the capture date of the web page - and it is not even the most time skewed element on the web page, with two GIF images on the page captured 17 years after the web page's capture date. 
 
 {% include figure.html filename="hudir-skew.png" alt="A screenshot of the Wayback Machine toolbar showcasing time skew" caption="A screenshot of the Wayback Machine toolbar showcasing time skew" %}
 
@@ -182,7 +188,7 @@ Our new API request returns only 70 results. In contrast, our original API reque
 
 ## Choosing a download method
 
-Most of the tools for scraping live websites can be used to download archived pages from the Wayback Machine. In this lesson, we will rely on Python’s requests library because it’s lightweight, easy to script, and handles basic HTTP fetches reliably.  
+Most of the tools for scraping live websites can be used to download archived pages from the Wayback Machine. In this lesson, we will rely on Python’s requests library because it’s lightweight, easy to script, and handles basic HTTP fetches reliably. 
 
 An inherent limitation of downloading the HTML data using requests or a download tool like wget is that any on-page client-side JavaScript is not executed. Some web pages may use JavaScript to populate content or redirect users to another web page. If you find yourself needing to scrape historical web pages that involve client-side scripting, consider using a browser automation framework such as [Selenium](https://www.selenium.dev/) or [Puppeteer](https://pptr.dev/). However, these tools generally demand more system resources, and you need to check whether executing archived scripts might alter the integrity or authenticity of the content you are examining. 
 
@@ -195,7 +201,7 @@ from datetime import datetime # used to calculate time difference
 import requests
 
 def download_wm_snapshot(snapshot_url, file_name): 
-    [CODE TK]
+    # TODO CODE HERE
 
 ```
 
@@ -252,22 +258,27 @@ This also raises a challenge, as you need to figure out when the document in eac
 
 ## Dealing with Wayback Machine rate limiting
 
-Like many public web services, the Wayback Machine employs rate limiting to prevent server overload from excessive requests. The Wayback Machine currently does not make its thresholds for rate limiting public, though there are [user reports](https://github.com/edgi-govdata-archiving/wayback/issues/137#issuecomment-1845803523) citing conversations with Internet Archive employees confirming the existence of rate limiting for both the CDX Server API and the web archive. When you exceed rate limits, the Wayback Machine may temporarily block your IP address or return HTTP error codes like 429 (Too Many Requests) or 503 (Service Temporarily Unavailable). 
+Like many public web services, the Wayback Machine employs rate limiting to prevent server overload from excessive requests. When you exceed rate limits, the Wayback Machine may return an HTTP 429 (Too Many Requests) error. 
 
-To handle these limitations, we can implement an [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) retry strategy using Python's `⁠tenacity` library. This approach automatically retries failed requests with progressively longer delays between attempts:
+The Wayback Machine currently does not make its thresholds for rate limiting public, though there is a [Github post](https://github.com/edgi-govdata-archiving/wayback/issues/137#issuecomment-1845803523) citing conversations with Internet Archive employees confirming the existence of rate limiting for both the CDX Server API and the web archive. According to the post, the recommended max number of requests for the CDX Server API and the web archive is as follows: 
+
+ - `/cdx/*`: 48/min
+ - `/web/NNNNNNNN*/*:` 480/min
+
+In the case study, we will use the `time.sleep` function to observe these limits. However, in case we still hit 429 errors,  we can implement an [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) retry strategy using Python's `⁠tenacity` library. This approach automatically retries failed requests with progressively longer delays between attempts:
 
 ```python
 from tenacity import retry, stop_after_attempt, wait_exponential
 import requests
 
-@retry(stop=stop_after_attempt(5), wait=wait_exponential(multiplier=1, min=2, max=8))
+@retry(stop=stop_after_attempt(10), wait=wait_exponential(multiplier=1, min=2, max=32))
 def download_wayback_page(url):
     response = requests.get(url)
     response.raise_for_status()  # Raises an exception for HTTP error codes
     return response
 ```
 
-The exponential backoff strategy works by waiting longer between each retry attempt (starting at 2 seconds, then doubling up to a maximum of 8 seconds). This gives the server time to recover while ensuring temporary connection issues will not cause your script to fail immediately. You may adjust these parameters according to your network conditions as necessary. 
+In the example code above, the tenacity library works by waiting longer between each retry attempt (starting at 2 seconds, then doubling up to a maximum of 32 seconds). This gives the server time to recover while ensuring temporary connection issues will not cause your script to fail immediately. You may adjust these parameters according to your network conditions as necessary. 
 
 
 ## Identifying embedded media on archived web pages
@@ -284,7 +295,7 @@ As mentioned above, by default the Wayback Machine rewrites image URLs with the 
 
 ### Sound and video
 
-On web pages authored in the 2010s and later, sound files and video files are usually embedded using the `<audio>` and `<video>` tags, and the syntax of both tags are very similar. The following example HTML snippet is taken from an [archived snapshot](https://web.archive.org/web/20150411044752/https://www.wework.com/) of the home page of WeWork from 2014, which contains a video background:
+On web pages authored in the 2010s and later, sound files and video files are usually embedded using the `<audio>` and `<video>` tags, and the syntax of both tags are very similar. The following example HTML snippet is taken from an [archived snapshot](https://web.archive.org/web/20150411044752/https://www.wework.com/) of the home page of the co-working office space company WeWork from 2014, which contains a video background:
 
 ```html
 <video autoplay="autoplay" id="myvideo" loop="loop" muted="muted" src="//web.archive.org/web/20150411044752im_/https://da6bhbkkgqxyz.cloudfront.net/production/assets/welcome/wework_members-video_background_small-92daabed06e4e3aafdede211d9070544.mp4"></video>
@@ -294,24 +305,20 @@ As you can see, the URL to the file is present in the `src` attribute of the `<v
 
 Sometimes, instead of specifying URL to the media file in the `src` attribute, `<video>` and `<audio>` elements will contain multiple `<source>` elements that specify alternative media files in different formats. The URLs to these files are located in the `src` attribute of these elements. 
 
-Older versions of Internet Explorer used to support a proprietary HTML tag `<bgsound>`, which was commonly used to embed background music, usually in MIDI format. The URL to the audio file is in its `src` attribute. 
-
 By default, the Wayback Machine also rewrites sound and video URLs with the `im_` flag, and you should append the same flag when scraping these files. 
 
-Some web pages may employ custom media players, which may make the media files less likely to be archived. In older web pages, sound and video files may be embedded using `<embed>` or `<object>` tags, which we will cover in the next section. 
-
-### Legacy media in \<embed\> and \<object\>
+### Media in \<embed\> and \<object\>
 
 `<embed>` and `<object>` are two HTML tags commonly used to add non-image media resources on web pages  in the 1990s and early 2000s. During the browser wars of the late 1990s, `<embed>` was preferred by Netscape while Internet Explorer pushed the `<object>` element as a container for web media content. As a result, many early webpages included both tags (often nested) to ensure their media would play correctly in whichever browser the visitor used [^BROWSERWAR]. 
 
 Fortunately, you will be able to find out the path to the content linked using information contained in either tag. The following is a real-life example, taken from an archived snapshot of the website of the [Integrated Digital Media Program]((https://web.archive.org/web/20040625234530/http://www.poly.edu:80/huss/idm/idmi.html)) of NYU's Tandon School of Engineering, featuring Shockwave content:
 
 ```html
-<object classid="clsid:166B1BCA-3F9C-11CF-8075-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/director/sw.cab#version=8,5,0,0" width="800" height="600">
+<object classid="clsid:166B1BCA-3F9C-11CF-8075-444553540000" codebase="https://web.archive.org/web/20040625234530oe_/http://download.macromedia.com/pub/shockwave/cabs/director/sw.cab#version=8,5,0,0" width="800" height="600">
     <param name="src" value="idmi.dcr">
-    <param name="swStretchStyle" value="fill">
+	<param name="swStretchStyle" value="fill">
     <param name="AutoStart" value="true">
-    <embed src="idmi.dcr" width="800" height="600" autostart="true" pluginspage="http://www.macromedia.com/shockwave/download/">
+    <embed src="/web/20040625234530oe_/http://www.poly.edu/huss/idm/idmi.dcr" width="800" height="600" autostart="true" pluginspage="http://www.macromedia.com/shockwave/download/">
 </object>
 ```
 
@@ -357,6 +364,8 @@ HTML reference books published in the late 1990s and early 2000s are incredibly 
 [^TIMESKEW]: Ankerson, Megan Sapnar. “Read/Write the Digital Archive: Strategies for Historical Web Research.” In Digital Research Confidential, edited by Eszter Hargittai and Christian Sandvig, 29–54. The MIT Press, 2015. https://doi.org/10.7551/mitpress/9386.003.0004.
 
 [^REQUESTFLAG]: There appears to be no consensus on the name of this component in archived snapshot URLs on the Wayback Machine. In this lesson, we call them "request flags," which is a term used in the [release notes](https://web.archive.org/web/20231221054022/https://archive-access.sourceforge.net/projects/wayback/release_notes.html) of the Wayback Machine software developed by the Internet Archive. 
+
+[^WAYBACK-MACHINE-NAME]: The Wayback Machine originally referred to only the replay service provided by the Internet Archive for users to browse its archived web content. Today, the term is largely synonymous with the Internet Archive's web archive service, which is also how we are going to use the term in this lesson. For a history of Internet Archive and the Wayback Machine, see Milligan, Ian. Averting the Digital Dark Age: How Archivists, Librarians, and Technologists Built the Web a Memory. 1st ed. Baltimore: Johns Hopkins University Press, 2024. 
 
 # Bibliography
 
